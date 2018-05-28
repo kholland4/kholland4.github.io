@@ -1,0 +1,85 @@
+body {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+}
+
+#titlebar {
+  width: calc(100% - 30px);
+  
+  margin: 0px;
+  margin-bottom: 30px;
+  border: 0px;
+  padding: 15px;
+  
+  font-family: "Roboto", sans-serif;
+  font-size: 36pt;
+  /* background-color: #2979ff; */
+  background-color: black;
+  color: white;
+}
+
+#blog {
+  width: 100%;
+  
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+  padding-bottom: 16px;
+}
+
+.blogEntry {
+  min-width: 150px;
+  width: 85%;
+  max-width: 1100px;
+  
+  margin: auto; /* horizontal centering */
+  margin-top: 8px; /* padding between entries */
+  border: 0px;
+  padding: 16px;
+  
+  /* material design card styling */
+  border-radius: 2px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); /*https://medium.com/@Florian/freebie-google-material-design-shadow-helper-2a0501295a2d*/
+}
+
+.blogEntryDate {
+  color: #888888;
+  font-family: "Roboto", sans-serif;
+  font-size: 10pt;
+}
+
+.blogEntryTitle {
+  font-family: Roboto, sans-serif;
+  font-size: 26pt;
+}
+
+.linkContainer {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.link {
+  height: 18px;
+  border-radius: 18px;
+  
+  margin: 2px;
+  border: 0px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  
+  text-decoration: none;
+  
+  background-color: #bbbbbb;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+}
+
+.blogEntryBody {
+  margin-top: 10px;
+  
+  font-family: "Noto Serif", serif;
+  font-size: 12pt;
+}

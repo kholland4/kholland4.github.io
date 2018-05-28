@@ -1,0 +1,15 @@
+[
+  {
+    "id": 0,
+    "time": 1527537124,
+    "title": "Hi",
+    "body": "This is my blog. I'll post things here and make it look nice eventually."
+  },
+  {
+    "id": 1,
+    "time": 1527537698,
+    "title": "Word Generator",
+    "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/genwords"}],
+    "body": "A genetic algorithm that generates gibberish words"
+  }
+]

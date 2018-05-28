@@ -3,7 +3,7 @@ function init() {
   xmlhttp.onload = function() {
     showBlog(JSON.parse(this.responseText));
   };
-  xmlhttp.open("GET", "blog.json");
+  xmlhttp.open("GET", "blog.json?r=" + Math.random());
   xmlhttp.send();
 }
 

@@ -17,6 +17,6 @@
     "time": 1527539035,
     "title": "Snake AI",
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/snakeAI"}],
-    "body": "This is a program that trains a neural network to play the Snake game. It's my first attempt at creating a neural network. It works semi-reliably, but it takes a long time to train."
+    "body": "This is a program that trains a neural network to play the <a href=\"https://en.wikipedia.org/wiki/Snake_(video_game_genre)\">Snake game</a>. It's my first attempt at creating a neural network. It works semi-reliably, but it takes a long time to train."
   }
 ]

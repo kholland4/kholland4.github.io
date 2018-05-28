@@ -58,7 +58,7 @@ function genBlogEntry(data) {
   
   var body = document.createElement("div");
   body.className = "blogEntryBody";
-  body.innerText = data.body;
+  body.innerHTML = data.body;
   entry.appendChild(body);
   
   return entry;

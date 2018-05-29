@@ -24,6 +24,6 @@
     "time": 1527542722,
     "title": "mc2",
     "links": [{"text": "View", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
-    "body": "A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/resource-packs/1243771-alvorias-sanity-1-12-2-christmas-add-on-pack-is\">Sanity</a> texture pack."
+    "body": "A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack."
   }
 ]

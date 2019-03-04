@@ -23,14 +23,28 @@
     "id": 3,
     "time": 1527542722,
     "title": "mc2",
-    "links": [{"text": "View", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
-    "body": "A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack."
+    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
+    "body": "<b>NOTE: Superseded by <a href=\"https://github.com/kholland4/mc3\">mc3</a></b><br>A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack."
   },
   {
-    "id": 3,
+    "id": 4,
     "time": 1536421199,
     "title": "OS",
     "links": [{"text": "View", "dest": "https://kholland4.github.io/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
     "body": "An experimental operating system environment written in JavaScript."
+  },
+  {
+    "id": 5,
+    "time": 1548288000,
+    "title": "mc3",
+    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
+    "body": "Another Minecraft clone; much improved (based on <a href=\"https://threejs.org/\">Three.js</a>)."
+  },
+  {
+    "id": 6,
+    "time": 1551658872,
+    "title": "Platformer Game",
+    "links": [{"text": "Play", "dest": "https://kholland4.github.io/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
+    "body": "A basic platformer game; work in progress"
   }
 ]

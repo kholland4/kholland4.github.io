@@ -17,34 +17,39 @@
     "time": 1527539035,
     "title": "Snake AI",
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/snakeAI"}],
-    "body": "This is a program that trains a neural network to play the <a href=\"https://en.wikipedia.org/wiki/Snake_(video_game_genre)\">Snake game</a>. It's my first attempt at creating a neural network. It works semi-reliably, but it takes a long time to train.<br><br>YouTube video: <a href=\"https://youtu.be/4vr-2cWKyPI\">https://youtu.be/4vr-2cWKyPI</a>"
+    "body": "This is a program that trains a neural network to play the <a href=\"https://en.wikipedia.org/wiki/Snake_(video_game_genre)\">Snake game</a>. It's my first attempt at creating a neural network. It works semi-reliably, but it takes a long time to train.<br><br>YouTube video: <a href=\"https://youtu.be/4vr-2cWKyPI\">https://youtu.be/4vr-2cWKyPI</a>",
+    "image": "images/post-2.png"
   },
   {
     "id": 3,
     "time": 1527542722,
     "title": "mc2",
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
-    "body": "<b>NOTE: Superseded by <a href=\"https://github.com/kholland4/mc3\">mc3</a></b><br>A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack."
+    "body": "<b>NOTE: Superseded by <a href=\"https://github.com/kholland4/mc3\">mc3</a></b><br>A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
+    "image": "images/post-3.jpg"
   },
   {
     "id": 4,
     "time": 1536421199,
-    "title": "OS",
+    "title": "os",
     "links": [{"text": "View", "dest": "https://kholland4.github.io/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
-    "body": "An experimental operating system environment written in JavaScript."
+    "body": "An experimental operating system environment written in JavaScript.",
+    "image": "images/post-4.png"
   },
   {
     "id": 5,
     "time": 1548288000,
     "title": "mc3",
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
-    "body": "Another Minecraft clone; much improved (based on <a href=\"https://threejs.org/\">Three.js</a>)."
+    "body": "Another Minecraft clone; much improved (based on <a href=\"https://threejs.org/\">Three.js</a>).",
+    "image": "images/post-5.jpg"
   },
   {
     "id": 6,
     "time": 1551658872,
     "title": "Platformer Game",
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
-    "body": "A basic platformer game; work in progress"
+    "body": "A basic platformer game; work in progress",
+    "image": "images/post-6.png"
   }
 ]

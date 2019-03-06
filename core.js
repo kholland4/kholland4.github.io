@@ -17,11 +17,20 @@ function genBlogEntry(data) {
   a.id = "post." + data.id;
   entry.appendChild(a);
   
+  var image = document.createElement("img");
+  image.className = "blogEntryImage";
+  if("image" in data) {
+    image.src = data.image;
+  } else {
+    image.src = "images/placeholder.png";
+  }
+  entry.appendChild(image);
+  
   //date/time
   var date = new Date(data.time * 1000); //pass unix timestamp in milliseconds
   var dateText = document.createElement("div");
   dateText.className = "blogEntryDate";
-  dateText.innerText = date.toLocaleString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit"});
+  dateText.innerText = date.toLocaleString("en-US", {weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit"});
   entry.appendChild(dateText);
   
   var title = document.createElement("div");
@@ -81,5 +90,11 @@ function showBlog(data) {
   for(var i = 0; i < data.length; i++) {
     var entry = genBlogEntry(data[i]);
     container.appendChild(entry);
+  }
+  
+  for(var i = 0; i < 10; i++) {
+    var el = document.createElement("div");
+    el.className = "blogEntrySpacer";
+    container.appendChild(el);
   }
 }

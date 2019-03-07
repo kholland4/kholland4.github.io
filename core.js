@@ -24,7 +24,16 @@ function genBlogEntry(data) {
   } else {
     image.src = "images/placeholder.png";
   }
-  entry.appendChild(image);
+  
+  
+  if("click" in data) {
+    var link = document.createElement("a");
+    link.href = data.click;
+    link.appendChild(image);
+    entry.appendChild(link);
+  } else {
+    entry.appendChild(image);
+  }
   
   //date/time
   var date = new Date(data.time * 1000); //pass unix timestamp in milliseconds

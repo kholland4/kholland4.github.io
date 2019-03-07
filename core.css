@@ -92,9 +92,9 @@ body {
   margin-bottom: 16px;
 }
 
-.link {
-  height: 18px;
-  border-radius: 18px;
+.tag {
+  height: 20px;
+  border-radius: 20px;
   
   margin: 2px;
   border: 0px;
@@ -107,7 +107,7 @@ body {
   background-color: #bbbbbb;
   color: white;
   font-family: "Roboto", sans-serif;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .blogEntryBody {

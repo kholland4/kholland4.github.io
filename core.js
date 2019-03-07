@@ -1,3 +1,5 @@
+var tagColors = {"lang": ["#6b6", "#fff"]};
+
 function init() {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onload = function() {
@@ -47,28 +49,49 @@ function genBlogEntry(data) {
   title.innerText = data.title;
   entry.appendChild(title);
   
-  if("links" in data) {
+  if(("links" in data) || ("tags" in data)) {
     var linkContainer = document.createElement("div");
     linkContainer.className = "linkContainer";
     
-    for(var i = 0; i < data.links.length; i++) {
-      //TODO: link icon
-      var link = document.createElement("a");
-      link.className = "link";
-      link.href = data.links[i].dest;
-      
-      var icon = document.createElement("img");
-      icon.src = "icons/link.png"; //material icon (https://material.io/tools/icons/) (under https://www.apache.org/licenses/LICENSE-2.0.html)
-      icon.style.height = "8px";
-      icon.style.verticalAlign = "middle";
-      icon.style.marginRight = "4px";
-      link.appendChild(icon);
-      
-      var text = document.createElement("span");
-      text.innerText = data.links[i].text;
-      link.appendChild(text);
-      
-      linkContainer.appendChild(link);
+    if("tags" in data) {
+      for(var i = 0; i < data.tags.length; i++) {
+        var tagName = data.tags[i][0];
+        var tagText = data.tags[i][1];
+        
+        var tag = document.createElement("span");
+        tag.className = "tag";
+        if(tagName in tagColors) {
+          tag.style.backgroundColor = tagColors[tagName][0];
+          tag.style.color = tagColors[tagName][1];
+        }
+        
+        var text = document.createElement("span");
+        text.innerText = tagText;
+        tag.appendChild(text);
+        
+        linkContainer.appendChild(tag);
+      }
+    }
+    
+    if("links" in data) {
+      for(var i = 0; i < data.links.length; i++) {
+        var link = document.createElement("a");
+        link.className = "tag";
+        link.href = data.links[i].dest;
+        
+        var icon = document.createElement("img");
+        icon.src = "icons/link.png"; //material icon (https://material.io/tools/icons/) (under https://www.apache.org/licenses/LICENSE-2.0.html)
+        icon.style.height = "8px";
+        icon.style.verticalAlign = "middle";
+        icon.style.marginRight = "4px";
+        link.appendChild(icon);
+        
+        var text = document.createElement("span");
+        text.innerText = data.links[i].text;
+        link.appendChild(text);
+        
+        linkContainer.appendChild(link);
+      }
     }
     
     entry.appendChild(linkContainer);

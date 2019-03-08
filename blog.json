@@ -34,7 +34,7 @@
     "title": "os",
     "tags": [["lang", "JavaScript"]],
     "links": [{"text": "View", "dest": "https://kholland4.github.io/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
-    "click": "https://github.com/kholland4/os",
+    "click": "https://kholland4.github.io/os",
     "body": "An experimental operating system environment written in JavaScript.",
     "image": "images/post-4.png"
   },

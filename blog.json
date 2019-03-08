@@ -22,7 +22,7 @@
     "id": 3,
     "time": 1527542722,
     "title": "mc2",
-    "tags": [["lang", "JavaScript"]],
+    "tags": [["status", "Obsolete"], ["lang", "JavaScript"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
     "click": "https://kholland4.github.io/mc2",
     "body": "<b>NOTE: Superseded by <a href=\"https://github.com/kholland4/mc3\">mc3</a></b><br>A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
@@ -52,10 +52,20 @@
     "id": 6,
     "time": 1551658872,
     "title": "Platformer Game",
-    "tags": [["lang", "JavaScript"]],
+    "tags": [["status", "Indev"], ["lang", "JavaScript"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
     "click": "https://kholland4.github.io/platformeng",
     "body": "A basic platformer game; work in progress",
     "image": "images/post-6.png"
+  },
+  {
+    "id": 7,
+    "time": 1552011381,
+    "title": "hab",
+    "tags": [["status", "Indev"], ["lang", "Python"]],
+    "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/hab"}],
+    "click": "https://github.com/kholland4/hab",
+    "body": "An experimental home automation system",
+    "image": "images/post-7.png"
   }
 ]

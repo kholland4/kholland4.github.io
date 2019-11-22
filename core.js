@@ -1,4 +1,4 @@
-var tagColors = {"lang": ["#6b6", "#fff"], "status": ["#c55", "#fff"]};
+var tagColors = {"lang": ["#6b6", "#fff"], "status": ["#c55", "#fff"], "hardware": ["#5ac", "#fff"]};
 
 function init() {
   var xmlhttp = new XMLHttpRequest();

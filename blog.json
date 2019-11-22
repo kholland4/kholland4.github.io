@@ -62,10 +62,20 @@
     "id": 7,
     "time": 1552011381,
     "title": "hab",
-    "tags": [["status", "Indev"], ["lang", "Python"]],
+    "tags": [["status", "Indev"], ["hardware", "HW"], ["lang", "Python"], ["lang", "C++"]],
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/hab"}],
     "click": "https://github.com/kholland4/hab",
     "body": "An experimental home automation system",
     "image": "images/post-7.png"
+  },
+  {
+    "id": 8,
+    "time": 1574461455,
+    "title": "8-bit",
+    "tags": [["status", "Prototype"], ["hardware", "HW"], ["lang", "Python"], ["lang", "ASM"], ["lang", "Docs"]],
+    "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/8-bit"}],
+    "click": "https://github.com/kholland4/8-bit",
+    "body": "A fully functional 8-bit CPU built from 74HCxx series logic chips",
+    "image": "images/post-8.jpg"
   }
 ]

@@ -77,5 +77,15 @@
     "click": "https://github.com/kholland4/8-bit",
     "body": "A fully functional 8-bit CPU built from 74HCxx series logic chips",
     "image": "images/post-8.jpg"
+  },
+  {
+    "id": 9,
+    "time": 1578181503,
+    "title": "mc4",
+    "tags": [["status", "Indev"], ["lang", "JavaScript"]],
+    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc4"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc4"}],
+    "click": "https://kholland4.github.io/mc4",
+    "body": "Fourth attempt at a Minecraft clone (this is starting to become a yearly thing). Backend is much faster and code is much cleaner; has support for multiplayer. Still in development.",
+    "image": "images/post-9.jpg"
   }
 ]

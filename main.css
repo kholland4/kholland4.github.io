@@ -1,0 +1,48 @@
+body {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+}
+
+.titlebar {
+  width: calc(100% - 30px);
+  
+  margin: 0px;
+  border: 0px;
+  padding: 15px;
+}
+
+#titlebar_main {
+  font-family: "Roboto", sans-serif;
+  font-size: 36pt;
+  /* background-color: #2979ff; */
+  background-color: #333;
+  color: white;
+}
+#titlebar_sub {
+  font-family: "Roboto", sans-serif;
+  font-size: 16pt;
+  
+  padding-top: 0px;
+  padding-bottom: 0px;
+  
+  background-color: #bbb;
+  color: #444;
+}
+
+.titlebar_button {
+  display: inline-block;
+  
+  padding-top: 7px;
+  padding-bottom: 7px;
+  
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.titlebar_button.selected {
+  background-color: #999;
+}
+.titlebar_button a {
+  color: inherit;
+  text-decoration: inherit;
+}

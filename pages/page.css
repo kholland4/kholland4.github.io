@@ -1,0 +1,29 @@
+body {
+  font-family: serif;
+  
+  max-width: 1000px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: sans-serif;
+}
+
+footer {
+  font-size: smaller;
+}
+
+img {
+  padding: 10px;
+  border: 1px solid black;
+  
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+pre {
+  background-color: #f8f8f8;
+  
+  padding: 10px;
+  display: table;
+}

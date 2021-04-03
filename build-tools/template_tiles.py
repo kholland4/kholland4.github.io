@@ -99,6 +99,7 @@ def parse(args, target, soup, workdir):
                     tag_el.string = text
                     
                     tag_container.append(tag_el)
+                    tag_container.append(bs4.NavigableString(" "))
             
             if "links" in item:
                 for props in item["links"]:
@@ -119,6 +120,7 @@ def parse(args, target, soup, workdir):
                     link_el.append(text_el)
                     
                     tag_container.append(link_el)
+                    tag_container.append(bs4.NavigableString(" "))
             
             entry.append(tag_container)
         

@@ -3,50 +3,50 @@
     "id": 9,
     "time": 1578181503,
     "title": "mc4",
-    "tags": [["status", "Indev"], ["lang", "JavaScript"], ["lang", "C++"]],
+    "tags": [["status-good", "Alpha"], ["lang", "JavaScript"], ["lang", "C++"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc4"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc4"}],
     "click": "https://kholland4.github.io/mc4",
-    "body": "Fourth attempt at a Minecraft clone (this is starting to become a yearly thing). Backend is much faster and code is much cleaner; has support for multiplayer. Still in development.",
+    "body": "Minecraft-like multiplayer voxel building game. Runs in a web browser. Click to play!",
     "image": "../images/projects/post-9.jpg"
   },
   {
     "id": 8,
     "time": 1574461455,
     "title": "8-bit",
-    "tags": [["status", "Prototype"], ["hardware", "HW"], ["lang", "Python"], ["lang", "ASM"], ["lang", "Docs"]],
+    "tags": [["status-good", "Prototype"], ["hardware", "HW"], ["lang", "Python"], ["lang", "ASM"], ["lang", "Docs"]],
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/8-bit"}],
     "click": "https://github.com/kholland4/8-bit",
-    "body": "A fully functional 8-bit CPU built from 74HCxx series logic chips",
+    "body": "A fully functional 8-bit CPU built from 74HCxx series logic chips.",
     "image": "../images/projects/post-8.jpg"
   },
   {
     "id": 7,
     "time": 1552011381,
     "title": "hab",
-    "tags": [["status", "Indev"], ["hardware", "HW"], ["lang", "Python"], ["lang", "C++"]],
+    "tags": [["status-bad", "Abandoned"], ["hardware", "HW"], ["lang", "Python"], ["lang", "C++"]],
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/hab"}],
     "click": "https://github.com/kholland4/hab",
-    "body": "An experimental home automation system",
+    "body": "An experimental home automation system.",
     "image": "../images/projects/post-7.png"
   },
   {
     "id": 6,
     "time": 1551658872,
     "title": "Platformer Game",
-    "tags": [["status", "Indev"], ["lang", "JavaScript"]],
+    "tags": [["lang", "JavaScript"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
     "click": "https://kholland4.github.io/platformeng",
-    "body": "A basic platformer game; work in progress",
+    "body": "A basic platformer game (<a href=\"https://kholland4.github.io/platformeng/leveledit.html\">level editor here</a>).",
     "image": "../images/projects/post-6.png"
   },
   {
     "id": 5,
     "time": 1548288000,
     "title": "mc3",
-    "tags": [["lang", "JavaScript"]],
+    "tags": [["status-bad", "Obsolete"], ["lang", "JavaScript"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
     "click": "https://kholland4.github.io/mc3",
-    "body": "Another Minecraft clone; much improved (based on <a href=\"https://threejs.org/\">Three.js</a>).",
+    "body": "Another Minecraft clone; much improved (uses <a href=\"https://threejs.org/\">Three.js</a>).",
     "image": "../images/projects/post-5.jpg"
   },
   {
@@ -63,10 +63,10 @@
     "id": 3,
     "time": 1527542722,
     "title": "mc2",
-    "tags": [["status", "Obsolete"], ["lang", "JavaScript"]],
+    "tags": [["status-bad", "Obsolete"], ["lang", "JavaScript"]],
     "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
     "click": "https://kholland4.github.io/mc2",
-    "body": "<b>NOTE: Superseded by <a href=\"https://github.com/kholland4/mc3\">mc3</a></b><br>A work-in-progress Minecraft clone (based on <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
+    "body": "Early attempt at a Minecraft clone (with <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
     "image": "../images/projects/post-3.jpg"
   },
   {
@@ -86,6 +86,6 @@
     "tags": [["lang", "C"]],
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/genwords"}],
     "click": "https://github.com/kholland4/genwords",
-    "body": "A genetic algorithm that generates gibberish words"
+    "body": "A genetic algorithm that generates gibberish words."
   }
 ]

@@ -5,8 +5,9 @@ from datetime import datetime
 
 tag_colors = {
     "lang": ["#6b6", "#fff"],
-    "status": ["#c55", "#fff"],
-    "hardware": ["#5ac", "#fff"]
+    "hardware": ["#6b6", "#fff"],
+    "status-bad": ["#c55", "#fff"],
+    "status-good": ["#5ac", "#fff"]
 }
 
 def parse(args, target, soup, workdir):

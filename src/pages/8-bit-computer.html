@@ -2,15 +2,9 @@
 <html>
 <head>
 <title>8-bit computer</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<link rel="stylesheet" href="../page.css" type="text/css">
 </head>
 <body>
-
-<nav>
-  <a href="../">Home</a>
-</nav>
+<div class="content">
 
 <h1>8-bit computer</h1>
 
@@ -67,7 +61,7 @@ During the execute cycle, the instruction is fed into decoding logic that operat
 Once the new state has stabilized, any registers/memory that need to be are latched in.
 </p>
 
-<img src="8-bit-computer/fig-clock.jpg" alt="Diagram of clock cycles" width="500">
+<img src="../images/8-bit-computer/fig-clock.jpg" alt="Diagram of clock cycles" width="500">
 
 <h4>Instructions</h4>
 
@@ -103,7 +97,7 @@ To AND two values together, one would load each of the values into the A and B r
 in a separate instruction, put the output of the AND operation to the bus.
 </p>
 
-<img src="8-bit-computer/fig-alu.jpg" alt="Diagram of ALU" width="250">
+<img src="../images/8-bit-computer/fig-alu.jpg" alt="Diagram of ALU" width="250">
 
 <h4>Memory</h4>
 
@@ -120,7 +114,7 @@ Once the address has been selected, data can either be loaded from the bus into 
 Addressing modes to access both the low (data) and high (instruction) bytes of the memory contents are available.
 </p>
 
-<img src="8-bit-computer/fig-memory.jpg" alt="Diagram of memory" width="350">
+<img src="../images/8-bit-computer/fig-memory.jpg" alt="Diagram of memory" width="350">
 
 <h4>Program counter</h4>
 
@@ -189,5 +183,6 @@ Testing was performed along the way, of course, by manually twiddling with the r
 
 <footer>Last updated 2020-01-27</footer>
 
+</div>
 </body>
 </html>

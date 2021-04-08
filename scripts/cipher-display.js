@@ -2,13 +2,18 @@ var CipherDisplay = {};
 
 CipherDisplay.charset = [
   // ASCII control codes, displayed nicely -- https://en.wikipedia.org/wiki/Control_Pictures
-  '\u2400', '\u2401', '\u2402', '\u2403', '\u2404', '\u2405', '\u2406', '\u2407', '\u2408', '\u2409', '\u240a', '\u240b', '\u240c', '\u240d', '\u240e', '\u240f',
-  '\u2410', '\u2411', '\u2412', '\u2413', '\u2414', '\u2415', '\u2416', '\u2417', '\u2418', '\u2419', '\u241a', '\u241b', '\u241c', '\u241d', '\u241e', '\u241f',
+  '\u2400', '\u2401', '\u2402', '\u2403', '\u2404', '\u2405', '\u2406', '\u2407',
+  '\u2408', '\u2409', '\u240a', '\u240b', '\u240c', '\u240d', '\u240e', '\u240f',
+  '\u2410', '\u2411', '\u2412', '\u2413', '\u2414', '\u2415', '\u2416', '\u2417',
+  '\u2418', '\u2419', '\u241a', '\u241b', '\u241c', '\u241d', '\u241e', '\u241f',
   
   // Printable ASCII + DEL (127)
-  ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<',  '=', '>', '?',
-  '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G',  'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_',
-  '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g',  'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|',  '}', '~', '\u2421'
+  ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',',  '-', '.', '/',
+  '0', '1', '2', '3', '4', '5', '6', '7',  '8', '9', ':', ';', '<',  '=', '>', '?',
+  '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G',  'H', 'I', 'J', 'K', 'L',  'M', 'N', 'O',
+  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',  'X', 'Y', 'Z', '[', '\\', ']', '^', '_',
+  '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g',  'h', 'i', 'j', 'k', 'l',  'm', 'n', 'o',
+  'p', 'q', 'r', 's', 't', 'u', 'v', 'w',  'x', 'y', 'z', '{', '|',  '}', '~', '\u2421'
   
   // Other byte values will be shown with \u00b7 Middle Dot
 ];
@@ -22,6 +27,21 @@ CipherDisplay.white = "white";
 CipherDisplay.green = "palegreen";
 CipherDisplay.yellow = "palegoldenrod";
 CipherDisplay.red = "palevioletred";
+
+/*
+ *   CipherDisplay.Colored, CipherDisplay.Plain:
+ *   for displaying a Cipher.Message as text or hexadecimal
+ *
+ *   Basic usage:
+ *     var x = new CipherDisplay.Plain({hex: true}).link(yourMessage);
+ *     something.appendChild(x.dom());
+ *
+ *   CipherDisplay.Colored has an additional ".colors" array
+ *   indicating which CSS color to use for which data index in the message.
+ *
+ *   Both auto-update from and to the .link()ed message
+ *   (use .unlink() to clean up when you're done).
+ */
 
 CipherDisplay._Core = class {
   constructor(options) {
@@ -181,6 +201,21 @@ CipherDisplay.Plain = class extends CipherDisplay._Core {
     }
   }
 };
+
+/*
+ *   CipherDisplay.Input.Plain, CipherDisplay.Input.Hex:
+ *   for accepting user input
+ *
+ *   Basic usage:
+ *     var x = new CipherDisplay.Input.Plain().link(yourMessage);
+ *     something.appendChild(x.dom());
+ *
+ *   CipherDisplay.Input.Hex takes hex input & will color itself
+ *   red upon invalid input
+ *
+ *   Both auto-update from and to the .link()ed message
+ *   (use .unlink() to clean up when you're done).
+ */
 
 CipherDisplay.Input = {};
 

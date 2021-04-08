@@ -9,14 +9,14 @@ import sys, os, argparse, bs4
 import template_tiles
 
 include_css = [
-    "../styles/main.css",
-    "../styles/page.css"
+    "styles/main.css",
+    "styles/page.css"
 ]
 main_title = "a blog"
 titlebar_buttons = [
-    ["showcase", "../pages/", "src/pages/index.html"],
-    ["all projects", "../pages/projects.html", "src/pages/projects.html"],
-    ["all pages", "../pages/page-list.html", "src/pages/page-list.html"]
+    ["showcase", "pages/", "src/pages/index.html"],
+    ["all projects", "pages/projects.html", "src/pages/projects.html"],
+    ["all pages", "pages/page-list.html", "src/pages/page-list.html"]
 ]
 
 arg_parser = argparse.ArgumentParser(description="Page builder.")
@@ -29,6 +29,7 @@ output_file = args.o[0]
 
 
 workdir = os.path.dirname(source_file)
+out_dir = os.path.dirname(output_file)
 
 with open(source_file, "r") as f:
     soup = bs4.BeautifulSoup(f.read(), "lxml")
@@ -40,7 +41,8 @@ viewport_tag = soup.new_tag("meta", content="width=device-width")
 viewport_tag["name"] = "viewport"
 soup.head.append(viewport_tag)
 for c in include_css:
-    soup.head.append(soup.new_tag("link", rel="stylesheet", href=c, type="text/css"))
+    rel = os.path.relpath(c, start=out_dir)
+    soup.head.append(soup.new_tag("link", rel="stylesheet", href=rel, type="text/css"))
 
 # Put in the titlebar
 titlebar_sub = soup.new_tag("div", id="titlebar_sub")
@@ -50,7 +52,8 @@ for label, link, match in titlebar_buttons:
     button_div["class"] = "titlebar_button"
     if source_file.endswith(match):
         button_div["class"] += " selected"
-    a = soup.new_tag("a", href=link)
+    link_rel = os.path.relpath(link, start=out_dir)
+    a = soup.new_tag("a", href=link_rel)
     a.string = label
     button_div.append(a)
     titlebar_sub.append(button_div)
@@ -83,5 +86,6 @@ for child in soup.body.descendants:
         child.clear()
         template_parse(content, child)
 
+os.makedirs(out_dir, exist_ok=True)
 with open(output_file, "w") as outf:
     outf.write(str(soup))

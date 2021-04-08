@@ -313,7 +313,7 @@ CipherDisplay.Input._Core = class {
   length() {
     return this._dom.length;
   }
-}
+};
 
 CipherDisplay.Input.Plain = class extends CipherDisplay.Input._Core {
   constructor(options=null) {

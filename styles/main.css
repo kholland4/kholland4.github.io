@@ -38,6 +38,8 @@ body {
   
   padding-left: 10px;
   padding-right: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 .titlebar_button.selected {
   background-color: #999;

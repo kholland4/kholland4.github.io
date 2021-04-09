@@ -55,7 +55,8 @@ CipherDisplay._Core = class {
     
     this._dom = document.createElement("span");
     this._dom.style.fontFamily = "monospace";
-    this._dom.style.whiteSpace = "pre";
+    this._dom.style.whiteSpace = "pre-wrap";
+    this._dom.style.wordWrap = "break-word";
     this._dom.style.color = "black";
   }
   
@@ -242,7 +243,7 @@ CipherDisplay.Input._Core = class {
     
     this._dom = document.createElement("input");
     this._dom.style.fontFamily = "monospace";
-    this._dom.style.whiteSpace = "pre";
+    this._dom.style.whiteSpace = "pre-wrap";
     this._dom.style.color = "black";
     
     this._dom.placeholder = this.placeholder;

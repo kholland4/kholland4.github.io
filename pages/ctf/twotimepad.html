@@ -146,8 +146,8 @@
         var table = document.createElement("table");
         
         for(var offset = 0; offset < k.data.length; offset++) {
-          var mask = new Cipher.Message(new Uint8Array(k.data.length));
-          for(var i = 0; i < srcWord.data.length && offset + i < k.data.length; i++) {
+          var mask = new Cipher.Message(srcMessage.data.slice());
+          for(var i = 0; i < srcWord.data.length && offset + i < mask.data.length; i++) {
             mask.data[offset + i] = srcWord.data[i];
           }
           
@@ -243,7 +243,7 @@
 </div>
 <button id="startButton" style="margin-top: 1em;">Start</button>
 <hr/>
-<table style="width: 100%">
+<table style="table-layout: fixed; width: 100%;">
 <tr>
 <td style="vertical-align: top;">
 <h3>Message 1</h3>

@@ -13,9 +13,11 @@ Cipher.Message = class {
   }
   
   update(newData, srcID) {
-    this.data = newData;
+    if(newData != undefined)
+      this.data = newData;
+    
     for(var s of Object.keys(this.subscribers)) {
-      if(s == "id" + srcID)
+      if(srcID != null && srcID != undefined && s == "id" + srcID)
         continue;
       
       this.subscribers[s].callback();
@@ -35,6 +37,23 @@ Cipher.Message = class {
   
   unsub(id) {
     delete this.subscribers["id" + id];
+  }
+  
+  static fromHex(s) {
+    if(s.length % 2 != 0)
+      s = "0" + s;
+    
+    var data = [];
+    for(var i = 0; i < s.length; i += 2) {
+      var hex = s.substr(i, 2);
+      if(!hex.match(/^[0-9a-fA-F]{2}$/g))
+        return null;
+      
+      var n = parseInt(hex, 16);
+      data.push(n);
+    }
+    
+    return new Cipher.Message(new Uint8Array(data));
   }
 };
 
@@ -150,4 +169,14 @@ Cipher.XOR = class extends Cipher._Core {
     
     return null;
   }
+};
+
+Cipher.calcXOR = function(m1, m2) {
+  var out = new Uint8Array(Math.min(m1.data.length, m2.data.length));
+
+  for(var i = 0; i < out.length; i++) {
+    out[i] = m1.data[i] ^ m2.data[i];
+  }
+  
+  return new Cipher.Message(out);
 };

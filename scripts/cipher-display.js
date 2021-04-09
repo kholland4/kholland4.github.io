@@ -53,11 +53,16 @@ CipherDisplay._Core = class {
       Object.assign(this, options);
     }
     
-    this._dom = document.createElement("div");
+    this._dom = document.createElement("span");
     this._dom.style.fontFamily = "monospace";
-    this._dom.style.fontSize = "20px";
     this._dom.style.whiteSpace = "pre";
     this._dom.style.color = "black";
+  }
+  
+  from(message) {
+    this.message = message;
+    this.update();
+    return this;
   }
   
   link(message) {
@@ -119,6 +124,10 @@ CipherDisplay.Colored = class extends CipherDisplay._Core {
     
     if(this.message == null)
       return;
+    
+    if(this.calcColors != undefined) {
+      this.colors = this.calcColors(this.message.data, this.colors);
+    }
     
     var data = this.message.data;
     
@@ -233,7 +242,6 @@ CipherDisplay.Input._Core = class {
     
     this._dom = document.createElement("input");
     this._dom.style.fontFamily = "monospace";
-    this._dom.style.fontSize = "20px";
     this._dom.style.whiteSpace = "pre";
     this._dom.style.color = "black";
     

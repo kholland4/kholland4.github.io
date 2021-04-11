@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RSA Calculator</title>
+    <script src="../../scripts/bigint-math.js" type="text/javascript"></script>
+    <script>
+    
+    var outputBase = 10;
+    
+    function getNum(where) {
+      var text = document.getElementById(where).value;
+      return BigInt(text);
+    }
+    function putNum(where, num) {
+      var text = num.toString(outputBase);
+      if(outputBase == 2)
+        text = "0b" + text;
+      if(outputBase == 8)
+        text = "0o" + text;
+      if(outputBase == 16)
+        text = "0x" + text;
+      
+      document.getElementById(where).value = text;
+    }
+    function putText(where, text) {
+      document.getElementById(where).innerText = text;
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+      outputBase = parseInt(document.getElementById("outStyle").value);
+    });
+    
+    function clearAll() {
+      var fields = ["inputP", "inputQ", "inputN", "outputTot", "inputE", "outputD", "inputM", "inputC"];
+      var texts = ["checkCoprimeE"];
+      for(var f of fields)
+        document.getElementById(f).value = "";
+      for(var t of texts)
+        document.getElementById(t).innerText = "";
+    }
+    
+    function calcN() {
+      var p = getNum("inputP");
+      var q = getNum("inputQ");
+      var n = p * q;
+      putNum("inputN", n);
+    }
+    function calcP() {
+      var q = getNum("inputQ");
+      var n = getNum("inputN");
+      var p = n / q;
+      putNum("inputP", p);
+    }
+    function calcQ() {
+      var p = getNum("inputP");
+      var n = getNum("inputN");
+      var q = n / p;
+      putNum("inputQ", q);
+    }
+    
+    function calcTotC() {
+      var p = getNum("inputP");
+      var q = getNum("inputQ");
+      var lambdaN = bmath.lcm(p - 1n, q - 1n);
+      putNum("outputTot", lambdaN);
+    }
+    function calcTotE() {
+      var p = getNum("inputP");
+      var q = getNum("inputQ");
+      var phiN = (p - 1n) * (q - 1n);
+      putNum("outputTot", phiN);
+    }
+    
+    function checkCoprimeE() {
+      var tot = getNum("outputTot");
+      var e = getNum("inputE");
+      
+      if(tot == 0) {
+        putText("checkCoprimeE", "Please calculate tot(n) first.");
+        return;
+      }
+      if(e <= 1) {
+        putText("checkCoprimeE", "e must be greater than 1.");
+        return;
+      }
+      if(e >= tot) {
+        putText("checkCoprimeE", "e must be less than tot(n).");
+        return;
+      }
+      
+      var gcd = bmath.gcd(e, tot);
+      if(gcd == 1) {
+        putText("checkCoprimeE", "e and tot(n) are coprime! Continue.");
+      } else {
+        putText("checkCoprimeE", "Not coprime. Try another e (perhaps a prime number)?");
+      }
+    }
+    
+    function calcD() {
+      var tot = getNum("outputTot");
+      var e = getNum("inputE");
+      var d = bmath.modMultInverse(e, tot);
+      putNum("outputD", d);
+    }
+    
+    // Encrypt
+    function calcC() {
+      var m = getNum("inputM");
+      var e = getNum("inputE");
+      var n = getNum("inputN");
+      var c = bmath.modExp(m, e, n);
+      putNum("inputC", c);
+    }
+    
+    // Decrypt
+    function calcM() {
+      var c = getNum("inputC");
+      var d = getNum("outputD");
+      var n = getNum("inputN");
+      var m = bmath.modExp(c, d, n);
+      putNum("inputM", m);
+    }
+    
+    </script>
+  </head>
+  <body>
+    <div class="content">
+      
+      <h1>RSA calculator</h1>
+      
+      <p>
+        Disclaimer: this tool is for educational purposes only and is not suited for security.
+      </p>
+      
+      <p>
+        Note: this tool uses JavaScript
+        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInts</a>.
+        If you want hex, octal, or binary input, prefix with
+        <code>0x</code>, <code>0o</code>, or <code>0b</code> respectively.
+        For hex, octal, or binary output, select:
+        <select id="outStyle" onchange="outputBase = parseInt(this.value);">
+          <option value="10" selected>Decimal (10)</option>
+          <option value="16">Hex (16)</option>
+          <option value="2">Binary (2)</option>
+          <option value="8">Octal (8)</option>
+        </select>
+      </p>
+      
+      <p>
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">Wikipedia</a>
+      </p>
+      
+      <p>
+        Need more flexibility? <a href="https://www.python.org/">Python</a> has
+        arbitrary-precision integer support (preferably use version 3.9 or later).
+      </p>
+      
+      <p>
+        <button onclick="clearAll();">Clear all fields</button>
+      </p>
+      
+      
+      
+      <h3>Key generation</h3>
+      
+      <p>
+        Choose two distinct prime numbers <code>p</code> and <code>q</code>.
+      </p>
+      <p>
+        <code>p</code>: <textarea id="inputP"></textarea>
+      </p>
+      <p>
+        <code>q</code>: <textarea id="inputQ"></textarea>
+      </p>
+      
+      <p>
+        Calculate <code>n = p * q</code>.
+      </p>
+      <p>
+        <code>n</code>: <textarea id="inputN"></textarea>
+      </p>
+      <p>
+        <button onclick="calcN();">Calculate n</button>
+        <button onclick="calcP();">Calculate p = n / q</button>
+        <button onclick="calcQ();">Calculate q = n / p</button>
+      </p>
+      
+      <p>
+        Compute the Carmichael's totient function <code>tot(n) = &lambda;(n) = lcm(p - 1, q - 1)</code>.
+        (Note that Euler's totient function <code>tot(n) = &phi;(n) = (p - 1) * (q - 1)</code> could be used instead.
+        See <a href="https://crypto.stackexchange.com/a/70626">StackExchange</a>.)
+      </p>
+      <p>
+        <code>tot(n)</code>: <textarea id="outputTot"></textarea>
+      </p>
+      <p>
+        <button onclick="calcTotC();">Calculate &lambda;(n)</button>
+        <button onclick="calcTotE();">Calculate &phi;(n)</button>
+      </p>
+      
+      <p>
+        Choose any number <code>e</code> where <code>1 &lt; e &lt; tot(n)</code> and <code>e</code> is coprime to <code>tot(n)</code>.
+        Common choices are 3, 17, and 65537 (these are <a href="https://en.wikipedia.org/wiki/Fermat_number">Fermat primes</a>).
+      </p>
+      <p>
+        <code>e</code>: <textarea id="inputE"></textarea>
+      </p>
+      <p>
+        <button onclick="checkCoprimeE();">Check if coprime</button>
+        <span id="checkCoprimeE"></span>
+      </p>
+      
+      <p>
+        Compute <code>d</code>, the modular multiplicative inverse of <code>e</code> (mod <code>tot(n)</code>).
+      </p>
+      <p>
+        <code>d</code>: <textarea id="outputD"></textarea>
+      </p>
+      <p>
+        <button onclick="calcD();">Calculate d</button>
+        <span id="calcD"></span>
+      </p>
+      
+      <p>
+        That's it for key generation!
+        The public key is <code>(n, e)</code> and the private key is <code>(n, d)</code>
+      </p>
+      
+      
+      
+      <h3>Encryption and decryption</h3>
+      
+      <p>
+        Encryption is done with <code>c(m) = m^e mod n</code> where <code>c</code> is the ciphertext and <code>m</code> is the message.
+        Note that both of these values must be integers <code>1 &lt; m &lt; n</code> and <code>1 &lt; c &lt; n</code>.
+      </p>
+      <p>
+        Decryption is done with <code>m(c) = c^d mod n</code>.
+      </p>
+      <p>
+        <code>m</code>: <textarea id="inputM"></textarea>
+      </p>
+      <p>
+        <code>c</code>: <textarea id="inputC"></textarea>
+      </p>
+      <p>
+        <button onclick="calcC();">Encrypt</button>
+        <button onclick="calcM();">Decrypt</button>
+      </p>
+      
+      
+      
+      <hr>
+      
+      <h2>Attacks</h2>
+      
+      <h3>Factoring the public modulus <code>n</code></h3>
+      
+      <p>
+        The public modulus <code>n</code> is equal to a prime number <code>p</code>
+        times a prime number <code>q</code>.
+        If you know <code>p</code> and <code>q</code> (and <code>e</code> from the
+        public key), you can determine the private key, thus breaking the encryption.
+        However, factoring a large <code>n</code> is very difficult (effectively impossible).
+        A small-ish <code>n</code> (perhaps 50-100 decimal digits) can be factored.
+        The following tool can do just that:
+      </p>
+      
+      <p>
+        <a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
+      </p>
+      
+    </div>
+  </body>
+</html>

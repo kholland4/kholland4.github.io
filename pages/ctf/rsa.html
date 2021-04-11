@@ -121,6 +121,20 @@
       putNum("inputM", m);
     }
     
+    // Oracle attack
+    function calcOracleCP() {
+      var n = getNum("oracleN");
+      var e = getNum("oracleE");
+      var c = getNum("oracleC");
+      var cp = (c * (2n ** e)) % n;
+      putNum("oracleCP", cp);
+    }
+    function calcOracleM() {
+      var mp = getNum("oracleMP");
+      var m = mp / 2n;
+      putNum("oracleM", m);
+    }
+    
     </script>
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
 <body><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div></div>
@@ -243,6 +257,50 @@
       </p>
 <p>
 <a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
+</p>
+<h3>Oracle attack</h3>
+<p>
+        You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,
+        and an oracle that will decrypt anything except for the given ciphertext.
+      </p>
+<p>
+<code>n</code>: <textarea id="oracleN"></textarea>
+</p>
+<p>
+<code>e</code>: <textarea id="oracleE"></textarea>
+</p>
+<p>
+<code>c</code>: <textarea id="oracleC"></textarea>
+</p>
+<p>
+        Compute a new ciphertext <code>c' = (c * 2^e) mod n</code>.
+      </p>
+<p>
+<code>c'</code>: <textarea id="oracleCP"></textarea>
+</p>
+<p>
+<button onclick="calcOracleCP();">Calculate c'</button>
+</p>
+<p>
+        When <code>c'</code> is decrypted using the oracle, you get back <code>m' = 2m mod n</code>.
+        Decrypt and put the result here (it should be significantly smaller than <code>n</code>,
+        assuming the message is not padded).
+      </p>
+<p>
+<code>m'</code>: <textarea id="oracleMP"></textarea>
+</p>
+<p>
+        For the unpadded messages found in this sort of textbook RSA implementation,
+        simply divide by <code>2</code> to recover the original message.
+      </p>
+<p>
+<code>m</code>: <textarea id="oracleM"></textarea>
+</p>
+<p>
+<button onclick="calcOracleM();">Calculate m = m' / 2</button>
+</p>
+<p>
+        Further reading: <a href="https://crypto.stackexchange.com/a/1449">StackExchange</a>
 </p>
 </div>
 </body>

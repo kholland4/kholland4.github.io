@@ -28,7 +28,7 @@ bmath.modMultInverse = function(a, m) {
     var quot = oldR / r;
     
     var tempR = r;
-    r = oldR - quot * r;
+    r = oldR - quot * r; // alternatively, r = oldR % r;
     oldR = tempR;
     
     var tempS = s;
@@ -36,9 +36,8 @@ bmath.modMultInverse = function(a, m) {
     oldS = tempS;
   }
   
-  // FIXME: dunno why this is necessary
   if(oldS < 0)
-    return s;
+    oldS += m;
   return oldS;
 };
 

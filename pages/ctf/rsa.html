@@ -30,13 +30,16 @@
       outputBase = parseInt(document.getElementById("outStyle").value);
     });
     
-    function clearAll() {
-      var fields = ["inputP", "inputQ", "inputN", "outputTot", "inputE", "outputD", "inputM", "inputC"];
-      var texts = ["checkCoprimeE"];
+    function clearAll(fields, texts) {
       for(var f of fields)
         document.getElementById(f).value = "";
       for(var t of texts)
         document.getElementById(t).innerText = "";
+    }
+    function clearAllMain() {
+      var fields = ["inputP", "inputQ", "inputN", "outputTot", "inputE", "outputD", "inputM", "inputC"];
+      var texts = ["checkCoprimeE"];
+      clearAll(fields, texts);
     }
     
     function calcN() {
@@ -134,6 +137,11 @@
       var m = mp / 2n;
       putNum("oracleM", m);
     }
+    function clearAllOracle() {
+      var fields = ["oracleN", "oracleE", "oracleC", "oracleCP", "oracleMP", "oracleM"];
+      var texts = [];
+      clearAll(fields, texts);
+    }
     
     </script>
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
@@ -165,7 +173,7 @@
         arbitrary-precision integer support (preferably use version 3.9 or later).
       </p>
 <p>
-<button onclick="clearAll();">Clear all fields</button>
+<button onclick="clearAllMain();">Clear all fields</button>
 </p>
 <h3>Key generation</h3>
 <p>
@@ -298,6 +306,9 @@
 </p>
 <p>
 <button onclick="calcOracleM();">Calculate m = m' / 2</button>
+</p>
+<p>
+<button onclick="clearAllOracle();">Clear all fields</button>
 </p>
 <p>
         Further reading: <a href="https://crypto.stackexchange.com/a/1449">StackExchange</a>

@@ -21,9 +21,9 @@
       }
       
       var opts = {
-        showAll: false,
-        showPossible: false,
-        showProbable: true
+        showAll: document.getElementById("showAll").checked, // default false
+        showPossible: document.getElementById("showPossible").checked, // false
+        showProbable: document.getElementById("showProbable").checked // true
       };
       
       document.getElementById("showAll").onchange = function() {

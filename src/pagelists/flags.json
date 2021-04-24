@@ -4,5 +4,11 @@
     "title": "\"Rotten\"",
     "tags": [["category", "cipher"], ["difficulty", "easy"]],
     "click": "flags/rotten-94ab9c.html"
+  },
+  {
+    "id": 2,
+    "title": "Cryptogram",
+    "tags": [["category", "cipher"], ["difficulty", "easy"]],
+    "click": "flags/cryptogram-963a54.html"
   }
 ]

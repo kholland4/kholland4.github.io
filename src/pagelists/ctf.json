@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Interactive two-time pad cracker",
+    "tags": [["category", "crypto"]],
+    "click": "ctf/twotimepad.html",
+    "body": "Don't reuse your one-time pad keys."
+  },
+  {
+    "id": 2,
+    "title": "RSA calculator",
+    "tags": [["category", "crypto"]],
+    "click": "ctf/rsa.html",
+    "body": "Arbitrary-precision."
+  }
+]

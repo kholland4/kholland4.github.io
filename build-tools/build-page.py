@@ -6,7 +6,7 @@
 # Also processes {{template}}s given in the source file.
 
 import sys, os, argparse, bs4
-import template_tiles
+import template_tiles, template_pagelist
 
 include_css = [
     "styles/main.css",
@@ -41,6 +41,7 @@ soup.head.append(soup.new_tag("meta", charset="utf-8"))
 viewport_tag = soup.new_tag("meta", content="width=device-width")
 viewport_tag["name"] = "viewport"
 soup.head.append(viewport_tag)
+# TODO character encoding
 for c in include_css:
     rel = os.path.relpath(c, start=out_dir)
     soup.head.append(soup.new_tag("link", rel="stylesheet", href=rel, type="text/css"))
@@ -70,6 +71,8 @@ def template_parse(content, child):
     args = content[2:-2].split("|")
     if args[0] == "tiles":
         template_tiles.parse(args, child, soup, workdir)
+    elif args[0] == "pagelist":
+        template_pagelist.parse(args, child, soup, workdir)
     else:
         raise ValueError("'" + args[0] + "' is not a valid template")
 

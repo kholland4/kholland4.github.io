@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "8-bit computer",
+    "tags": [],
+    "click": "8-bit-computer.html",
+    "body": "Build log and information about the <a href=\"https://github.com/kholland4/8-bit/\">8-bit computer project</a>"
+  },
+  {
+    "id": 2,
+    "title": "Games to Play",
+    "tags": [],
+    "click": "games-to-play.html",
+    "body": "A list of some fun computer games"
+  }
+]

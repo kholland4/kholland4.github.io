@@ -1,0 +1,84 @@
+#!/usr/bin/python3
+
+import json, os, bs4
+
+tag_colors = {
+    "category": ["#5ac", "#fff"]
+}
+
+def parse(args, target, soup, workdir):
+    tile_data = []
+    for filename_raw in args[1:]:
+        parts = filename_raw.split("#")
+        filename_actual = parts[0]
+        if len(parts) > 1:
+            use_ids_raw = parts[1].split(",")
+        else:
+            use_ids_raw = None
+        
+        data_items = {}
+        
+        filename = os.path.join(workdir, filename_actual)
+        with open(filename, "r") as f:
+            data = json.load(f)
+            for item in data:
+                if use_ids_raw is not None:
+                    data_items[item["id"]] = item
+                else:
+                    tile_data.append(item)
+        
+        if use_ids_raw is not None:
+            for n in use_ids_raw:
+                if n.count("-") == 1:
+                    bits = n.split("-")
+                    min_ = int(bits[0])
+                    max_ = int(bits[1])
+                    
+                    if max_ >= min_:
+                        for i in range(min_, max_ + 1):
+                            tile_data.append(data_items[i])
+                    else:
+                        for i in range(min_, max_ - 1, -1):
+                            tile_data.append(data_items[i])
+                else:
+                    tile_data.append(data_items[int(n)])
+    
+    for item in tile_data:
+        entry = soup.new_tag("div")
+        entry["class"] = "entry"
+        
+        # Clickable title
+        title = soup.new_tag("div")
+        title["class"] = "entry_title"
+        title_a = soup.new_tag("a", href=item["click"])
+        title_a.string = item["title"]
+        title.append(title_a)
+        entry.append(title)
+        
+        # Tag and link bubbles
+        if "tags" in item:
+            tag_container = soup.new_tag("div")
+            tag_container["class"] = "tag_container"
+            
+            if "tags" in item:
+                for name, text in item["tags"]:
+                    tag_el = soup.new_tag("span")
+                    tag_el["class"] = "tag"
+                    
+                    if name in tag_colors:
+                        tag_el["style"] = "background-color: " + tag_colors[name][0] + "; color: " + tag_colors[name][1] + ";"
+                    
+                    tag_el.string = text
+                    
+                    tag_container.append(tag_el)
+                    tag_container.append(bs4.NavigableString(" "))
+            
+            entry.append(tag_container)
+        
+        # Body
+        body = soup.new_tag("div")
+        body["class"] = "entry_desc"
+        body.append(bs4.BeautifulSoup(item["body"], "lxml"))
+        entry.append(body)
+        
+        target.append(entry)

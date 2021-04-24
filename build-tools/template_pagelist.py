@@ -80,9 +80,10 @@ def parse(args, target, soup, workdir):
             entry.append(tag_container)
         
         # Body
-        body = soup.new_tag("div")
-        body["class"] = "entry_desc"
-        body.append(bs4.BeautifulSoup(item["body"], "lxml"))
-        entry.append(body)
+        if "body" in item:
+            body = soup.new_tag("div")
+            body["class"] = "entry_desc"
+            body.append(bs4.BeautifulSoup(item["body"], "lxml"))
+            entry.append(body)
         
         target.append(entry)

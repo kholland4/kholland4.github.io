@@ -17,7 +17,8 @@ titlebar_buttons = [
     ["showcase", "pages/", "src/pages/index.html"],
     ["all projects", "pages/projects.html", "src/pages/projects.html"],
     ["pages", "pages/page-list.html", "src/pages/page-list.html"],
-    ["ctf tools", "pages/ctf.html", "src/pages/ctf.html"]
+    ["ctf tools", "pages/ctf.html", "src/pages/ctf.html"],
+    ["ctf challenges", "pages/flags.html", "src/pages/flags.html"]
 ]
 
 arg_parser = argparse.ArgumentParser(description="Page builder.")

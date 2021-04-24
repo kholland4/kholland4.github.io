@@ -51,3 +51,37 @@
   font-family: sans-serif;
   font-size: 12px;
 }
+
+
+.pagelist_nav {
+  padding: 16px;
+  border-bottom: 1px solid #aaa;
+}
+
+div.pagelist_nav_category {
+  
+}
+div.pagelist_nav_category_c {
+  margin-bottom: 12px;
+  columns: 8em;
+}
+input.pagelist_nav_category {
+  
+}
+label.pagelist_nav_category {
+  
+}
+
+div.pagelist_nav_search_c {
+  
+}
+div.pagelist_nav_search {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+input.pagelist_nav_search {
+  
+}
+button.pagelist_nav_clear {
+  margin-top: 8px;
+}

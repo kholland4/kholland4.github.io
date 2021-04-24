@@ -43,6 +43,10 @@ def parse(args, target, soup, workdir):
                 else:
                     tile_data.append(data_items[int(n)])
     
+    nav = soup.new_tag("div")
+    nav["class"] = "pagelist_nav"
+    target.append(nav)
+    
     for item in tile_data:
         entry = soup.new_tag("div")
         entry["class"] = "entry"

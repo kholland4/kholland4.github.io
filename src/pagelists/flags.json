@@ -2,13 +2,13 @@
   {
     "id": 1,
     "title": "\"Rotten\"",
-    "tags": [["category", "cipher"], ["difficulty", "easy"]],
+    "tags": [["category", "cipher"], ["difficulty", "intro"]],
     "click": "flags/rotten-94ab9c.html"
   },
   {
     "id": 2,
     "title": "Cryptogram",
-    "tags": [["category", "cipher"], ["difficulty", "easy"]],
+    "tags": [["category", "cipher"], ["difficulty", "intro"]],
     "click": "flags/cryptogram-963a54.html"
   }
 ]

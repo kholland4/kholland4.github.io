@@ -31,6 +31,10 @@ pre.inline {
   padding: 5px;
   margin: 0px;
 }
+pre.wrap {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
 code {
   background-color: #e9e9e9;
   padding: 5px;

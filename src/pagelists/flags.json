@@ -22,5 +22,11 @@
     "title": "RSA modulus",
     "tags": [["category", "crypto"], ["category", "RSA"], ["difficulty", "easy"]],
     "click": "flags/rsa-3408b5.html"
+  },
+  {
+    "id": 5,
+    "title": "\"Three can keep a secret\"",
+    "tags": [["category", "crypto"], ["category", "RSA"], ["difficulty", "moderate"]],
+    "click": "flags/rsa-a8f920.html"
   }
 ]

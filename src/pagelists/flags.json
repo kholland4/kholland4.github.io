@@ -8,7 +8,13 @@
   {
     "id": 2,
     "title": "Cryptogram",
-    "tags": [["category", "cipher"], ["difficulty", "intro"]],
+    "tags": [["category", "cipher"], ["difficulty", "easy"]],
     "click": "flags/cryptogram-963a54.html"
+  },
+  {
+    "id": 3,
+    "title": "Vigenère",
+    "tags": [["category", "cipher"], ["difficulty", "easy"]],
+    "click": "flags/vigenere-4f1926.html"
   }
 ]

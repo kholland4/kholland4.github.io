@@ -6,7 +6,7 @@
 # Also processes {{template}}s given in the source file.
 
 import sys, os, argparse, bs4
-import template_tiles, template_pagelist
+import template_tiles, template_pagelist, template_wikicite
 
 include_css = [
     "styles/main.css",
@@ -74,6 +74,8 @@ def template_parse(content, child):
         template_tiles.parse(args, child, soup, workdir)
     elif args[0] == "pagelist":
         template_pagelist.parse(args, child, soup, workdir)
+    elif args[0] == "wikicite":
+        template_wikicite.parse(args, child, soup, workdir)
     else:
         raise ValueError("'" + args[0] + "' is not a valid template")
 

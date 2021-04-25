@@ -65,6 +65,10 @@ div.pagelist_nav_category_c {
   margin-bottom: 12px;
   columns: 8em;
 }
+div.pagelist_nav_category_inner {
+  break-inside: avoid-column;
+  page-break-inside: avoid; /* Firefox */
+}
 input.pagelist_nav_category {
   
 }

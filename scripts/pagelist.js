@@ -3,14 +3,22 @@ document.addEventListener("DOMContentLoaded", function() {
     // show and hide entries based on filters
     
     var tagStatus = {};
-    var anyTagsSelected = false;
-    for(var c of catFilterContainer.childNodes) {
-      if(c.tagName != "LABEL")
+    for(var section of catFilterContainer.childNodes) {
+      if(!("name" in section.dataset))
         continue;
-      var name = c.innerText;
-      var check = document.getElementById(c.htmlFor);
-      tagStatus[name] = check.checked;
-      anyTagsSelected |= check.checked;
+      var tagName = section.dataset.name;
+      for(var c of section.childNodes) {
+        if(c.tagName != "LABEL")
+          continue;
+        var tagText = c.innerText;
+        var check = document.getElementById(c.htmlFor);
+        if(check.checked) {
+          if(!(tagName in tagStatus))
+            tagStatus[tagName] = new Set();
+          
+          tagStatus[tagName].add(tagText);
+        }
+      }
     }
     
     var searchText = searchFilter.value.toLowerCase();
@@ -29,28 +37,30 @@ document.addEventListener("DOMContentLoaded", function() {
         break;
       }
       
-      // match against user-selected tags
-      if(!anyTagsSelected) {
-        // no need to check tags, none were selected
-      } else if(tagContainer == null) {
-        // has no tags but some were selected
-        entry.style.display = "none";
-        continue;
-      } else {
+      var allTagMatch = true;
+      for(var tagName in tagStatus) {
         var tagMatch = false;
+        
         for(var tagEl of tagContainer.childNodes) {
           if(tagEl.className != "tag")
             continue;
-          if(tagStatus[tagEl.innerText] === true) {
+          if(tagEl.dataset.name != tagName)
+            continue;
+          if(tagStatus[tagName].has(tagEl.innerText)) {
             tagMatch = true;
             break;
           }
         }
         
         if(!tagMatch) {
-          entry.style.display = "none";
-          continue;
+          allTagMatch = false;
+          break;
         }
+      }
+      
+      if(!allTagMatch) {
+        entry.style.display = "none";
+        continue;
       }
       
       // match against user search
@@ -74,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var listContainer = navElement.parentElement;
     
     // get all tags that exist
-    var haveTags = new Set();
+    var haveTags = {};
     var entries = listContainer.childNodes;
     for(var entry of entries) {
       // exclude the nav element and anything else
@@ -96,11 +106,20 @@ document.addEventListener("DOMContentLoaded", function() {
       for(var tagEl of tagContainer.childNodes) {
         if(tagEl.className != "tag")
           continue;
-        haveTags.add(tagEl.innerText);
+        var tagName = tagEl.dataset.name;
+        var tagText = tagEl.innerText;
+        if(!(tagName in haveTags))
+          haveTags[tagName] = new Set();
+        haveTags[tagName].add(tagText);
       }
     }
     
-    var tagList = Array.from(haveTags);
+    var tagList = [];
+    for(var key in haveTags)
+      tagList.push({
+        name: key,
+        values: Array.from(haveTags[key]).sort()
+      });
     tagList.sort();
     
     
@@ -110,34 +129,46 @@ document.addEventListener("DOMContentLoaded", function() {
     catFilterContainer.className = "pagelist_nav_category_c";
     
     // make some checkboxes to allow filtering by tags
-    if(tagList.length > 0) {
-      var header = document.createElement("div");
-      header.innerText = "Filter tags:";
-      header.className = "pagelist_nav_category";
-      // add to main container so that columns of checkboxes look nicer
-      navElement.appendChild(header);
-    } else {
+    if(tagList.length == 0)
       catFilterContainer.style.display = "none";
-    }
     
-    for(var tag of tagList) {
-      var check = document.createElement("input");
-      check.type = "checkbox";
-      check.id = "pagelist_filter" + n + "_" + tag;
-      check.className = "pagelist_nav_category";
-      check.oninput = function(a, b, c) {
-        enactFilter(a, b, c);
-      }.bind(null, listContainer, catFilterContainer, searchFilter);
-      catFilterContainer.appendChild(check);
+    for(var tagType of tagList) {
+      var tagName = tagType.name;
+      var tagValues = tagType.values;
       
-      var label = document.createElement("label");
-      label.htmlFor = check.id;
-      label.innerText = tag;
-      label.className = "pagelist_nav_category";
-      catFilterContainer.appendChild(label);
+      if(tagValues.length == 0)
+        continue;
       
-      var br = document.createElement("br");
-      catFilterContainer.appendChild(br);
+      var container = document.createElement("div");
+      container.className = "pagelist_nav_category_inner";
+      container.dataset.name = tagName;
+      
+      var header = document.createElement("div");
+      header.innerText = tagName + ":";
+      header.className = "pagelist_nav_category";
+      container.appendChild(header);
+      
+      for(var tag of tagValues) {
+        var check = document.createElement("input");
+        check.type = "checkbox";
+        check.id = "pagelist_filter" + n + "_" + tag;
+        check.className = "pagelist_nav_category";
+        check.oninput = function(a, b, c) {
+          enactFilter(a, b, c);
+        }.bind(null, listContainer, catFilterContainer, searchFilter);
+        container.appendChild(check);
+        
+        var label = document.createElement("label");
+        label.htmlFor = check.id;
+        label.innerText = tag;
+        label.className = "pagelist_nav_category";
+        container.appendChild(label);
+        
+        var br = document.createElement("br");
+        container.appendChild(br);
+      }
+      
+      catFilterContainer.appendChild(container);
     }
     
     navElement.appendChild(catFilterContainer);

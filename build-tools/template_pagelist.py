@@ -68,6 +68,7 @@ def parse(args, target, soup, workdir):
                 for name, text in item["tags"]:
                     tag_el = soup.new_tag("span")
                     tag_el["class"] = "tag"
+                    tag_el["data-name"] = name
                     
                     if name in tag_colors:
                         tag_el["style"] = "background-color: " + tag_colors[name][0] + "; color: " + tag_colors[name][1] + ";"

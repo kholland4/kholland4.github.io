@@ -16,5 +16,11 @@
     "title": "Vigenère",
     "tags": [["category", "cipher"], ["difficulty", "easy"]],
     "click": "flags/vigenere-4f1926.html"
+  },
+  {
+    "id": 4,
+    "title": "RSA modulus",
+    "tags": [["category", "crypto"], ["category", "RSA"], ["difficulty", "easy"]],
+    "click": "flags/rsa-3408b5.html"
   }
 ]

@@ -53,3 +53,19 @@ bmath.modExp = function(b, e, n) {
   }
   return res;
 };
+
+bmath.invPow = function(b, n) {
+  // integer component of the nth root of b
+  // result ** n <= b < (result + 1) ** n
+  // using the Babylonian method (effectively the same as Newton's method)
+  if(b < 0n)
+    throw new Error("cannot find the root of a negative number");
+  if(b == 0n || b == 1n)
+    return b;
+  
+  var x = b / 2n;
+  while(!(x ** n <= b && b < (x + 1n) ** n)) {
+    x = (x*(n-1n) + b / x**(n-1n)) / n;
+  }
+  return x;
+}

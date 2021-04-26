@@ -124,6 +124,110 @@
       putNum("inputM", m);
     }
     
+    // Broadcast attack
+    function checkBroadcastCoprime() {
+      var n1 = getNum("broadcast_n1");
+      var n2 = getNum("broadcast_n2");
+      var n3 = getNum("broadcast_n3");
+      if(n1 == 0)
+        putText("checkBroadcastCoprime", "please enter n1");
+      if(n2 == 0)
+        putText("checkBroadcastCoprime", "please enter n2");
+      if(n3 == 0)
+        putText("checkBroadcastCoprime", "please enter n3");
+      if(n1 == 0 || n2 == 0 || n3 == 0)
+        return;
+      
+      var g = bmath.gcd(n1, n2);
+      if(g > 1) {
+        putText("checkBroadcastCoprime", "n1 and n2 share a factor of " + g);
+        return;
+      }
+      
+      g = bmath.gcd(n2, n3);
+      if(g > 1) {
+        putText("checkBroadcastCoprime", "n2 and n3 share a factor of " + g);
+        return;
+      }
+      
+      g = bmath.gcd(n1, n3);
+      if(g > 1) {
+        putText("checkBroadcastCoprime", "n1 and n3 share a factor of " + g);
+        return;
+      }
+      
+      putText("checkBroadcastCoprime", "All good!");
+    }
+    function calcBroadcastN() {
+      var n1 = getNum("broadcast_n1");
+      var n2 = getNum("broadcast_n2");
+      var n3 = getNum("broadcast_n3");
+      
+      var N1 = n2 * n3;
+      var N2 = n1 * n3;
+      var N3 = n1 * n2;
+      putNum("broadcastN1", N1);
+      putNum("broadcastN2", N2);
+      putNum("broadcastN3", N3);
+    }
+    function calcBroadcastU() {
+      var n1 = getNum("broadcast_n1");
+      var n2 = getNum("broadcast_n2");
+      var n3 = getNum("broadcast_n3");
+      
+      var N = n1 * n2 * n3;
+      var N1 = n2 * n3;
+      var N2 = n1 * n3;
+      var N3 = n1 * n2;
+      
+      var u1 = bmath.modMultInverse(N1, n1);
+      var u2 = bmath.modMultInverse(N2, n2);
+      var u3 = bmath.modMultInverse(N3, n3);
+      putNum("broadcastU1", u1);
+      putNum("broadcastU2", u2);
+      putNum("broadcastU3", u3);
+    }
+    function calcBroadcastM() {
+      var n1 = getNum("broadcast_n1");
+      var n2 = getNum("broadcast_n2");
+      var n3 = getNum("broadcast_n3");
+      var c1 = getNum("broadcastC1");
+      var c2 = getNum("broadcastC2");
+      var c3 = getNum("broadcastC3");
+      var u1 = getNum("broadcastU1");
+      var u2 = getNum("broadcastU2");
+      var u3 = getNum("broadcastU3");
+      
+      var N = n1 * n2 * n3;
+      var N1 = n2 * n3;
+      var N2 = n1 * n3;
+      var N3 = n1 * n2;
+      
+      var M = (c1*N1*u1 + c2*N2*u2 + c3*N3*u3) % N;
+      putNum("broadcastM", M);
+    }
+    function calcBroadcast_m() {
+      var M = getNum("broadcastM");
+      var m = bmath.invPow(M, 3n);
+      putNum("broadcast_m", m);
+      if(m ** 3n != M) {
+        putText("broadcastRoot", "M does not have an integer cube root. Something's off.");
+      } else {
+        putText("broadcastRoot", "");
+      }
+    }
+    function clearAllBroadcast() {
+      var fields = [
+        "broadcast_n1", "broadcast_n2", "broadcast_n3",
+        "broadcastC1", "broadcastC2", "broadcastC3",
+        "broadcastN1", "broadcastN2", "broadcastN3",
+        "broadcastU1", "broadcastU2", "broadcastU3",
+        "broadcastM", "broadcast_m"
+      ];
+      var texts = ["checkBroadcastCoprime", "broadcastRoot"];
+      clearAll(fields, texts);
+    }
+    
     // Oracle attack
     function calcOracleCP() {
       var n = getNum("oracleN");
@@ -166,11 +270,11 @@
 </p>
 <p>
         Further reading:
-        <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">Wikipedia</a>
-</p>
+        <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a> on Wikipedia
+      </p>
 <p>
         Need more flexibility? <a href="https://www.python.org/">Python</a> has
-        arbitrary-precision integer support (preferably use version 3.9 or later).
+        arbitrary-precision integer support (preferably use version 3.8 or later).
       </p>
 <p>
 <button onclick="clearAllMain();">Clear all fields</button>
@@ -266,6 +370,119 @@
 <p>
 <a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
 </p>
+<h3>Broadcast attack</h3>
+<p>
+        If the same message <code>m</code> is encrypted with <code>e</code>
+        different public keys, then the original message can be recovered
+        without the private key.
+        This is Håstad's broadcast attack.
+        It's most useful when <code>e</code> is 3, since only 3 messages are
+        needed; this calculator is meant for that case.
+        This attack applies primarily to textbook RSA where there is no padding;
+        modern padding schemes mitigate it.
+      </p>
+<p>
+<code>e</code>: 3
+      </p>
+<p>
+<code>n1</code>: <textarea id="broadcast_n1"></textarea>
+<code>c1</code>: <textarea id="broadcastC1"></textarea>
+</p>
+<p>
+<code>n2</code>: <textarea id="broadcast_n2"></textarea>
+<code>c2</code>: <textarea id="broadcastC2"></textarea>
+</p>
+<p>
+<code>n3</code>: <textarea id="broadcast_n3"></textarea>
+<code>c3</code>: <textarea id="broadcastC3"></textarea>
+</p>
+<p>
+        The RSA decryption function is <code>c = m^e (mod n)</code>, so
+        suppose that <code>e=3</code> and <code>M = m^3</code>.
+        We must now solve this system of equations:
+      </p>
+<pre>
+M ≡ c1 (mod n1)
+M ≡ c2 (mod n2)
+M ≡ c3 (mod n3)
+</pre>
+<p>
+        Assuming all three <code>n</code>s are coprime, the Chinese Remainder
+        Theorem indicates that there is a solution for the system exists.
+        If the moduli were not coprime, then one or more could be factored.
+      </p>
+<p>
+<button onclick="checkBroadcastCoprime();">Check if moduli are coprime</button>
+<span id="checkBroadcastCoprime"></span>
+</p>
+<p>
+        To find this solution, first find:
+      </p>
+<pre>
+N = n1*n2*n3
+N1 = N / n1
+N2 = N / n2
+N3 = N / n3
+</pre>
+<p>
+<code>N1</code>: <textarea id="broadcastN1"></textarea>
+</p>
+<p>
+<code>N2</code>: <textarea id="broadcastN2"></textarea>
+</p>
+<p>
+<code>N3</code>: <textarea id="broadcastN3"></textarea>
+</p>
+<p>
+<button onclick="calcBroadcastN();">Calculate N1, N2, N3</button>
+</p>
+<p>
+<code>gcd(Ni, ni) = 1</code> for each pair <code>Ni</code> and
+        <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
+        must exist such that <code>Ni * ui = 1 (mod ni)</code>.
+        Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
+      </p>
+<p>
+<code>u1</code>: <textarea id="broadcastU1"></textarea>
+</p>
+<p>
+<code>u2</code>: <textarea id="broadcastU2"></textarea>
+</p>
+<p>
+<code>u3</code>: <textarea id="broadcastU3"></textarea>
+</p>
+<p>
+<button onclick="calcBroadcastU();">Calculate u1, u2, u3</button>
+</p>
+<p>
+        Now, calculate
+        <code>M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)</code>:
+      </p>
+<p>
+<code>M</code>: <textarea id="broadcastM"></textarea>
+</p>
+<p>
+<button onclick="calcBroadcastM();">Calculate M</button>
+</p>
+<p>
+        Since <code>m &lt; n</code> for each message,
+        <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
+        Find the cube root of <code>M</code> to recover the original message.
+      </p>
+<p>
+<code>m</code>: <textarea id="broadcast_m"></textarea>
+</p>
+<p>
+<button onclick="calcBroadcast_m();">Calculate m</button>
+<span id="broadcastRoot"></span>
+</p>
+<p>
+<button onclick="clearAllBroadcast();">Clear all fields</button>
+</p>
+<p>
+        Further reading: <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
+        Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)
+      </p>
 <h3>Oracle attack</h3>
 <p>
         You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,

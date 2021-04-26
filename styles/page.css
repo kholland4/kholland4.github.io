@@ -33,7 +33,7 @@ pre.inline {
 }
 pre.wrap {
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: break-word;
 }
 code {
   background-color: #e9e9e9;

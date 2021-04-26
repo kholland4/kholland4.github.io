@@ -34,30 +34,28 @@ c3 = 105701078713124916679890751630377272530830855893924304038439189705574579165
   -- Benjamin Franklin, Poor Richard's Almanack
 </pre>
 <p>
-        If the same message <code>m</code> is encrypted with <code>e</code>
-        different public keys, then the original message can be recovered
-        without the private key.
-        This is Håstad's broadcast attack.
-        It's most useful when <code>e</code> is 3, since only 3 messages are
-        needed.
-        This attack applies primarily to textbook RSA where there is no padding;
-        modern padding schemes mitigate it.
-      </p>
+  If the same message <code>m</code> is encrypted with <code>e</code>
+  different public keys, then the original message can be recovered without the private key.
+  This is Håstad's broadcast attack.
+  It's most useful when <code>e</code> is 3, since only 3 messages are needed.
+  This attack applies primarily to textbook RSA where there is no padding;
+  modern padding schemes mitigate it.
+</p>
 <p>
-        The RSA decryption function is <code>c = m^e (mod n)</code>, so
-        suppose that <code>e=3</code> and <code>M = m^3</code>.
-        We must now solve this system of equations:
-      </p>
+  The RSA decryption function is <code>c = m^e (mod n)</code>, so
+  suppose that <code>e=3</code> and <code>M = m^3</code>.
+  We must now solve this system of equations:
+</p>
 <pre>
 M ≡ c1 (mod n1)
 M ≡ c2 (mod n2)
 M ≡ c3 (mod n3)
 </pre>
 <p>
-        Assuming all three <code>n</code>s are coprime, the Chinese Remainder
-        Theorem indicates that there is a solution for the system exists.
-        To find this solution, first find:
-      </p>
+  Assuming all three <code>n</code>s are coprime,
+  the Chinese Remainder Theorem indicates that there is a solution for the system exists.
+  To find this solution, first find:
+</p>
 <pre>
 N = n1*n2*n3
 N1 = N / n1
@@ -66,19 +64,18 @@ N3 = N / n3
 </pre>
 <p>
 <code>gcd(Ni, ni) = 1</code> for each pair <code>Ni</code> and
-        <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
-        must exist such that <code>Ni * ui = 1 (mod ni)</code>.
-        Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
-        Therefore:
-      </p>
+  <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
+  must exist such that <code>Ni * ui = 1 (mod ni)</code>.
+  Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
+  Therefore:
+</p>
 <pre>
 M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)
 </pre>
 <p>
-        Since <code>m &lt; n</code> for each message,
-        <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
-        Find the cube root of <code>M</code> to recover the original message.
-      </p>
+  Since <code>m &lt; n</code> for each message, <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
+  Find the cube root of <code>M</code> to recover the original message.
+</p>
 <h3>Python 3.8+ code</h3>
 <pre>
 # find_invpow adapted from https://stackoverflow.com/q/55436001
@@ -131,8 +128,8 @@ m = find_invpow(M, 3)
 m = 186576314465159171206572697173754806981509321675655648776614523032773455457361390801192678189859864088187148169981814221757456882655522670736473272289076707789729388576613685689382980630853081842314743476285631463193232725295173581041890295056874188827094127
 </pre>
 <p>
-        Converting this integer to hexadecimal and then to ASCII, we get:
-      </p>
+  Converting this integer to hexadecimal and then to ASCII, we get:
+</p>
 <pre class="wrap">
 charlie oscar papa papa echo romeo sierra mike india tango hotel underscore zulu Juliet mike five golf kilo
 </pre>
@@ -145,7 +142,7 @@ charlie oscar papa papa echo romeo sierra mike india tango hotel underscore zulu
 <p>Further reading:</p>
 <ul>
 <li><a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
-        Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)</li>
+  Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)</li>
 </ul>
 </div>
 </body>

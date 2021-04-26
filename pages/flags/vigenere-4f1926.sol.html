@@ -16,25 +16,23 @@ yrzk i voyrqguzsa-mixc abgyyt hf qgvbtp zigdhglmh.
 amtrawnptbprqv_QIaZik
 </pre>
 <p>
-        This is a <a href="https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher">
-        Vigenère cipher</a>, a type of polyalphabetic substitution cipher.
-        It uses a series of different Caesar ciphers for each plaintext letter.
-        The shift values for these ciphers are chosen based on a keyword,
-        and they repeat with a period the same as the length of the keyword.
-      </p>
+  This is a <a href="https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher">
+  Vigenère cipher</a>, a type of polyalphabetic substitution cipher.
+  It uses a series of different Caesar ciphers for each plaintext letter.
+  The shift values for these ciphers are chosen based on a keyword,
+  and they repeat with a period the same as the length of the keyword.
+</p>
 <h2>Cipher operation</h2>
 <p>
-        Take each letter <code>M</code> of the plaintext and the corresponding
-        letter <code>K</code> of the key.
-        The key repeats as much as needed to fit the length of the plaintext
-        (i. e. <code>DELTADELTADELTA</code>).
-        The letters A-Z are represented as the numbers 0-25.
-        To encrypt, ciphertext letter <code>C</code> is:
-      </p>
+  Take each letter <code>M</code> of the plaintext and the corresponding letter <code>K</code> of the key.
+  The key repeats as much as needed to fit the length of the plaintext (i. e. <code>DELTADELTADELTA</code>).
+  The letters A-Z are represented as the numbers 0-25.
+  To encrypt, ciphertext letter <code>C</code> is:
+</p>
 <pre>C = (M + K) mod 26</pre>
 <p>
-        and to decrypt:
-      </p>
+  and to decrypt:
+</p>
 <pre>M = (C - K + 26) mod 26</pre>
 <h3>Example</h3>
 <pre>
@@ -63,12 +61,11 @@ Subtract the key, add 26, then mod 26 to decrypt.
 </pre>
 <h2>Cryptanalysis</h2>
 <p>
-        By guessing the length of the key, a Vigenère cipher can be broken
-        down into a set of Caesar ciphers, each of which can be cracked with
-        basic statistical analysis.
-        If the key length is 5, then the 1st, 6th, 11th, ... letters are one
-        Caesar cipher, the 2nd, 7th, 12th, ... letters are another, and so on.
-      </p>
+  By guessing the length of the key, a Vigenère cipher can be broken down into
+  a set of Caesar ciphers, each of which can be cracked with basic statistical analysis.
+  If the key length is 5, then the 1st, 6th, 11th, ... letters are one Caesar cipher,
+  the 2nd, 7th, 12th, ... letters are another, and so on.
+</p>
 <pre>
 The Nyquist–Shannon sampling theorem is a theorem in the field of signal
 processing which serves as a fundamental bridge between continuous-time signals
@@ -83,18 +80,18 @@ polyalphabetic_QXcRpk
 <p>Further reading:</p>
 <ul>
 <li><a href="https://www.cipherchallenge.org/wp-content/uploads/2020/12/Five-ways-to-crack-a-Vigenere-cipher.pdf">
-        Five Ways to Crack a Vigenère Cipher</a></li>
+  Five Ways to Crack a Vigenère Cipher</a></li>
 <li><a href="https://simonsingh.net/The_Black_Chamber/vigenere_cracking.html">
-        Cracking the Vigenère Cipher (The Black Chamber)</a></li>
+  Cracking the Vigenère Cipher (The Black Chamber)</a></li>
 </ul>
 <p>Online tools:</p>
 <ul>
 <li><a href="https://www.guballa.de/vigenere-solver">
-        Vigenère Solver</a></li>
+  Vigenère Solver</a></li>
 <li><a href="https://wiremask.eu/tools/vigenere-cracker/">
-        Vigenère Cracker</a></li>
+  Vigenère Cracker</a></li>
 <li><a href="https://cryptii.com/pipes/vigenere-cipher">
-        Cryptii</a> (must know key)</li>
+  Cryptii</a> (must know key)</li>
 </ul>
 <p><i>This page uses material from the Wikipedia article "<a href="https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem">Nyquist–Shannon sampling theorem</a>", which is released under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share-Alike License 3.0</a>.</i></p>
 </div>

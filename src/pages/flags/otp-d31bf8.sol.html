@@ -5,36 +5,35 @@
   </head>
   <body>
     <div class="content">
-      <h1>Solution: OTP</h1>
-      
+
+<h1>Solution: OTP</h1>
+
 <pre>
 c1e0db0b3687929e5759092ca0b45c5f5e6d51587525612ed2
 
 d3fedc0c73ac9388284b0a2298f94b45165568575e0e3e04d4
 </pre>
-      
-      <p>
-        The <a href="https://en.wikipedia.org/wiki/One-time_pad">one-time pad</a>
-        is a theoretically uncrackable scheme for encrypting messages.
-        It works by XORing a pre-shared, random key with a message,
-        transmitting it, then XORing again with the same key to decrypt.
-        However, for this to happen securely, the key must be truly random,
-        kept completely secret, and <u>never reused</u>.
-        In the case that key material is reused, knowing (or guessing) the
-        plaintext of one message will give you the plaintext of a second message.
-      </p>
-      
-      <p>
-        To crack a pair of one-time pad messages that use the same key,
-        first compute <code>k = m1 XOR m2</code>.
-        Next, guess a word that may appear in the plaintext,
-        for example <code>" flag "</code>.
-        XOR this word with <code>k</code> in all possible positions.
-        Anything that reveals legible text is likely correct.
-        Repeat the process; you can guess words that may appear in either
-        plaintext.
-      </p>
-      
+
+<p>
+  The <a href="https://en.wikipedia.org/wiki/One-time_pad">one-time pad</a>
+  is a theoretically uncrackable scheme for encrypting messages.
+  It works by XORing a pre-shared, random key with a message, transmitting it,
+  then XORing again with the same key to decrypt.
+  However, for this to happen securely, the key must be truly random,
+  kept completely secret, and <u>never reused</u>.
+  In the case that key material is reused, knowing (or guessing) the
+  plaintext of one message will give you the plaintext of a second message.
+</p>
+
+<p>
+  To crack a pair of one-time pad messages that use the same key, first compute
+  <code>k = m1 XOR m2</code>.
+  Next, guess a word that may appear in the plaintext, for example <code>" flag "</code>.
+  XOR this word with <code>k</code> in all possible positions.
+  Anything that reveals legible text is likely correct.
+  Repeat the process; you can guess words that may appear in either plaintext.
+</p>
+
 <pre>
 plaintext 1: 66696e642074686520666c6167206279206775657373696e67
     "find the flag by guessing"
@@ -42,16 +41,18 @@ plaintext 2: 74776963655f69735f746f6f5f6d7563685f4c6a5858364461
     "twice_is_too_much_LjXX6Da"
 key:         a789b56f16f3fafb773f654dc7943e267e0a243d06560840b5
 </pre>
-      
-      <p>The flag:</p>
-      <pre>twice_is_too_much_LjXX6Da</pre>
-      
-      <p>Online tools:</p>
-      <ul>
-        <li>My own <a href="../ctf/twotimepad.html">interactive cracker</a></li>
-        <li><a href="http://cribdrag.com/">Interactive Crib Dragging Tool</a>
-        </li>
-      </ul>
+
+<p>The flag:</p>
+<pre>twice_is_too_much_LjXX6Da</pre>
+
+<p>Online tools:</p>
+<ul>
+  <li>My own <a href="../ctf/twotimepad.html">interactive cracker</a></li>
+  <li><a href="http://cribdrag.com/">
+  Interactive Crib Dragging Tool</a>
+  </li>
+</ul>
+
     </div>
   </body>
 </html>

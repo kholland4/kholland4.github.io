@@ -46,7 +46,7 @@ c3 = 105701078713124916679890751630377272530830855893924304038439189705574579165
   suppose that <code>e=3</code> and <code>M = m^3</code>.
   We must now solve this system of equations:
 </p>
-<pre>
+<pre class="wrap">
 M ≡ c1 (mod n1)
 M ≡ c2 (mod n2)
 M ≡ c3 (mod n3)
@@ -56,7 +56,7 @@ M ≡ c3 (mod n3)
   the Chinese Remainder Theorem indicates that there is a solution for the system exists.
   To find this solution, first find:
 </p>
-<pre>
+<pre class="wrap">
 N = n1*n2*n3
 N1 = N / n1
 N2 = N / n2
@@ -69,7 +69,7 @@ N3 = N / n3
   Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
   Therefore:
 </p>
-<pre>
+<pre class="wrap">
 M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)
 </pre>
 <p>
@@ -77,7 +77,7 @@ M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)
   Find the cube root of <code>M</code> to recover the original message.
 </p>
 <h3>Python 3.8+ code</h3>
-<pre>
+<pre class="wrap">
 # find_invpow adapted from https://stackoverflow.com/q/55436001
 # by user GMX Rider (https://stackoverflow.com/users/8207239/gmx-rider)
 # CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/legalcode)
@@ -134,7 +134,7 @@ m = 1865763144651591712065726971737548069815093216756556487766145230327734554573
 charlie oscar papa papa echo romeo sierra mike india tango hotel underscore zulu Juliet mike five golf kilo
 </pre>
 <p>The flag:</p>
-<pre>coppersmith_zJm5gk</pre>
+<pre class="wrap">coppersmith_zJm5gk</pre>
 <p>Online tools:</p>
 <ul>
 <li>My own <a href="../ctf/rsa.html">RSA calculator</a></li>

@@ -6,14 +6,18 @@
 <body><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
 <div class="content">
 <h1>Solution: Vigenère</h1>
-<pre>
-Bae Ywynidr–Aaaylwg slkxeiye baezpmf id y baezpmf iy rpx ftctw oq qqznlj
-xkoncaliye eainf axrgca ts l dcgdlkmgtlj jkioem ueeumxn nmvmiyswns-egux stevtld
-yvw dtqkkeec-bbmp qqznlja. Bt pqbtbwgaaed y anfqgkbeyr khnogbboy dwk a dyuilp
-pime efim pppubtd y lbsnpmme dcyneyam hf dyuilpq bh clnbnrp yte tsc qgfzputttmv
-yrzk i voyrqguzsa-mixc abgyyt hf qgvbtp zigdhglmh.
-
-amtrawnptbprqv_QIaZik
+<pre class="wrap collapse">
+  <p>
+    Bae Ywynidr–Aaaylwg slkxeiye baezpmf id y baezpmf iy rpx ftctw oq qqznlj
+    xkoncaliye eainf axrgca ts l dcgdlkmgtlj jkioem ueeumxn nmvmiyswns-egux stevtld
+    yvw dtqkkeec-bbmp qqznlja. Bt pqbtbwgaaed y anfqgkbeyr khnogbboy dwk a dyuilp
+    pime efim pppubtd y lbsnpmme dcyneyam hf dyuilpq bh clnbnrp yte tsc qgfzputttmv
+    yrzk i voyrqguzsa-mixc abgyyt hf qgvbtp zigdhglmh.
+  </p>
+  <br/>
+  <p>
+    amtrawnptbprqv_QIaZik
+  </p>
 </pre>
 <p>
   This is a <a href="https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher">
@@ -29,13 +33,13 @@ amtrawnptbprqv_QIaZik
   The letters A-Z are represented as the numbers 0-25.
   To encrypt, ciphertext letter <code>C</code> is:
 </p>
-<pre>C = (M + K) mod 26</pre>
+<pre class="wrap">C = (M + K) mod 26</pre>
 <p>
   and to decrypt:
 </p>
-<pre>M = (C - K + 26) mod 26</pre>
+<pre class="wrap">M = (C - K + 26) mod 26</pre>
 <h3>Example</h3>
-<pre>
+<div class="scroll"><pre>
 Plaintext:
 THEQUICKBROWNFOX
 
@@ -58,7 +62,7 @@ Ciphertext:
 HYEDAMQBBEUABWOK
 
 Subtract the key, add 26, then mod 26 to decrypt.
-</pre>
+</pre></div>
 <h2>Cryptanalysis</h2>
 <p>
   By guessing the length of the key, a Vigenère cipher can be broken down into
@@ -66,17 +70,21 @@ Subtract the key, add 26, then mod 26 to decrypt.
   If the key length is 5, then the 1st, 6th, 11th, ... letters are one Caesar cipher,
   the 2nd, 7th, 12th, ... letters are another, and so on.
 </p>
-<pre>
-The Nyquist–Shannon sampling theorem is a theorem in the field of signal
-processing which serves as a fundamental bridge between continuous-time signals
-and discrete-time signals. It establishes a sufficient condition for a sample
-rate that permits a discrete sequence of samples to capture all the information
-from a continuous-time signal of finite bandwidth.
-
-polyalphabetic_QXcRpk
+<pre class="wrap collapse">
+  <p>
+    The Nyquist–Shannon sampling theorem is a theorem in the field of signal
+    processing which serves as a fundamental bridge between continuous-time signals
+    and discrete-time signals. It establishes a sufficient condition for a sample
+    rate that permits a discrete sequence of samples to capture all the information
+    from a continuous-time signal of finite bandwidth.
+  </p>
+  <br/>
+  <p>
+    polyalphabetic_QXcRpk
+  </p>
 </pre>
 <p>The flag:</p>
-<pre>polyalphabetic_QXcRpk</pre>
+<pre class="wrap">polyalphabetic_QXcRpk</pre>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://www.cipherchallenge.org/wp-content/uploads/2020/12/Five-ways-to-crack-a-Vigenere-cipher.pdf">

@@ -251,7 +251,7 @@
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
 <body><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
 <div class="content">
-<h1>RSA calculator</h1>
+<h1 id="RSA_calculator">RSA calculator</h1>
 <p>
         Disclaimer: this tool is for educational purposes only and is not suited for security.
       </p>
@@ -276,10 +276,12 @@
         Need more flexibility? <a href="https://www.python.org/">Python</a> has
         arbitrary-precision integer support (preferably use version 3.8 or later).
       </p>
+<div><div class="tocBox"><span class="tocHeader">Contents</span><ul class="toc tocRoot"><li class="toc toc2"><a href="#RSA">RSA</a><ul class="toc"><li class="toc toc3"><a href="#Key_generation">Key generation</a></li><li class="toc toc3"><a href="#Encryption_and_decryption">Encryption and decryption</a></li></ul></li><li class="toc toc2"><a href="#Attacks">Attacks</a><ul class="toc"><li class="toc toc3"><a href="#Factoring_the_public_modulus_n">Factoring the public modulus n</a></li><li class="toc toc3"><a href="#Broadcast_attack">Broadcast attack</a></li><li class="toc toc3"><a href="#Oracle_attack">Oracle attack</a></li></ul></li></ul></div></div>
+<h2 id="RSA">RSA</h2>
 <p>
 <button onclick="clearAllMain();">Clear all fields</button>
 </p>
-<h3>Key generation</h3>
+<h3 id="Key_generation">Key generation</h3>
 <p>
         Choose two distinct prime numbers <code>p</code> and <code>q</code>.
       </p>
@@ -337,7 +339,7 @@
         That's it for key generation!
         The public key is <code>(n, e)</code> and the private key is <code>(n, d)</code>
 </p>
-<h3>Encryption and decryption</h3>
+<h3 id="Encryption_and_decryption">Encryption and decryption</h3>
 <p>
         Encryption is done with <code>c(m) = m^e mod n</code> where <code>c</code> is the ciphertext and <code>m</code> is the message.
         Note that both of these values must be integers <code>1 &lt; m &lt; n</code> and <code>1 &lt; c &lt; n</code>.
@@ -356,8 +358,8 @@
 <button onclick="calcM();">Decrypt</button>
 </p>
 <hr/>
-<h2>Attacks</h2>
-<h3>Factoring the public modulus <code>n</code></h3>
+<h2 id="Attacks">Attacks</h2>
+<h3 id="Factoring_the_public_modulus_n">Factoring the public modulus <code>n</code></h3>
 <p>
         The public modulus <code>n</code> is equal to a prime number <code>p</code>
         times a prime number <code>q</code>.
@@ -370,7 +372,7 @@
 <p>
 <a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
 </p>
-<h3>Broadcast attack</h3>
+<h3 id="Broadcast_attack">Broadcast attack</h3>
 <p>
         If the same message <code>m</code> is encrypted with <code>e</code>
         different public keys, then the original message can be recovered
@@ -483,7 +485,7 @@ N3 = N / n3
         Further reading: <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
         Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)
       </p>
-<h3>Oracle attack</h3>
+<h3 id="Oracle_attack">Oracle attack</h3>
 <p>
         You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,
         and an oracle that will decrypt anything except for the given ciphertext.

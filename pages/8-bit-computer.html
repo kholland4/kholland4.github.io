@@ -5,12 +5,12 @@
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../styles/main.css" rel="stylesheet" type="text/css"/><link href="../styles/page.css" rel="stylesheet" type="text/css"/></head>
 <body><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href=".">showcase</a></div><div class="titlebar_button"><a href="projects.html">all projects</a></div><div class="titlebar_button"><a href="page-list.html">pages</a></div><div class="titlebar_button"><a href="ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="flags.html">ctf challenges</a></div></div>
 <div class="content">
-<h1>8-bit computer</h1>
+<h1 id="8-bit_computer">8-bit computer</h1>
 <p>
 Inspired by the work of people on the <a href="https://www.homebrewcpuring.org/">Homebuilt CPU web ring</a>,
 I decided to design and build my own 8-bit computer from scratch.
 </p>
-<h2>First Steps</h2>
+<h2 id="First_Steps">First Steps</h2>
 <p>
 The design of the CPU is loosely inspired by <a href="https://eater.net/8bit">Ben Eater's</a> 4/8-bit breadboard computer.
 His design uses 74HCxx series logic chips on breadboards.
@@ -26,7 +26,7 @@ This computer would be built around an 8-bit data bus,
 running down the middle of the construction on breadboard bus bars.
 Memory addressing would be 16 bits wide in order to support far more complex programs than would otherwise be allowed.
 </p>
-<h2>Design</h2>
+<h2 id="Design">Design</h2>
 <p>
 The main idea behind the architecture is that for each instruction,
 some portion of the computer outputs a data word onto the bus and another portion of the computer uses or stores it.
@@ -34,7 +34,7 @@ For example, to store a value in the A register, the computer would output an im
 Similarly, to store the result of addition to a memory location,
 the addition section of the ALU would output onto the bus, and the memory circuitry would store it.
 </p>
-<h4>Clock cycles</h4>
+<h4 id="Clock_cycles">Clock cycles</h4>
 <p>
 Each clock cycle, the computer alternates between doing one of two operations: fetch and execute.
 For the fetch cycle, most of the computer is disabled and the program counter is fed into the memory address.
@@ -47,7 +47,7 @@ During the execute cycle, the instruction is fed into decoding logic that operat
 Once the new state has stabilized, any registers/memory that need to be are latched in.
 </p>
 <img alt="Diagram of clock cycles" src="../images/8-bit-computer/fig-clock.jpg" width="500"/>
-<h4>Instructions</h4>
+<h4 id="Instructions">Instructions</h4>
 <p>
 The 8-bit instruction register ("I") holds the machine's current instruction.
 The instruction is divided into two 4-bit sections.
@@ -63,7 +63,7 @@ The control lines from both decoders connect all across the computer, mainly dri
 -----------------
 | out   | in    |
 </pre>
-<h4>ALU</h4>
+<h4 id="ALU">ALU</h4>
 <p>
 The ALU is perhaps the most straightforward subsystem in the computer.
 It has two 8-bit registers called "A" and "B".
@@ -76,7 +76,7 @@ To AND two values together, one would load each of the values into the A and B r
 in a separate instruction, put the output of the AND operation to the bus.
 </p>
 <img alt="Diagram of ALU" src="../images/8-bit-computer/fig-alu.jpg" width="250"/>
-<h4>Memory</h4>
+<h4 id="Memory">Memory</h4>
 <p>
 The memory subsystem is separate from the main data bus because it's 16 bits wide for both address and data.
 It uses two address registers ("RH" and "RL" for the high and low 8 bits of the address, respectively) and two data registers (I and D, described above)
@@ -90,7 +90,7 @@ Once the address has been selected, data can either be loaded from the bus into 
 Addressing modes to access both the low (data) and high (instruction) bytes of the memory contents are available.
 </p>
 <img alt="Diagram of memory" src="../images/8-bit-computer/fig-memory.jpg" width="350"/>
-<h4>Program counter</h4>
+<h4 id="Program_counter">Program counter</h4>
 <p>
 The program counter is a 16-bit counter circuit with reset and preset capabilities.
 It is incremented at the end of every fetch cycle.
@@ -98,14 +98,14 @@ Jumps are done using two 8-bit registers -- "IPH" and "IPL" for the high and low
 These registers are loaded and a conditional jump instruction is executed.
 </p>
 <!-- TODO image? -->
-<h4>I/O</h4>
+<h4 id="I/O">I/O</h4>
 <p>
 Physically, the I/O circuitry is not combined with the rest of the computer.
 The I/O breadboards are connected via ribbon cables to the main bus, control signals, and power.
 I/O is used in fundamentally the same way as any other part of the computer.
 Modules can be selected to either output data to or take data from the bus.
 </p>
-<h2>Build</h2>
+<h2 id="Build">Build</h2>
 <p>
 After reasonably complete schematics were drawn, I wrote up a bill of materials.
 This included about 15 different types of 74HCxx integrated circuits,
@@ -134,7 +134,7 @@ I started running wires from the instruction decode circuitry to the rest of the
 Testing was performed along the way, of course, by manually twiddling with the registers and control lines.
 </p>
 <!-- TODO pictures -->
-<h4>Debugging</h4>
+<h4 id="Debugging">Debugging</h4>
 <!-- TODO finish -->
 <p>
 <i>To be continued...</i>

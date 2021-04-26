@@ -5,7 +5,7 @@
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
 <body><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
 <div class="content">
-<h1>Solution: Vigenère</h1>
+<h1 id="Solution:_Vigenère">Solution: Vigenère</h1>
 <pre class="wrap collapse">
   <p>
     Bae Ywynidr–Aaaylwg slkxeiye baezpmf id y baezpmf iy rpx ftctw oq qqznlj
@@ -26,7 +26,7 @@
   The shift values for these ciphers are chosen based on a keyword,
   and they repeat with a period the same as the length of the keyword.
 </p>
-<h2>Cipher operation</h2>
+<h2 id="Cipher_operation">Cipher operation</h2>
 <p>
   Take each letter <code>M</code> of the plaintext and the corresponding letter <code>K</code> of the key.
   The key repeats as much as needed to fit the length of the plaintext (i. e. <code>DELTADELTADELTA</code>).
@@ -38,8 +38,8 @@
   and to decrypt:
 </p>
 <pre class="wrap">M = (C - K + 26) mod 26</pre>
-<h3>Example</h3>
-<div class="scroll"><pre>
+<h3 id="Example">Example</h3>
+<pre>
 Plaintext:
 THEQUICKBROWNFOX
 
@@ -62,8 +62,8 @@ Ciphertext:
 HYEDAMQBBEUABWOK
 
 Subtract the key, add 26, then mod 26 to decrypt.
-</pre></div>
-<h2>Cryptanalysis</h2>
+</pre>
+<h2 id="Cryptanalysis">Cryptanalysis</h2>
 <p>
   By guessing the length of the key, a Vigenère cipher can be broken down into
   a set of Caesar ciphers, each of which can be cracked with basic statistical analysis.

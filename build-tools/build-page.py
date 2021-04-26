@@ -6,7 +6,7 @@
 # Also processes {{template}}s given in the source file.
 
 import sys, os, argparse, bs4
-import template_tiles, template_pagelist, template_wikicite
+import template_tiles, template_pagelist, template_wikicite, template_toc
 
 include_css = [
     "styles/main.css",
@@ -67,6 +67,31 @@ titlebar["class"] = "titlebar"
 titlebar.string = main_title
 soup.body.insert(0, titlebar)
 
+
+# Traverse the tree adding id attributes for headings
+for child in soup.body.descendants:
+    # Look only for tags containing a single string as a child
+    # Exclude the actual string tags themselves
+    if isinstance(child, bs4.NavigableString):
+        continue
+    # Headings only
+    if child.name.lower() not in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        continue
+    # Don't overwrite existing id attributes
+    if child.has_attr("id"):
+        continue
+    
+    if child.string is not None:
+        content = child.string.strip()
+    else:
+        content = child.text.strip()
+    fragment = content.replace(" ", "_")
+    if len(fragment) == 0:
+        raise ValueError("empty tag, can't generate id: %s" % child)
+    
+    child["id"] = fragment
+
+
 # Traverse the tree looking for templates
 def template_parse(content, child):
     args = content[2:-2].split("|")
@@ -76,6 +101,8 @@ def template_parse(content, child):
         template_pagelist.parse(args, child, soup, workdir)
     elif args[0] == "wikicite":
         template_wikicite.parse(args, child, soup, workdir)
+    elif args[0] == "toc":
+        template_toc.parse(args, child, soup, workdir)
     else:
         raise ValueError("'" + args[0] + "' is not a valid template")
 

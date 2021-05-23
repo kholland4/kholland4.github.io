@@ -4,8 +4,8 @@
     "time": 1578181503,
     "title": "mc4",
     "tags": [["status-good", "Alpha"], ["lang", "JavaScript"], ["lang", "C++"]],
-    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc4"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc4"}],
-    "click": "https://kholland4.github.io/mc4",
+    "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc4"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc4"}],
+    "click": "https://www.tausquared.net/mc4",
     "body": "Minecraft-like multiplayer voxel building game. Runs in a web browser. Click to play!",
     "image": "../images/projects/post-9.jpg"
   },
@@ -34,9 +34,9 @@
     "time": 1551658872,
     "title": "Platformer Game",
     "tags": [["lang", "JavaScript"]],
-    "links": [{"text": "Play", "dest": "https://kholland4.github.io/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
-    "click": "https://kholland4.github.io/platformeng",
-    "body": "A basic platformer game (<a href=\"https://kholland4.github.io/platformeng/leveledit.html\">level editor here</a>).",
+    "links": [{"text": "Play", "dest": "https://www.tausquared.net/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
+    "click": "https://www.tausquared.net/platformeng",
+    "body": "A basic platformer game (<a href=\"https://www.tausquared.net/platformeng/leveledit.html\">level editor here</a>).",
     "image": "../images/projects/post-6.png"
   },
   {
@@ -44,8 +44,8 @@
     "time": 1548288000,
     "title": "mc3",
     "tags": [["status-bad", "Obsolete"], ["lang", "JavaScript"]],
-    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
-    "click": "https://kholland4.github.io/mc3",
+    "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
+    "click": "https://www.tausquared.net/mc3",
     "body": "Another Minecraft clone; much improved (uses <a href=\"https://threejs.org/\">Three.js</a>).",
     "image": "../images/projects/post-5.jpg"
   },
@@ -54,8 +54,8 @@
     "time": 1536421199,
     "title": "os",
     "tags": [["lang", "JavaScript"]],
-    "links": [{"text": "View", "dest": "https://kholland4.github.io/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
-    "click": "https://kholland4.github.io/os",
+    "links": [{"text": "View", "dest": "https://www.tausquared.net/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
+    "click": "https://www.tausquared.net/os",
     "body": "An experimental operating system environment written in JavaScript.",
     "image": "../images/projects/post-4.png"
   },
@@ -64,8 +64,8 @@
     "time": 1527542722,
     "title": "mc2",
     "tags": [["status-bad", "Obsolete"], ["lang", "JavaScript"]],
-    "links": [{"text": "Play", "dest": "https://kholland4.github.io/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
-    "click": "https://kholland4.github.io/mc2",
+    "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
+    "click": "https://www.tausquared.net/mc2",
     "body": "Early attempt at a Minecraft clone (with <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
     "image": "../images/projects/post-3.jpg"
   },

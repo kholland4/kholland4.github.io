@@ -1,2 +1,2 @@
-# [kholland4.github.io](https://kholland4.github.io/)
-GitHub Pages site
+# [www.tausquared.net](https://www.tausquared.net/)
+Personal website

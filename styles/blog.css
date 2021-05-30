@@ -93,7 +93,7 @@
   text-decoration: none;
   
   background-color: #bbbbbb;
-  color: white;
+  color: white !important;
   font-family: sans-serif;
   font-size: 12px;
 }
@@ -106,4 +106,14 @@
   
   font-family: serif;
   font-size: 12pt;
+}
+
+@media (prefers-color-scheme: dark) {
+  .blogEntry {
+    background-color: #252f2f;
+  }
+  .tag {
+    background-image: linear-gradient(#bbb, #bbb);
+    background-blend-mode: multiply;
+  }
 }

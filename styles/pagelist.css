@@ -7,18 +7,17 @@
   display: inline-block;
   
   font-family: sans-serif;
-  font-size: 18pt;
+  font-size: 140%;
 }
 .entry_title a {
-  color: inherit;
-  text-decoration: inherit;
+  /*color: inherit;
+  text-decoration: inherit;*/
 }
 
 .entry_desc {
   margin-top: 4px;
   
   font-family: serif;
-  font-size: 12pt;
 }
 .entry_desc p {
   margin: 0;
@@ -88,4 +87,11 @@ input.pagelist_nav_search {
 }
 button.pagelist_nav_clear {
   margin-top: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tag {
+    background-image: linear-gradient(#bbb, #bbb);
+    background-blend-mode: multiply;
+  }
 }

@@ -45,6 +45,21 @@ body {
   background-color: #999;
 }
 .titlebar_button a {
-  color: inherit;
+  color: inherit !important;
   text-decoration: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  #titlebar_main {
+    background-color: #222;
+    color: #ddd;
+  }
+  #titlebar_sub {
+    background-color: #202929;
+    color: #ccc;
+  }
+  .titlebar_button.selected {
+    background-color: #394545;
+    color: #eee;
+  }
 }

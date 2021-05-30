@@ -84,3 +84,43 @@ li.toc::before {
   content: "-";
   padding-right: 8px;
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #dcdcdc;
+  }
+  
+  a:link {
+    color: dodgerblue;
+  }
+  a:visited {
+    color: mediumorchid;
+  }
+  a:hover {
+    
+  }
+  a:active {
+    color: firebrick;
+  }
+  
+  pre, code {
+    background-color: #333;
+  }
+  
+  img {
+    opacity: 0.7;
+  }
+  img:hover {
+    opacity: initial;
+  }
+  
+  input, textarea, select {
+    background-color: #333;
+    color: #dcdcdc;
+  }
+  button {
+    background-color: #555;
+    color: #efefef;
+  }
+}

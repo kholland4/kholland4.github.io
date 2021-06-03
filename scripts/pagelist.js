@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     var searchFilter = document.createElement("input");
     searchFilter.className = "pagelist_nav_search";
+    searchFilter.id = "pagelist_nav_searchfilter";
     var catFilterContainer = document.createElement("div");
     catFilterContainer.className = "pagelist_nav_category_c";
     
@@ -178,8 +179,9 @@ document.addEventListener("DOMContentLoaded", function() {
     var searchBox = document.createElement("div");
     
     searchBox.className = "pagelist_nav_search_c";
-    var searchLabel = document.createElement("div");
-    searchLabel.innerText = "Search:";
+    var searchLabel = document.createElement("label");
+    searchLabel.htmlFor = "pagelist_nav_searchfilter";
+    searchLabel.innerText = "Search: ";
     searchLabel.className = "pagelist_nav_search";
     searchBox.appendChild(searchLabel);
     

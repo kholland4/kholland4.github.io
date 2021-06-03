@@ -48,19 +48,18 @@ def parse(args, target, soup, workdir):
                     tile_data.append(data_items[int(n)])
     
     for item in tile_data:
-        entry = soup.new_tag("div")
+        entry = soup.new_tag("div", id=("post." + str(item["id"])))
         entry["class"] = "blogEntry"
-        
-        anchor = soup.new_tag("a", id=("post." + str(item["id"])))
-        entry.append(anchor)
         
         # Clickable image
         img = soup.new_tag("img")
         img["class"] = "blogEntryImage"
         if "image" in item:
             img["src"] = item["image"]
+            img["alt"] = "Depiction of '" + item["title"] + "'"
         else:
             img["src"] = "../images/projects/placeholder.png"
+            img["alt"] = "Placeholder image"
         if "click" in item:
             img_a = soup.new_tag("a", href=item["click"])
             img_a.append(img)
@@ -113,6 +112,7 @@ def parse(args, target, soup, workdir):
                     
                     icon = soup.new_tag("img")
                     icon["src"] = "../icons/link.png" #material icon (https://material.io/tools/icons/) (under https://www.apache.org/licenses/LICENSE-2.0.html)
+                    icon["alt"] = "link: "
                     icon["class"] = "blogLinkIcon"
                     link_el.append(icon)
                     

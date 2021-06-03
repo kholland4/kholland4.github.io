@@ -3,7 +3,7 @@
 import json, os, bs4
 
 tag_colors = {
-    "category": ["#5ac", "#fff"]
+    "category": ["#3f9fc6", "#fff"]
 }
 
 def parse(args, target, soup, workdir):

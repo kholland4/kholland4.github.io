@@ -37,7 +37,7 @@
     "links": [{"text": "Play", "dest": "https://www.tausquared.net/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
     "click": "https://www.tausquared.net/platformeng",
     "body": "A basic platformer game (<a href=\"https://www.tausquared.net/platformeng/leveledit.html\">level editor here</a>).",
-    "image": "../images/projects/post-6.png"
+    "image": "../images/projects/post-6.jpg"
   },
   {
     "id": 5,

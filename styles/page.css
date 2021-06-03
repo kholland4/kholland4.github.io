@@ -1,6 +1,19 @@
-.content {
+#content {
   font-family: serif;
   padding: 10px;
+}
+
+.skipLink {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: white;
+  padding: 4px;
+  transform: translateY(-100%);
+}
+.skipLink:focus {
+  transform: translateY(0);
 }
 
 h1, h2, h3, h4, h5, h6 {

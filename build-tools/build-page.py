@@ -68,6 +68,12 @@ titlebar["class"] = "titlebar"
 titlebar.string = main_title
 soup.body.insert(0, titlebar)
 
+# Skip link
+skip_link = soup.new_tag("a", href="#content")
+skip_link["class"] = "skipLink"
+skip_link.string = "Skip to content"
+soup.body.insert(0, skip_link)
+
 
 # Traverse the tree adding id attributes for headings
 for child in soup.body.descendants:

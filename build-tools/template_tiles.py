@@ -128,7 +128,8 @@ def parse(args, target, soup, workdir):
         # Body
         body = soup.new_tag("div")
         body["class"] = "blogEntryBody"
-        body.append(bs4.BeautifulSoup(item["body"], "lxml"))
+        body_content = bs4.BeautifulSoup(item["body"], "lxml")
+        body.extend(body_content.body.contents)
         entry.append(body)
         
         target.append(entry)

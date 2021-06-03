@@ -116,7 +116,7 @@
     color: #a0a0a0;
   }
   .tag {
-    background-image: linear-gradient(#999, #999);
+    background-image: linear-gradient(#bbb, #bbb);
     background-blend-mode: multiply;
   }
 }

@@ -27,7 +27,7 @@ body {
   padding-bottom: 0px;
   
   background-color: #bbb;
-  color: #222;
+  color: #444;
 }
 
 .titlebar_button {
@@ -43,6 +43,7 @@ body {
 }
 .titlebar_button.selected {
   background-color: #999;
+  color: #222;
 }
 .titlebar_button a {
   color: inherit !important;
@@ -52,7 +53,7 @@ body {
 @media (prefers-color-scheme: dark) {
   #titlebar_main {
     background-color: #222;
-    color: #ddd;
+    color: #ccc;
   }
   #titlebar_sub {
     background-color: #202929;
@@ -60,6 +61,6 @@ body {
   }
   .titlebar_button.selected {
     background-color: #394545;
-    color: #eee;
+    color: #ddd;
   }
 }

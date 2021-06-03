@@ -38,6 +38,7 @@ with open(source_file, "r") as f:
 
 
 # Append meta tags & CSS tags
+soup.html["lang"] = "en"
 soup.head.append(soup.new_tag("meta", charset="utf-8"))
 viewport_tag = soup.new_tag("meta", content="width=device-width")
 viewport_tag["name"] = "viewport"

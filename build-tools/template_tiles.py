@@ -4,10 +4,10 @@ import json, os, bs4
 from datetime import datetime
 
 tag_colors = {
-    "lang": ["#6b6", "#fff"],
-    "hardware": ["#6b6", "#fff"],
+    "lang": ["#4aa54a", "#fff"],
+    "hardware": ["#4aa54a", "#fff"],
     "status-bad": ["#c55", "#fff"],
-    "status-good": ["#5ac", "#fff"]
+    "status-good": ["#3f9fc6", "#fff"]
 }
 
 def parse(args, target, soup, workdir):

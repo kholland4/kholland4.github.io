@@ -91,7 +91,7 @@ button.pagelist_nav_clear {
 
 @media (prefers-color-scheme: dark) {
   .tag {
-    background-image: linear-gradient(#bbb, #bbb);
+    background-image: linear-gradient(#999, #999);
     background-blend-mode: multiply;
   }
 }

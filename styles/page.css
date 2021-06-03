@@ -90,18 +90,21 @@ li.toc::before {
     background-color: #121212;
     color: #dcdcdc;
   }
+  h1, h2, h3, h4, h5, h6 {
+    color: #ccc;
+  }
   
   a:link {
-    color: dodgerblue;
+    color: deepskyblue;
   }
   a:visited {
-    color: mediumorchid;
+    color: violet;
   }
   a:hover {
     
   }
   a:active {
-    color: firebrick;
+    color: tomato;
   }
   
   pre, code {
@@ -118,9 +121,19 @@ li.toc::before {
   input, textarea, select {
     background-color: #333;
     color: #dcdcdc;
+    border: 1px solid #777;
   }
   button {
-    background-color: #555;
+    background-color: #3a3a3a;
     color: #efefef;
+    
+    border: 1px solid #666;
+    padding: 5px;
+  }
+  button:hover {
+    background-color: #4a4a4a;
+  }
+  button:active {
+    background-color: #2c2c2c;
   }
 }

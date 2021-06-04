@@ -21,13 +21,18 @@
 .blogEntry {
   width: 480px;
   
-  margin: 32px;
+  margin: 24px;
   border: 0px;
   padding: 0px;
   
   /* material design card styling */
   border-radius: 2px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); /*https://medium.com/@Florian/freebie-google-material-design-shadow-helper-2a0501295a2d*/
+}
+@media screen and (max-width: 580px) {
+  .blogEntry {
+    margin: 5%;
+  }
 }
 
 .blogEntryImage {

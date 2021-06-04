@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>RSA Calculator</title>
-<meta content="An arbitrary-precision RSA calculator
+ <head>
+  <title>
+   RSA Calculator
+  </title>
+  <meta content="An arbitrary-precision RSA calculator
     intended for Capture the Flag exercises. Features key calculation given
     prime numbers, encryption and decryption, and Håstad's broadcast attack." name="description"/>
-<script src="../../scripts/bigint-math.js" type="text/javascript"></script>
-<script>
-    
-    var outputBase = 10;
+  <script src="../../scripts/bigint-math.js" type="text/javascript">
+  </script>
+  <script>
+   var outputBase = 10;
     
     function getNum(where) {
       var text = document.getElementById(where).value;
@@ -249,292 +251,812 @@
       var texts = [];
       clearAll(fields, texts);
     }
-    
-    </script>
-<meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
-<body><a class="skipLink" href="#content">Skip to content</a><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
-<div id="content">
-<h1 id="RSA_calculator">RSA calculator</h1>
-<p>
-        Disclaimer: this tool is for educational purposes only and is not suited for security.
-      </p>
-<p>
-        Note: this tool uses JavaScript
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInts</a>.
+  </script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width" name="viewport"/>
+  <link href="../../styles/main.css" rel="stylesheet" type="text/css"/>
+  <link href="../../styles/page.css" rel="stylesheet" type="text/css"/>
+ </head>
+ <body>
+  <a class="skipLink" href="#content">
+   Skip to content
+  </a>
+  <div class="titlebar" id="titlebar_main">
+   a blog
+  </div>
+  <div class="titlebar" id="titlebar_sub">
+   <div class="titlebar_button">
+    <a href="..">
+     showcase
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../projects.html">
+     all projects
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../page-list.html">
+     pages
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../ctf.html">
+     ctf tools
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../flags.html">
+     ctf challenges
+    </a>
+   </div>
+  </div>
+  <div id="content">
+   <h1 id="RSA_calculator">
+    RSA calculator
+   </h1>
+   <p>
+    Disclaimer: this tool is for educational purposes only and is not suited for security.
+   </p>
+   <p>
+    Note: this tool uses JavaScript
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">
+     BigInts
+    </a>
+    .
         If you want hex, octal, or binary input, prefix with
-        <code>0x</code>, <code>0o</code>, or <code>0b</code> respectively.
+    <code>
+     0x
+    </code>
+    ,
+    <code>
+     0o
+    </code>
+    , or
+    <code>
+     0b
+    </code>
+    respectively.
         For hex, octal, or binary output, select:
-        <select id="outStyle" onchange="outputBase = parseInt(this.value);">
-<option selected="" value="10">Decimal (10)</option>
-<option value="16">Hex (16)</option>
-<option value="2">Binary (2)</option>
-<option value="8">Octal (8)</option>
-</select>
-</p>
-<p>
-        Further reading:
-        <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a> on Wikipedia
-      </p>
-<p>
-        Need more flexibility? <a href="https://www.python.org/">Python</a> has
+    <select id="outStyle" onchange="outputBase = parseInt(this.value);">
+     <option selected="" value="10">
+      Decimal (10)
+     </option>
+     <option value="16">
+      Hex (16)
+     </option>
+     <option value="2">
+      Binary (2)
+     </option>
+     <option value="8">
+      Octal (8)
+     </option>
+    </select>
+   </p>
+   <p>
+    Further reading:
+    <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">
+     RSA (cryptosystem)
+    </a>
+    on Wikipedia
+   </p>
+   <p>
+    Need more flexibility?
+    <a href="https://www.python.org/">
+     Python
+    </a>
+    has
         arbitrary-precision integer support (preferably use version 3.8 or later).
-      </p>
-<div><div class="tocBox"><span class="tocHeader">Contents</span><ul class="toc tocRoot"><li class="toc toc2"><a href="#RSA">RSA</a><ul class="toc"><li class="toc toc3"><a href="#Key_generation">Key generation</a></li><li class="toc toc3"><a href="#Encryption_and_decryption">Encryption and decryption</a></li></ul></li><li class="toc toc2"><a href="#Attacks">Attacks</a><ul class="toc"><li class="toc toc3"><a href="#Factoring_the_public_modulus_n">Factoring the public modulus n</a></li><li class="toc toc3"><a href="#Broadcast_attack">Broadcast attack</a></li><li class="toc toc3"><a href="#Oracle_attack">Oracle attack</a></li></ul></li></ul></div></div>
-<h2 id="RSA">RSA</h2>
-<p>
-<button onclick="clearAllMain();">Clear all fields</button>
-</p>
-<h3 id="Key_generation">Key generation</h3>
-<p>
-        Choose two distinct prime numbers <code>p</code> and <code>q</code>.
-      </p>
-<p>
-<code>p</code>: <textarea id="inputP"></textarea>
-</p>
-<p>
-<code>q</code>: <textarea id="inputQ"></textarea>
-</p>
-<p>
-        Calculate <code>n = p * q</code>.
-      </p>
-<p>
-<code>n</code>: <textarea id="inputN"></textarea>
-</p>
-<p>
-<button onclick="calcN();">Calculate n</button>
-<button onclick="calcP();">Calculate p = n / q</button>
-<button onclick="calcQ();">Calculate q = n / p</button>
-</p>
-<p>
-        Compute the Carmichael's totient function <code>tot(n) = λ(n) = lcm(p - 1, q - 1)</code>.
-        (Note that Euler's totient function <code>tot(n) = φ(n) = (p - 1) * (q - 1)</code> could be used instead.
-        See <a href="https://crypto.stackexchange.com/a/70626">StackExchange</a>.)
-      </p>
-<p>
-<code>tot(n)</code>: <textarea id="outputTot"></textarea>
-</p>
-<p>
-<button onclick="calcTotC();">Calculate λ(n)</button>
-<button onclick="calcTotE();">Calculate φ(n)</button>
-</p>
-<p>
-        Choose any number <code>e</code> where <code>1 &lt; e &lt; tot(n)</code> and <code>e</code> is coprime to <code>tot(n)</code>.
-        Common choices are 3, 17, and 65537 (these are <a href="https://en.wikipedia.org/wiki/Fermat_number">Fermat primes</a>).
-      </p>
-<p>
-<code>e</code>: <textarea id="inputE"></textarea>
-</p>
-<p>
-<button onclick="checkCoprimeE();">Check if coprime</button>
-<span id="checkCoprimeE"></span>
-</p>
-<p>
-        Compute <code>d</code>, the modular multiplicative inverse of <code>e</code> (mod <code>tot(n)</code>).
-      </p>
-<p>
-<code>d</code>: <textarea id="outputD"></textarea>
-</p>
-<p>
-<button onclick="calcD();">Calculate d</button>
-<span id="calcD"></span>
-</p>
-<p>
-        That's it for key generation!
-        The public key is <code>(n, e)</code> and the private key is <code>(n, d)</code>
-</p>
-<h3 id="Encryption_and_decryption">Encryption and decryption</h3>
-<p>
-        Encryption is done with <code>c(m) = m^e mod n</code> where <code>c</code> is the ciphertext and <code>m</code> is the message.
-        Note that both of these values must be integers <code>1 &lt; m &lt; n</code> and <code>1 &lt; c &lt; n</code>.
-      </p>
-<p>
-        Decryption is done with <code>m(c) = c^d mod n</code>.
-      </p>
-<p>
-<code>m</code>: <textarea id="inputM"></textarea>
-</p>
-<p>
-<code>c</code>: <textarea id="inputC"></textarea>
-</p>
-<p>
-<button onclick="calcC();">Encrypt</button>
-<button onclick="calcM();">Decrypt</button>
-</p>
-<hr/>
-<h2 id="Attacks">Attacks</h2>
-<h3 id="Factoring_the_public_modulus_n">Factoring the public modulus <code>n</code></h3>
-<p>
-        The public modulus <code>n</code> is equal to a prime number <code>p</code>
-        times a prime number <code>q</code>.
-        If you know <code>p</code> and <code>q</code> (and <code>e</code> from the
+   </p>
+   <div>
+    <div class="tocBox">
+     <span class="tocHeader">
+      Contents
+     </span>
+     <ul class="toc tocRoot">
+      <li class="toc toc2">
+       <a href="#RSA">
+        RSA
+       </a>
+       <ul class="toc">
+        <li class="toc toc3">
+         <a href="#Key_generation">
+          Key generation
+         </a>
+        </li>
+        <li class="toc toc3">
+         <a href="#Encryption_and_decryption">
+          Encryption and decryption
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toc toc2">
+       <a href="#Attacks">
+        Attacks
+       </a>
+       <ul class="toc">
+        <li class="toc toc3">
+         <a href="#Factoring_the_public_modulus_n">
+          Factoring the public modulus n
+         </a>
+        </li>
+        <li class="toc toc3">
+         <a href="#Broadcast_attack">
+          Broadcast attack
+         </a>
+        </li>
+        <li class="toc toc3">
+         <a href="#Oracle_attack">
+          Oracle attack
+         </a>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <h2 id="RSA">
+    RSA
+   </h2>
+   <p>
+    <button onclick="clearAllMain();">
+     Clear all fields
+    </button>
+   </p>
+   <h3 id="Key_generation">
+    Key generation
+   </h3>
+   <p>
+    Choose two distinct prime numbers
+    <code>
+     p
+    </code>
+    and
+    <code>
+     q
+    </code>
+    .
+   </p>
+   <p>
+    <code>
+     p
+    </code>
+    :
+    <textarea id="inputP"></textarea>
+   </p>
+   <p>
+    <code>
+     q
+    </code>
+    :
+    <textarea id="inputQ"></textarea>
+   </p>
+   <p>
+    Calculate
+    <code>
+     n = p * q
+    </code>
+    .
+   </p>
+   <p>
+    <code>
+     n
+    </code>
+    :
+    <textarea id="inputN"></textarea>
+   </p>
+   <p>
+    <button onclick="calcN();">
+     Calculate n
+    </button>
+    <button onclick="calcP();">
+     Calculate p = n / q
+    </button>
+    <button onclick="calcQ();">
+     Calculate q = n / p
+    </button>
+   </p>
+   <p>
+    Compute the Carmichael's totient function
+    <code>
+     tot(n) = λ(n) = lcm(p - 1, q - 1)
+    </code>
+    .
+        (Note that Euler's totient function
+    <code>
+     tot(n) = φ(n) = (p - 1) * (q - 1)
+    </code>
+    could be used instead.
+        See
+    <a href="https://crypto.stackexchange.com/a/70626">
+     StackExchange
+    </a>
+    .)
+   </p>
+   <p>
+    <code>
+     tot(n)
+    </code>
+    :
+    <textarea id="outputTot"></textarea>
+   </p>
+   <p>
+    <button onclick="calcTotC();">
+     Calculate λ(n)
+    </button>
+    <button onclick="calcTotE();">
+     Calculate φ(n)
+    </button>
+   </p>
+   <p>
+    Choose any number
+    <code>
+     e
+    </code>
+    where
+    <code>
+     1 &lt; e &lt; tot(n)
+    </code>
+    and
+    <code>
+     e
+    </code>
+    is coprime to
+    <code>
+     tot(n)
+    </code>
+    .
+        Common choices are 3, 17, and 65537 (these are
+    <a href="https://en.wikipedia.org/wiki/Fermat_number">
+     Fermat primes
+    </a>
+    ).
+   </p>
+   <p>
+    <code>
+     e
+    </code>
+    :
+    <textarea id="inputE"></textarea>
+   </p>
+   <p>
+    <button onclick="checkCoprimeE();">
+     Check if coprime
+    </button>
+    <span id="checkCoprimeE">
+    </span>
+   </p>
+   <p>
+    Compute
+    <code>
+     d
+    </code>
+    , the modular multiplicative inverse of
+    <code>
+     e
+    </code>
+    (mod
+    <code>
+     tot(n)
+    </code>
+    ).
+   </p>
+   <p>
+    <code>
+     d
+    </code>
+    :
+    <textarea id="outputD"></textarea>
+   </p>
+   <p>
+    <button onclick="calcD();">
+     Calculate d
+    </button>
+    <span id="calcD">
+    </span>
+   </p>
+   <p>
+    That's it for key generation!
+        The public key is
+    <code>
+     (n, e)
+    </code>
+    and the private key is
+    <code>
+     (n, d)
+    </code>
+   </p>
+   <h3 id="Encryption_and_decryption">
+    Encryption and decryption
+   </h3>
+   <p>
+    Encryption is done with
+    <code>
+     c(m) = m^e mod n
+    </code>
+    where
+    <code>
+     c
+    </code>
+    is the ciphertext and
+    <code>
+     m
+    </code>
+    is the message.
+        Note that both of these values must be integers
+    <code>
+     1 &lt; m &lt; n
+    </code>
+    and
+    <code>
+     1 &lt; c &lt; n
+    </code>
+    .
+   </p>
+   <p>
+    Decryption is done with
+    <code>
+     m(c) = c^d mod n
+    </code>
+    .
+   </p>
+   <p>
+    <code>
+     m
+    </code>
+    :
+    <textarea id="inputM"></textarea>
+   </p>
+   <p>
+    <code>
+     c
+    </code>
+    :
+    <textarea id="inputC"></textarea>
+   </p>
+   <p>
+    <button onclick="calcC();">
+     Encrypt
+    </button>
+    <button onclick="calcM();">
+     Decrypt
+    </button>
+   </p>
+   <hr/>
+   <h2 id="Attacks">
+    Attacks
+   </h2>
+   <h3 id="Factoring_the_public_modulus_n">
+    Factoring the public modulus
+    <code>
+     n
+    </code>
+   </h3>
+   <p>
+    The public modulus
+    <code>
+     n
+    </code>
+    is equal to a prime number
+    <code>
+     p
+    </code>
+    times a prime number
+    <code>
+     q
+    </code>
+    .
+        If you know
+    <code>
+     p
+    </code>
+    and
+    <code>
+     q
+    </code>
+    (and
+    <code>
+     e
+    </code>
+    from the
         public key), you can determine the private key, thus breaking the encryption.
-        However, factoring a large <code>n</code> is very difficult (effectively impossible).
-        A small-ish <code>n</code> (perhaps 50-100 decimal digits) can be factored.
+        However, factoring a large
+    <code>
+     n
+    </code>
+    is very difficult (effectively impossible).
+        A small-ish
+    <code>
+     n
+    </code>
+    (perhaps 50-100 decimal digits) can be factored.
         The following tool can do just that:
-      </p>
-<p>
-<a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
-</p>
-<h3 id="Broadcast_attack">Broadcast attack</h3>
-<p>
-        If the same message <code>m</code> is encrypted with <code>e</code>
-        different public keys, then the original message can be recovered
+   </p>
+   <p>
+    <a href="https://www.alpertron.com.ar/ECM.HTM">
+     Alpertron's integer factorization calculator
+    </a>
+   </p>
+   <h3 id="Broadcast_attack">
+    Broadcast attack
+   </h3>
+   <p>
+    If the same message
+    <code>
+     m
+    </code>
+    is encrypted with
+    <code>
+     e
+    </code>
+    different public keys, then the original message can be recovered
         without the private key.
         This is Håstad's broadcast attack.
-        It's most useful when <code>e</code> is 3, since only 3 messages are
+        It's most useful when
+    <code>
+     e
+    </code>
+    is 3, since only 3 messages are
         needed; this calculator is meant for that case.
         This attack applies primarily to textbook RSA where there is no padding;
         modern padding schemes mitigate it.
-      </p>
-<p>
-<code>e</code>: 3
-      </p>
-<p>
-<code>n1</code>: <textarea id="broadcast_n1"></textarea>
-<code>c1</code>: <textarea id="broadcastC1"></textarea>
-</p>
-<p>
-<code>n2</code>: <textarea id="broadcast_n2"></textarea>
-<code>c2</code>: <textarea id="broadcastC2"></textarea>
-</p>
-<p>
-<code>n3</code>: <textarea id="broadcast_n3"></textarea>
-<code>c3</code>: <textarea id="broadcastC3"></textarea>
-</p>
-<p>
-        The RSA decryption function is <code>c = m^e (mod n)</code>, so
-        suppose that <code>e=3</code> and <code>M = m^3</code>.
+   </p>
+   <p>
+    <code>
+     e
+    </code>
+    : 3
+   </p>
+   <p>
+    <code>
+     n1
+    </code>
+    :
+    <textarea id="broadcast_n1"></textarea>
+    <code>
+     c1
+    </code>
+    :
+    <textarea id="broadcastC1"></textarea>
+   </p>
+   <p>
+    <code>
+     n2
+    </code>
+    :
+    <textarea id="broadcast_n2"></textarea>
+    <code>
+     c2
+    </code>
+    :
+    <textarea id="broadcastC2"></textarea>
+   </p>
+   <p>
+    <code>
+     n3
+    </code>
+    :
+    <textarea id="broadcast_n3"></textarea>
+    <code>
+     c3
+    </code>
+    :
+    <textarea id="broadcastC3"></textarea>
+   </p>
+   <p>
+    The RSA decryption function is
+    <code>
+     c = m^e (mod n)
+    </code>
+    , so
+        suppose that
+    <code>
+     e=3
+    </code>
+    and
+    <code>
+     M = m^3
+    </code>
+    .
         We must now solve this system of equations:
-      </p>
-<pre>
+   </p>
+   <pre>
 M ≡ c1 (mod n1)
 M ≡ c2 (mod n2)
 M ≡ c3 (mod n3)
 </pre>
-<p>
-        Assuming all three <code>n</code>s are coprime, the Chinese Remainder
+   <p>
+    Assuming all three
+    <code>
+     n
+    </code>
+    s are coprime, the Chinese Remainder
         Theorem indicates that there is a solution for the system exists.
         If the moduli were not coprime, then one or more could be factored.
-      </p>
-<p>
-<button onclick="checkBroadcastCoprime();">Check if moduli are coprime</button>
-<span id="checkBroadcastCoprime"></span>
-</p>
-<p>
-        To find this solution, first find:
-      </p>
-<pre>
+   </p>
+   <p>
+    <button onclick="checkBroadcastCoprime();">
+     Check if moduli are coprime
+    </button>
+    <span id="checkBroadcastCoprime">
+    </span>
+   </p>
+   <p>
+    To find this solution, first find:
+   </p>
+   <pre>
 N = n1*n2*n3
 N1 = N / n1
 N2 = N / n2
 N3 = N / n3
 </pre>
-<p>
-<code>N1</code>: <textarea id="broadcastN1"></textarea>
-</p>
-<p>
-<code>N2</code>: <textarea id="broadcastN2"></textarea>
-</p>
-<p>
-<code>N3</code>: <textarea id="broadcastN3"></textarea>
-</p>
-<p>
-<button onclick="calcBroadcastN();">Calculate N1, N2, N3</button>
-</p>
-<p>
-<code>gcd(Ni, ni) = 1</code> for each pair <code>Ni</code> and
-        <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
-        must exist such that <code>Ni * ui = 1 (mod ni)</code>.
-        Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
-      </p>
-<p>
-<code>u1</code>: <textarea id="broadcastU1"></textarea>
-</p>
-<p>
-<code>u2</code>: <textarea id="broadcastU2"></textarea>
-</p>
-<p>
-<code>u3</code>: <textarea id="broadcastU3"></textarea>
-</p>
-<p>
-<button onclick="calcBroadcastU();">Calculate u1, u2, u3</button>
-</p>
-<p>
-        Now, calculate
-        <code>M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)</code>:
-      </p>
-<p>
-<code>M</code>: <textarea id="broadcastM"></textarea>
-</p>
-<p>
-<button onclick="calcBroadcastM();">Calculate M</button>
-</p>
-<p>
-        Since <code>m &lt; n</code> for each message,
-        <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
-        Find the cube root of <code>M</code> to recover the original message.
-      </p>
-<p>
-<code>m</code>: <textarea id="broadcast_m"></textarea>
-</p>
-<p>
-<button onclick="calcBroadcast_m();">Calculate m</button>
-<span id="broadcastRoot"></span>
-</p>
-<p>
-<button onclick="clearAllBroadcast();">Clear all fields</button>
-</p>
-<p>
-        Further reading: <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
-        Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)
-      </p>
-<h3 id="Oracle_attack">Oracle attack</h3>
-<p>
-        You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,
+   <p>
+    <code>
+     N1
+    </code>
+    :
+    <textarea id="broadcastN1"></textarea>
+   </p>
+   <p>
+    <code>
+     N2
+    </code>
+    :
+    <textarea id="broadcastN2"></textarea>
+   </p>
+   <p>
+    <code>
+     N3
+    </code>
+    :
+    <textarea id="broadcastN3"></textarea>
+   </p>
+   <p>
+    <button onclick="calcBroadcastN();">
+     Calculate N1, N2, N3
+    </button>
+   </p>
+   <p>
+    <code>
+     gcd(Ni, ni) = 1
+    </code>
+    for each pair
+    <code>
+     Ni
+    </code>
+    and
+    <code>
+     ni
+    </code>
+    , so the modular multiplicative inverse
+    <code>
+     ui
+    </code>
+    must exist such that
+    <code>
+     Ni * ui = 1 (mod ni)
+    </code>
+    .
+        Find each inverse
+    <code>
+     u1
+    </code>
+    ,
+    <code>
+     u2
+    </code>
+    , and
+    <code>
+     u3
+    </code>
+    .
+   </p>
+   <p>
+    <code>
+     u1
+    </code>
+    :
+    <textarea id="broadcastU1"></textarea>
+   </p>
+   <p>
+    <code>
+     u2
+    </code>
+    :
+    <textarea id="broadcastU2"></textarea>
+   </p>
+   <p>
+    <code>
+     u3
+    </code>
+    :
+    <textarea id="broadcastU3"></textarea>
+   </p>
+   <p>
+    <button onclick="calcBroadcastU();">
+     Calculate u1, u2, u3
+    </button>
+   </p>
+   <p>
+    Now, calculate
+    <code>
+     M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)
+    </code>
+    :
+   </p>
+   <p>
+    <code>
+     M
+    </code>
+    :
+    <textarea id="broadcastM"></textarea>
+   </p>
+   <p>
+    <button onclick="calcBroadcastM();">
+     Calculate M
+    </button>
+   </p>
+   <p>
+    Since
+    <code>
+     m &lt; n
+    </code>
+    for each message,
+    <code>
+     m^3 &lt; n1*n2*n3
+    </code>
+    and
+    <code>
+     M = m^3
+    </code>
+    .
+        Find the cube root of
+    <code>
+     M
+    </code>
+    to recover the original message.
+   </p>
+   <p>
+    <code>
+     m
+    </code>
+    :
+    <textarea id="broadcast_m"></textarea>
+   </p>
+   <p>
+    <button onclick="calcBroadcast_m();">
+     Calculate m
+    </button>
+    <span id="broadcastRoot">
+    </span>
+   </p>
+   <p>
+    <button onclick="clearAllBroadcast();">
+     Clear all fields
+    </button>
+   </p>
+   <p>
+    Further reading:
+    <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
+     Attacking RSA for fun and CTF points – part 2
+    </a>
+    (BitsDeep)
+   </p>
+   <h3 id="Oracle_attack">
+    Oracle attack
+   </h3>
+   <p>
+    You are given the public key
+    <code>
+     n
+    </code>
+    and
+    <code>
+     e
+    </code>
+    , a ciphertext
+    <code>
+     c
+    </code>
+    ,
         and an oracle that will decrypt anything except for the given ciphertext.
-      </p>
-<p>
-<code>n</code>: <textarea id="oracleN"></textarea>
-</p>
-<p>
-<code>e</code>: <textarea id="oracleE"></textarea>
-</p>
-<p>
-<code>c</code>: <textarea id="oracleC"></textarea>
-</p>
-<p>
-        Compute a new ciphertext <code>c' = (c * 2^e) mod n</code>.
-      </p>
-<p>
-<code>c'</code>: <textarea id="oracleCP"></textarea>
-</p>
-<p>
-<button onclick="calcOracleCP();">Calculate c'</button>
-</p>
-<p>
-        When <code>c'</code> is decrypted using the oracle, you get back <code>m' = 2m mod n</code>.
-        Decrypt and put the result here (it should be significantly smaller than <code>n</code>,
+   </p>
+   <p>
+    <code>
+     n
+    </code>
+    :
+    <textarea id="oracleN"></textarea>
+   </p>
+   <p>
+    <code>
+     e
+    </code>
+    :
+    <textarea id="oracleE"></textarea>
+   </p>
+   <p>
+    <code>
+     c
+    </code>
+    :
+    <textarea id="oracleC"></textarea>
+   </p>
+   <p>
+    Compute a new ciphertext
+    <code>
+     c' = (c * 2^e) mod n
+    </code>
+    .
+   </p>
+   <p>
+    <code>
+     c'
+    </code>
+    :
+    <textarea id="oracleCP"></textarea>
+   </p>
+   <p>
+    <button onclick="calcOracleCP();">
+     Calculate c'
+    </button>
+   </p>
+   <p>
+    When
+    <code>
+     c'
+    </code>
+    is decrypted using the oracle, you get back
+    <code>
+     m' = 2m mod n
+    </code>
+    .
+        Decrypt and put the result here (it should be significantly smaller than
+    <code>
+     n
+    </code>
+    ,
         assuming the message is not padded).
-      </p>
-<p>
-<code>m'</code>: <textarea id="oracleMP"></textarea>
-</p>
-<p>
-        For the unpadded messages found in this sort of textbook RSA implementation,
-        simply divide by <code>2</code> to recover the original message.
-      </p>
-<p>
-<code>m</code>: <textarea id="oracleM"></textarea>
-</p>
-<p>
-<button onclick="calcOracleM();">Calculate m = m' / 2</button>
-</p>
-<p>
-<button onclick="clearAllOracle();">Clear all fields</button>
-</p>
-<p>
-        Further reading: <a href="https://crypto.stackexchange.com/a/1449">StackExchange</a>
-</p>
-</div>
-</body>
+   </p>
+   <p>
+    <code>
+     m'
+    </code>
+    :
+    <textarea id="oracleMP"></textarea>
+   </p>
+   <p>
+    For the unpadded messages found in this sort of textbook RSA implementation,
+        simply divide by
+    <code>
+     2
+    </code>
+    to recover the original message.
+   </p>
+   <p>
+    <code>
+     m
+    </code>
+    :
+    <textarea id="oracleM"></textarea>
+   </p>
+   <p>
+    <button onclick="calcOracleM();">
+     Calculate m = m' / 2
+    </button>
+   </p>
+   <p>
+    <button onclick="clearAllOracle();">
+     Clear all fields
+    </button>
+   </p>
+   <p>
+    Further reading:
+    <a href="https://crypto.stackexchange.com/a/1449">
+     StackExchange
+    </a>
+   </p>
+  </div>
+ </body>
 </html>

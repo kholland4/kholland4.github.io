@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>Two-Time Pad Cracker</title>
-<meta content="An interactive tool for 'crib dragging'
+ <head>
+  <title>
+   Two-Time Pad Cracker
+  </title>
+  <meta content="An interactive tool for 'crib dragging'
     to crack a one-time pad where the key material was reused." name="description"/>
-<script src="../../scripts/cipher.js" type="text/javascript"></script>
-<script src="../../scripts/cipher-display.js" type="text/javascript"></script>
-<script>
-    
-    var content;
+  <script src="../../scripts/cipher.js" type="text/javascript">
+  </script>
+  <script src="../../scripts/cipher-display.js" type="text/javascript">
+  </script>
+  <script>
+   var content;
     
     document.addEventListener("DOMContentLoaded", function() {
       content = document.getElementsByClassName("content")[0];
@@ -248,28 +251,76 @@
       }).link(guessM2);
       document.getElementById("inputGuessM2").appendChild(inputGuessM2.dom());
     });
-    
-    </script>
-<meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
-<body><a class="skipLink" href="#content">Skip to content</a><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
-<div id="content">
-<h1 id="Interactive_two-time_pad_cracker">Interactive two-time pad cracker</h1>
-<p>
-        The <a href="https://en.wikipedia.org/wiki/One-time_pad">one-time pad</a>
-        is a theoretically uncrackable scheme for encrypting messages.
+  </script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width" name="viewport"/>
+  <link href="../../styles/main.css" rel="stylesheet" type="text/css"/>
+  <link href="../../styles/page.css" rel="stylesheet" type="text/css"/>
+ </head>
+ <body>
+  <a class="skipLink" href="#content">
+   Skip to content
+  </a>
+  <div class="titlebar" id="titlebar_main">
+   a blog
+  </div>
+  <div class="titlebar" id="titlebar_sub">
+   <div class="titlebar_button">
+    <a href="..">
+     showcase
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../projects.html">
+     all projects
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../page-list.html">
+     pages
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../ctf.html">
+     ctf tools
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="../flags.html">
+     ctf challenges
+    </a>
+   </div>
+  </div>
+  <div id="content">
+   <h1 id="Interactive_two-time_pad_cracker">
+    Interactive two-time pad cracker
+   </h1>
+   <p>
+    The
+    <a href="https://en.wikipedia.org/wiki/One-time_pad">
+     one-time pad
+    </a>
+    is a theoretically uncrackable scheme for encrypting messages.
         It works by XORing a pre-shared, random key with a message,
         transmitting it, then XORing again with the same key to decrypt.
         However, for this to happen securely, the key must be truly random,
-        kept completely secret, and <u>never reused</u>.
+        kept completely secret, and
+    <u>
+     never reused
+    </u>
+    .
         In the case that key material is reused, knowing (or guessing) the
         plaintext of one message will give you the plaintext of a second message.
         This tool is meant to assist in guessing (more precisely, "crib dragging")
         to this end.
-      </p>
-<div class="p"><!-- avoid build-tools/build-page.py parser bug -->
-        Note that there are some quirks to this method: if you guess, say,
-        <pre class="inline">" and "</pre> for one message, revealing
-        <pre class="inline">" the "</pre> at the same position in the other message,
+   </p>
+   <div class="p">
+    <!-- avoid build-tools/build-page.py parser bug -->
+    Note that there are some quirks to this method: if you guess, say,
+    <pre class="inline">" and "</pre>
+    for one message, revealing
+    <pre class="inline">" the "</pre>
+    at the same position in the other message,
         it is entirely possible that these words were in the opposite places
         in the original messages.
         Most of the time, this is easy to notice, but sometimes, especially
@@ -277,61 +328,107 @@
         More notably, this effect happens on the individual bit level,
         not just for whole characters.
         Due to the design of ASCII, this means that guessing the wrong case
-        (<pre class="inline">a</pre> vs. <pre class="inline">A</pre>) for one message
+        (
+    <pre class="inline">a</pre>
+    vs.
+    <pre class="inline">A</pre>
+    ) for one message
         will result in the second message also having the wrong case.
+   </div>
+   <p>
+    Further reading:
+    <a href="https://crypto.stackexchange.com/a/2250">
+     Stack Exchange
+    </a>
+   </p>
+   <hr/>
+   <div>
+    Ciphertext
+    <pre class="inline">c1</pre>
+    (hex):
+    <span id="inputC1">
+    </span>
+   </div>
+   <div>
+    Ciphertext
+    <pre class="inline">c2</pre>
+    (hex):
+    <span id="inputC2">
+    </span>
+   </div>
+   <div>
+    <pre class="inline">k = c1 ⊕ c2</pre>
+    (hex):
+    <span id="outputK">
+    </span>
+   </div>
+   <button id="startButton" style="margin-top: 1em;">
+    Start
+   </button>
+   <hr/>
+   <div>
+    Show candidates:
+        probable
+    <input checked="" id="showProbable" type="checkbox"/>
+    possible
+    <input checked="" id="showPossible" type="checkbox"/>
+    all
+    <input id="showAll" type="checkbox"/>
+   </div>
+   <table style="table-layout: fixed; width: 100%;">
+    <tr>
+     <td style="vertical-align: top;">
+      <h3 id="Message_1">
+       Message 1
+      </h3>
+      Decrypted so far,
+      <pre class="inline">m1 = m2 ⊕ k</pre>
+      :
+      <div id="textM1">
       </div>
-<p>
-        Further reading:
-        <a href="https://crypto.stackexchange.com/a/2250">Stack Exchange</a>
-</p>
-<hr/>
-<div>
-        Ciphertext <pre class="inline">c1</pre> (hex): <span id="inputC1"></span>
-</div>
-<div>
-        Ciphertext <pre class="inline">c2</pre> (hex): <span id="inputC2"></span>
-</div>
-<div>
-<pre class="inline">k = c1 ⊕ c2</pre> (hex): <span id="outputK"></span>
-</div>
-<button id="startButton" style="margin-top: 1em;">Start</button>
-<hr/>
-<div>
-        Show candidates:
-        probable <input checked="" id="showProbable" type="checkbox"/>
-        possible <input checked="" id="showPossible" type="checkbox"/>
-        all <input id="showAll" type="checkbox"/>
-</div>
-<table style="table-layout: fixed; width: 100%;">
-<tr>
-<td style="vertical-align: top;">
-<h3 id="Message_1">Message 1</h3>
-            
-            Decrypted so far, <pre class="inline">m1 = m2 ⊕ k</pre>:
-            <div id="textM1"></div>
-<div id="hexM1"></div>
-<br/>
-<div>
-              Guess a word: <span id="inputGuessM1"></span>
-</div>
-<h4 id="Candidates_for_m2:">Candidates for <pre class="inline">m2</pre>:</h4>
-<div id="m1candidates"></div>
-</td>
-<td style="vertical-align: top;">
-<h3 id="Message_2">Message 2</h3>
-            
-            Decrypted so far, <pre class="inline">m2 = m1 ⊕ k</pre>:
-            <div id="textM2"></div>
-<div id="hexM2"></div>
-<br/>
-<div>
-              Guess a word: <span id="inputGuessM2"></span>
-</div>
-<h4 id="Candidates_for_m1:">Candidates for <pre class="inline">m1</pre>:</h4>
-<div id="m2candidates"></div>
-</td>
-</tr>
-</table>
-</div>
-</body>
+      <div id="hexM1">
+      </div>
+      <br/>
+      <div>
+       Guess a word:
+       <span id="inputGuessM1">
+       </span>
+      </div>
+      <h4 id="Candidates_for_m2:">
+       Candidates for
+       <pre class="inline">m2</pre>
+       :
+      </h4>
+      <div id="m1candidates">
+      </div>
+     </td>
+     <td style="vertical-align: top;">
+      <h3 id="Message_2">
+       Message 2
+      </h3>
+      Decrypted so far,
+      <pre class="inline">m2 = m1 ⊕ k</pre>
+      :
+      <div id="textM2">
+      </div>
+      <div id="hexM2">
+      </div>
+      <br/>
+      <div>
+       Guess a word:
+       <span id="inputGuessM2">
+       </span>
+      </div>
+      <h4 id="Candidates_for_m1:">
+       Candidates for
+       <pre class="inline">m1</pre>
+       :
+      </h4>
+      <div id="m2candidates">
+      </div>
+     </td>
+    </tr>
+   </table>
+  </div>
+ </body>
 </html>

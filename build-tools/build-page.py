@@ -129,4 +129,4 @@ for child in soup.body.descendants:
 
 os.makedirs(out_dir, exist_ok=True)
 with open(output_file, "w") as outf:
-    outf.write(str(soup))
+    outf.write(soup.prettify())

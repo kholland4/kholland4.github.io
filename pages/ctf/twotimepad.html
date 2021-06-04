@@ -317,9 +317,13 @@
    <div class="p">
     <!-- avoid build-tools/build-page.py parser bug -->
     Note that there are some quirks to this method: if you guess, say,
-    <pre class="inline">" and "</pre>
+    <code>
+     " and "
+    </code>
     for one message, revealing
-    <pre class="inline">" the "</pre>
+    <code>
+     " the "
+    </code>
     at the same position in the other message,
         it is entirely possible that these words were in the opposite places
         in the original messages.
@@ -329,9 +333,13 @@
         not just for whole characters.
         Due to the design of ASCII, this means that guessing the wrong case
         (
-    <pre class="inline">a</pre>
+    <code>
+     a
+    </code>
     vs.
-    <pre class="inline">A</pre>
+    <code>
+     A
+    </code>
     ) for one message
         will result in the second message also having the wrong case.
    </div>
@@ -344,20 +352,26 @@
    <hr/>
    <div>
     Ciphertext
-    <pre class="inline">c1</pre>
+    <code>
+     c1
+    </code>
     (hex):
     <span id="inputC1">
     </span>
    </div>
    <div>
     Ciphertext
-    <pre class="inline">c2</pre>
+    <code>
+     c2
+    </code>
     (hex):
     <span id="inputC2">
     </span>
    </div>
    <div>
-    <pre class="inline">k = c1 ⊕ c2</pre>
+    <code>
+     k = c1 ⊕ c2
+    </code>
     (hex):
     <span id="outputK">
     </span>
@@ -382,7 +396,9 @@
        Message 1
       </h3>
       Decrypted so far,
-      <pre class="inline">m1 = m2 ⊕ k</pre>
+      <code>
+       m1 = m2 ⊕ k
+      </code>
       :
       <div id="textM1">
       </div>
@@ -396,7 +412,9 @@
       </div>
       <h4 id="Candidates_for_m2:">
        Candidates for
-       <pre class="inline">m2</pre>
+       <code>
+        m2
+       </code>
        :
       </h4>
       <div id="m1candidates">
@@ -407,7 +425,9 @@
        Message 2
       </h3>
       Decrypted so far,
-      <pre class="inline">m2 = m1 ⊕ k</pre>
+      <code>
+       m2 = m1 ⊕ k
+      </code>
       :
       <div id="textM2">
       </div>
@@ -421,7 +441,9 @@
       </div>
       <h4 id="Candidates_for_m1:">
        Candidates for
-       <pre class="inline">m1</pre>
+       <code>
+        m1
+       </code>
        :
       </h4>
       <div id="m2candidates">

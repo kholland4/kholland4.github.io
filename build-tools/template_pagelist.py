@@ -6,7 +6,7 @@ tag_colors = {
     "category": ["#3f9fc6", "#fff"]
 }
 
-def parse(args, target, soup, workdir):
+def parse(args, target, soup, workdir, out_dir):
     tile_data = []
     for filename_raw in args[1:]:
         parts = filename_raw.split("#")

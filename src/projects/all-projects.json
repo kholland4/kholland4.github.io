@@ -7,7 +7,7 @@
     "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc4"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc4"}],
     "click": "https://www.tausquared.net/mc4",
     "body": "Minecraft-like multiplayer voxel building game. Runs in a web browser. Click to play!",
-    "image": "../images/projects/post-9.jpg"
+    "image": "../../images/projects/post-9.jpg"
   },
   {
     "id": 8,
@@ -17,7 +17,7 @@
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/8-bit"}],
     "click": "https://github.com/kholland4/8-bit",
     "body": "A fully functional 8-bit CPU built from 74HCxx series logic chips.",
-    "image": "../images/projects/post-8.jpg"
+    "image": "../../images/projects/post-8.jpg"
   },
   {
     "id": 7,
@@ -27,7 +27,7 @@
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/hab"}],
     "click": "https://github.com/kholland4/hab",
     "body": "An experimental home automation system.",
-    "image": "../images/projects/post-7.png"
+    "image": "../../images/projects/post-7.png"
   },
   {
     "id": 6,
@@ -37,7 +37,7 @@
     "links": [{"text": "Play", "dest": "https://www.tausquared.net/platformeng"}, {"text": "GitHub", "dest": "https://github.com/kholland4/platformeng"}],
     "click": "https://www.tausquared.net/platformeng",
     "body": "A basic platformer game (<a href=\"https://www.tausquared.net/platformeng/leveledit.html\">level editor here</a>).",
-    "image": "../images/projects/post-6.jpg"
+    "image": "../../images/projects/post-6.jpg"
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc3"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc3"}],
     "click": "https://www.tausquared.net/mc3",
     "body": "Another Minecraft clone; much improved (uses <a href=\"https://threejs.org/\">Three.js</a>).",
-    "image": "../images/projects/post-5.jpg"
+    "image": "../../images/projects/post-5.jpg"
   },
   {
     "id": 4,
@@ -57,7 +57,7 @@
     "links": [{"text": "View", "dest": "https://www.tausquared.net/os"}, {"text": "GitHub", "dest": "https://github.com/kholland4/os"}],
     "click": "https://www.tausquared.net/os",
     "body": "An experimental operating system environment written in JavaScript.",
-    "image": "../images/projects/post-4.png"
+    "image": "../../images/projects/post-4.png"
   },
   {
     "id": 3,
@@ -67,7 +67,7 @@
     "links": [{"text": "Play", "dest": "https://www.tausquared.net/mc2"}, {"text": "GitHub", "dest": "https://github.com/kholland4/mc2"}],
     "click": "https://www.tausquared.net/mc2",
     "body": "Early attempt at a Minecraft clone (with <a href=\"https://threejs.org/\">Three.js</a>). Uses the <a href=\"https://www.planetminecraft.com/texture_pack/new-start---by-loufisch/\">New Start</a> texture pack.",
-    "image": "../images/projects/post-3.jpg"
+    "image": "../../images/projects/post-3.jpg"
   },
   {
     "id": 2,
@@ -77,7 +77,7 @@
     "links": [{"text": "GitHub", "dest": "https://github.com/kholland4/snakeAI"}],
     "click": "https://github.com/kholland4/snakeAI",
     "body": "This is a program that trains a neural network to play the <a href=\"https://en.wikipedia.org/wiki/Snake_(video_game_genre)\">Snake game</a>. It's my first attempt at creating a neural network. It works semi-reliably, but it takes a long time to train.<br><br>YouTube video: <a href=\"https://youtu.be/4vr-2cWKyPI\">https://youtu.be/4vr-2cWKyPI</a>",
-    "image": "../images/projects/post-2.png"
+    "image": "../../images/projects/post-2.png"
   },
   {
     "id": 1,

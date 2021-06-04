@@ -2,7 +2,7 @@
 
 import bs4
 
-def parse(args, target, soup, workdir):
+def parse(args, target, soup, workdir, out_dir):
     i = soup.new_tag("i")
     
     i.append("This page uses material from the Wikipedia article \"")

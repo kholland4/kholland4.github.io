@@ -2,7 +2,7 @@
 
 import bs4
 
-def parse(args, target, soup, workdir):
+def parse(args, target, soup, workdir, out_dir):
     heading_list = []
     
     for child in soup.body.descendants:

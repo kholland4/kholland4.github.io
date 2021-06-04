@@ -103,13 +103,13 @@ for child in soup.body.descendants:
 def template_parse(content, child):
     args = content[2:-2].split("|")
     if args[0] == "tiles":
-        template_tiles.parse(args, child, soup, workdir)
+        template_tiles.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "pagelist":
-        template_pagelist.parse(args, child, soup, workdir)
+        template_pagelist.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "wikicite":
-        template_wikicite.parse(args, child, soup, workdir)
+        template_wikicite.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "toc":
-        template_toc.parse(args, child, soup, workdir)
+        template_toc.parse(args, child, soup, workdir, out_dir)
     else:
         raise ValueError("'" + args[0] + "' is not a valid template")
 

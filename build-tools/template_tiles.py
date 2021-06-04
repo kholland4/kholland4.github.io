@@ -2,6 +2,7 @@
 
 import json, os, bs4
 from datetime import datetime
+from PIL import Image
 
 tag_colors = {
     "lang": ["#4aa54a", "#fff"],
@@ -10,7 +11,7 @@ tag_colors = {
     "status-good": ["#3f9fc6", "#fff"]
 }
 
-def parse(args, target, soup, workdir):
+def parse(args, target, soup, workdir, out_dir):
     tile_data = []
     for filename_raw in args[1:]:
         parts = filename_raw.split("#")
@@ -55,11 +56,16 @@ def parse(args, target, soup, workdir):
         img = soup.new_tag("img")
         img["class"] = "blogEntryImage"
         if "image" in item:
-            img["src"] = item["image"]
+            real_image_loc = os.path.join(workdir, item["image"])
             img["alt"] = "Depiction of '" + item["title"] + "'"
         else:
-            img["src"] = "../images/projects/placeholder.png"
+            real_image_loc = "images/projects/placeholder.png"
             img["alt"] = "Placeholder image"
+        
+        img["src"] = os.path.relpath(real_image_loc, start=out_dir)
+        entry_image = Image.open(os.path.normpath(real_image_loc))
+        img["width"], img["height"] = entry_image.size
+        
         if "click" in item:
             img_a = soup.new_tag("a", href=item["click"])
             img_a.append(img)

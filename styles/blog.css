@@ -32,6 +32,7 @@
 
 .blogEntryImage {
   width: 100%;
+  height: auto;
   
   /* negate img styling from page.css */
   padding: initial;

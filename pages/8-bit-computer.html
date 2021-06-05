@@ -151,7 +151,7 @@ an address is fed through the 16-bit memory address bus and into the memory chip
 For instruction fetches, the address comes from the program counter.
 For data access, one of two different addressing modes can be used --
 combining the 8-bit RH and RL registers or combining the RH register with the D (immediate value) register.
-Once the address has been selected, data can either be loaded from the bus into memory or read fron memory and put on the bus.
+Once the address has been selected, data can either be loaded from the bus into memory or read from memory and put on the bus.
 Addressing modes to access both the low (data) and high (instruction) bytes of the memory contents are available.
    </p>
    <img alt="Diagram of memory" src="../images/8-bit-computer/fig-memory.jpg" width="350"/>
@@ -199,7 +199,7 @@ I then worked down through the memory circuitry.
 It was the most difficult to lay out -- the 16-bit wide data bus took up a lot of valuable space.
 The workflow went something like this: assemble breadboards; lay out and insert chips;
 bend, cut, strip, and insert all of the wires; insert LEDs.
-Next came the decode circutry, followed by the memory logic and the ALU.
+Next came the decode circuitry, followed by the memory logic and the ALU.
 Once each individual section had been wired up and connected to the main bus,
 I started running wires from the instruction decode circuitry to the rest of the computer.
 Testing was performed along the way, of course, by manually twiddling with the registers and control lines.

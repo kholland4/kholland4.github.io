@@ -44,16 +44,16 @@ def parse(args, target, soup, workdir, out_dir):
                     tile_data.append(data_items[int(n)])
     
     nav = soup.new_tag("div")
-    nav["class"] = "pagelist_nav"
+    nav["class"] = "pagelist-nav"
     target.append(nav)
     
     for item in tile_data:
         entry = soup.new_tag("div")
-        entry["class"] = "entry"
+        entry["class"] = "pagelist-entry"
         
         # Clickable title
         title = soup.new_tag("div")
-        title["class"] = "entry_title"
+        title["class"] = "pagelist-entry-title"
         title_a = soup.new_tag("a", href=item["click"])
         title_a.string = item["title"]
         title.append(title_a)
@@ -62,7 +62,7 @@ def parse(args, target, soup, workdir, out_dir):
         # Tag and link bubbles
         if "tags" in item:
             tag_container = soup.new_tag("div")
-            tag_container["class"] = "tag_container"
+            tag_container["class"] = "pagelist-tag-container"
             
             if "tags" in item:
                 for name, text in item["tags"]:
@@ -83,7 +83,7 @@ def parse(args, target, soup, workdir, out_dir):
         # Body
         if "body" in item:
             body = soup.new_tag("div")
-            body["class"] = "entry_desc"
+            body["class"] = "pagelist-entry-desc"
             body.append(bs4.BeautifulSoup(item["body"], "lxml"))
             entry.append(body)
         

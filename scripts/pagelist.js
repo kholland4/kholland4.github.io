@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     for(var entry of listContainer.childNodes) {
-      if(entry.className != "entry")
+      if(entry.className != "pagelist-entry")
         continue;
       
       // find the tag list of the entry (if present)
       var tagContainer = null;
       for(var c of entry.childNodes) {
-        if(c.className != "tag_container")
+        if(c.className != "pagelist-tag-container")
           continue;
         tagContainer = c;
         break;
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   var n = 0;
-  var navElementList = document.getElementsByClassName("pagelist_nav");
+  var navElementList = document.getElementsByClassName("pagelist-nav");
   for(var navElement of navElementList) {
     var listContainer = navElement.parentElement;
     
@@ -88,13 +88,13 @@ document.addEventListener("DOMContentLoaded", function() {
     var entries = listContainer.childNodes;
     for(var entry of entries) {
       // exclude the nav element and anything else
-      if(entry.className != "entry")
+      if(entry.className != "pagelist-entry")
         continue;
       
       // find the tag list of the entry (if present)
       var tagContainer = null;
       for(var c of entry.childNodes) {
-        if(c.className != "tag_container")
+        if(c.className != "pagelist-tag-container")
           continue;
         tagContainer = c;
         break;
@@ -124,10 +124,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     var searchFilter = document.createElement("input");
-    searchFilter.className = "pagelist_nav_search";
-    searchFilter.id = "pagelist_nav_searchfilter";
+    searchFilter.className = "pagelist-nav-search";
+    searchFilter.id = "pagelist-nav-searchfilter";
     var catFilterContainer = document.createElement("div");
-    catFilterContainer.className = "pagelist_nav_category_c";
+    catFilterContainer.className = "pagelist-nav-category-c";
     
     // make some checkboxes to allow filtering by tags
     if(tagList.length == 0)
@@ -141,19 +141,19 @@ document.addEventListener("DOMContentLoaded", function() {
         continue;
       
       var container = document.createElement("div");
-      container.className = "pagelist_nav_category_inner";
+      container.className = "pagelist-nav-category-inner";
       container.dataset.name = tagName;
       
       var header = document.createElement("div");
       header.innerText = tagName + ":";
-      header.className = "pagelist_nav_category";
+      header.className = "pagelist-nav-category";
       container.appendChild(header);
       
       for(var tag of tagValues) {
         var check = document.createElement("input");
         check.type = "checkbox";
-        check.id = "pagelist_filter" + n + "_" + tag;
-        check.className = "pagelist_nav_category";
+        check.id = "pagelist-filter" + n + "-" + tag;
+        check.className = "pagelist-nav-category";
         check.oninput = function(a, b, c) {
           enactFilter(a, b, c);
         }.bind(null, listContainer, catFilterContainer, searchFilter);
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var label = document.createElement("label");
         label.htmlFor = check.id;
         label.innerText = tag;
-        label.className = "pagelist_nav_category";
+        label.className = "pagelist-nav-category";
         container.appendChild(label);
         
         var br = document.createElement("br");
@@ -178,11 +178,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // a search box
     var searchBox = document.createElement("div");
     
-    searchBox.className = "pagelist_nav_search_c";
+    searchBox.className = "pagelist-nav-search-c";
     var searchLabel = document.createElement("label");
-    searchLabel.htmlFor = "pagelist_nav_searchfilter";
+    searchLabel.htmlFor = "pagelist-nav-searchfilter";
     searchLabel.innerText = "Search: ";
-    searchLabel.className = "pagelist_nav_search";
+    searchLabel.className = "pagelist-nav-search";
     searchBox.appendChild(searchLabel);
     
     searchFilter.type = "text";
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // clear filters button
     var clearFilters = document.createElement("button");
     clearFilters.innerText = "Clear all filters";
-    clearFilters.className = "pagelist_nav_clear";
+    clearFilters.className = "pagelist-nav-clear";
     clearFilters.onclick = function(a, b, c) {
       for(var label of b.childNodes) {
         if(label.tagName != "LABEL")

@@ -50,11 +50,11 @@ def parse(args, target, soup, workdir, out_dir):
     
     for item in tile_data:
         entry = soup.new_tag("div", id=("post." + str(item["id"])))
-        entry["class"] = "blogEntry"
+        entry["class"] = "tile"
         
         # Clickable image
         img = soup.new_tag("img")
-        img["class"] = "blogEntryImage"
+        img["class"] = "tile-image"
         if "image" in item:
             real_image_loc = os.path.join(workdir, item["image"])
             img["alt"] = "Depiction of '" + item["title"] + "'"
@@ -79,20 +79,20 @@ def parse(args, target, soup, workdir, out_dir):
             when_str = when.strftime("%b %e, %Y")
             
             when_div = soup.new_tag("div")
-            when_div["class"] = "blogEntryDate"
+            when_div["class"] = "tile-date"
             when_div.string = when_str
             entry.append(when_div)
         
         # Title
         title = soup.new_tag("div")
-        title["class"] = "blogEntryTitle"
+        title["class"] = "tile-title"
         title.string = item["title"]
         entry.append(title)
         
         # Tag and link bubbles
         if ("tags" in item) or ("links" in item):
             tag_container = soup.new_tag("div")
-            tag_container["class"] = "linkContainer"
+            tag_container["class"] = "tile-tag-container"
             
             if "tags" in item:
                 for name, text in item["tags"]:
@@ -119,7 +119,7 @@ def parse(args, target, soup, workdir, out_dir):
                     icon = soup.new_tag("img")
                     icon["src"] = "../icons/link.png" #material icon (https://material.io/tools/icons/) (under https://www.apache.org/licenses/LICENSE-2.0.html)
                     icon["alt"] = "link: "
-                    icon["class"] = "blogLinkIcon"
+                    icon["class"] = "tag-link-icon"
                     link_el.append(icon)
                     
                     text_el = soup.new_tag("span")
@@ -133,7 +133,7 @@ def parse(args, target, soup, workdir, out_dir):
         
         # Body
         body = soup.new_tag("div")
-        body["class"] = "blogEntryBody"
+        body["class"] = "tile-body"
         body_content = bs4.BeautifulSoup(item["body"], "lxml")
         body.extend(body_content.body.contents)
         entry.append(body)
@@ -143,5 +143,5 @@ def parse(args, target, soup, workdir, out_dir):
     # Add some dummy spacers to make everything display as desired
     for i in range(10):
         spacer = soup.new_tag("div")
-        spacer["class"] = "blogEntrySpacer"
+        spacer["class"] = "tile-spacer"
         target.append(spacer)

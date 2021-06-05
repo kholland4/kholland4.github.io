@@ -1,29 +1,29 @@
-.entry {
+.pagelist-entry {
   padding: 16px;
   border-bottom: 1px solid #aaa;
 }
 
-.entry_title {
+.pagelist-entry-title {
   display: inline-block;
   
   font-family: sans-serif;
   font-size: 140%;
 }
-.entry_title a {
+.pagelist-entry-title a {
   /*color: inherit;
   text-decoration: inherit;*/
 }
 
-.entry_desc {
+.pagelist-entry-desc {
   margin-top: 4px;
   
   font-family: serif;
 }
-.entry_desc p {
+.pagelist-entry-desc p {
   margin: 0;
 }
 
-.tag_container {
+.pagelist-tag-container {
   display: inline-block;
   vertical-align: top;
   
@@ -52,40 +52,40 @@
 }
 
 
-.pagelist_nav {
+.pagelist-nav {
   padding: 16px;
   border-bottom: 1px solid #aaa;
 }
 
-div.pagelist_nav_category {
+div.pagelist-nav-category {
   
 }
-div.pagelist_nav_category_c {
+div.pagelist-nav-category-c {
   margin-bottom: 12px;
   columns: 8em;
 }
-div.pagelist_nav_category_inner {
+div.pagelist-nav-category-inner {
   break-inside: avoid-column;
   page-break-inside: avoid; /* Firefox */
 }
-input.pagelist_nav_category {
+input.pagelist-nav-category {
   
 }
-label.pagelist_nav_category {
+label.pagelist-nav-category {
   
 }
 
-div.pagelist_nav_search_c {
+div.pagelist-nav-search-c {
   
 }
-div.pagelist_nav_search {
+div.pagelist-nav-search {
   display: inline-block;
   margin-right: 0.5em;
 }
-input.pagelist_nav_search {
+input.pagelist-nav-search {
   
 }
-button.pagelist_nav_clear {
+button.pagelist-nav-clear {
   margin-top: 8px;
 }
 

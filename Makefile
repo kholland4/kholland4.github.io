@@ -14,14 +14,11 @@ tidy: .tidy_ok
 	tidy -qe --gnu-emacs yes $^
 	touch .tidy_ok
 
-%.html.spchk: %.html
-	bash ./spellcheck.sh $<
+spell: .spell_ok
 
 .spell_ok: $(OUT_HTML)
 	bash ./spellcheck.sh $^
 	touch .spell_ok
-
-spell: .spell_ok
 
 clean:
 	rm $(OUT_HTML) .tidy_ok .spell_ok

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import bs4
+from urllib.parse import quote
 
 def parse(args, target, soup, workdir, out_dir):
     i = soup.new_tag("i")
@@ -12,7 +13,7 @@ def parse(args, target, soup, workdir, out_dir):
     if len(args) >= 3:
         article_link = args[2]
     else:
-        article_link = "https://en.wikipedia.org/wiki/" + article_title.replace(" ", "_")
+        article_link = "https://en.wikipedia.org/wiki/" + quote(article_title.replace(" ", "_"))
     
     article = soup.new_tag("a", href=article_link)
     article.string = article_title

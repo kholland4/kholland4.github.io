@@ -36,7 +36,6 @@ out_dir = os.path.dirname(output_file)
 with open(source_file, "r") as f:
     soup = bs4.BeautifulSoup(f.read(), "lxml")
 
-
 # Append meta tags & CSS tags
 soup.html["lang"] = "en"
 soup.head.append(soup.new_tag("meta", charset="utf-8"))

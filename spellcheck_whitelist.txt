@@ -45,6 +45,7 @@ Nyquist
 ol
 os
 OTP
+pagelist
 plaintext
 platformer
 polyalphabetic
@@ -54,6 +55,7 @@ RL
 ROT13
 RSA
 StackExchange
+toc
 totient
 tri
 u1
@@ -64,6 +66,7 @@ uncrackable
 unpadded
 Vigenère
 voxel
+wikicite
 XORing
 Zermelo
 λ

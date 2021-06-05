@@ -84,7 +84,8 @@ def parse(args, target, soup, workdir, out_dir):
         if "body" in item:
             body = soup.new_tag("div")
             body["class"] = "pagelist-entry-desc"
-            body.append(bs4.BeautifulSoup(item["body"], "lxml"))
+            body_content = bs4.BeautifulSoup(item["body"], "lxml")
+            body.extend(body_content.body.contents)
             entry.append(body)
         
         target.append(entry)

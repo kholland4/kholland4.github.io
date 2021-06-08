@@ -66,12 +66,23 @@ div.pagelist-nav-category-c {
 }
 div.pagelist-nav-category-inner {
   break-inside: avoid-column;
-  page-break-inside: avoid; /* Firefox */
+  
+  /* Firefox */
+  display: inline-grid;
+  page-break-inside: avoid;
 }
-input.pagelist-nav-category {
+@supports (break-inside: avoid-column) {
+  div.pagelist-nav-category-inner {
+    display: block;
+  }
+}
+div.pagelist-nav-category-item {
+  display: block;
+}
+input.pagelist-nav-category-item {
   
 }
-label.pagelist-nav-category {
+label.pagelist-nav-category-item {
   
 }
 

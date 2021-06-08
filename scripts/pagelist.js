@@ -150,23 +150,25 @@ document.addEventListener("DOMContentLoaded", function() {
       container.appendChild(header);
       
       for(var tag of tagValues) {
+        var outer = document.createElement("div");
+        outer.className = "pagelist-nav-category-item";
+        
         var check = document.createElement("input");
         check.type = "checkbox";
         check.id = "pagelist-filter" + n + "-" + tag;
-        check.className = "pagelist-nav-category";
+        check.className = "pagelist-nav-category-item";
         check.oninput = function(a, b, c) {
           enactFilter(a, b, c);
         }.bind(null, listContainer, catFilterContainer, searchFilter);
-        container.appendChild(check);
+        outer.appendChild(check);
         
         var label = document.createElement("label");
         label.htmlFor = check.id;
         label.innerText = tag;
-        label.className = "pagelist-nav-category";
-        container.appendChild(label);
+        label.className = "pagelist-nav-category-item";
+        outer.appendChild(label);
         
-        var br = document.createElement("br");
-        container.appendChild(br);
+        container.appendChild(outer);
       }
       
       catFilterContainer.appendChild(container);

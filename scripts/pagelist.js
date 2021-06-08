@@ -164,8 +164,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         var label = document.createElement("label");
         label.htmlFor = check.id;
-        label.innerText = tag;
         label.className = "pagelist-nav-category-item";
+        var labelContent = document.createTextNode(tag);
+        label.appendChild(labelContent);
         outer.appendChild(label);
         
         container.appendChild(outer);

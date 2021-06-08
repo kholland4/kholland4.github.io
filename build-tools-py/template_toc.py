@@ -3,6 +3,12 @@
 import bs4
 
 def parse(args, target, soup, workdir, out_dir):
+    source_info = {
+        "type": "script",
+        "file": __file__,
+        "children": []
+    }
+    
     heading_list = []
     
     for child in soup.body.descendants:
@@ -70,3 +76,5 @@ def parse(args, target, soup, workdir, out_dir):
     box.append(toc)
     
     target.append(box)
+    
+    return source_info

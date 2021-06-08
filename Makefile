@@ -2,11 +2,12 @@ SRC_HTML = $(shell find src/pages/ -type f -name '*.html')
 OUT_HTML  = $(subst src/,,$(SRC_HTML))
 
 BUILD_PAGE_SCRIPTS = build-tools-py/build-page.py $(wildcard build-tools-py/template_*.py)
+BASEURL = "https://www.tausquared.net/"
 
 FAVICON_SRC = src-favicon.png
 
 pages/%.html: src/pages/%.html $(BUILD_PAGE_SCRIPTS)
-	python3 build-tools-py/build-page.py -o $@ $<
+	python3 build-tools-py/build-page.py -o $@ --baseurl $(BASEURL) $<
 
 all: $(OUT_HTML) tidy spell
 

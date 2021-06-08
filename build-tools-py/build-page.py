@@ -24,14 +24,31 @@ titlebar_buttons = [
 arg_parser = argparse.ArgumentParser(description="Page builder.")
 arg_parser.add_argument("source_file", type=str, nargs=1, help="Bare HTML file to use as source. May include {{templates}}.")
 arg_parser.add_argument("-o", metavar="output_file", type=str, nargs=1, required=True, help="Output HTML file.")
+arg_parser.add_argument("--baseurl", metavar="base_url", type=str, nargs=1, required=False, help="Base URL of site, i. e. https://example.com/")
 
 args = arg_parser.parse_args()
 source_file = args.source_file[0]
 output_file = args.o[0]
+base_url = args.baseurl
+if base_url is not None:
+    base_url = base_url[0]
 
 
 workdir = os.path.dirname(source_file)
 out_dir = os.path.dirname(output_file)
+
+# type is "script" or "source"
+source_file_info = {
+    "type": "script",
+    "file": __file__,
+    "children": [
+        {
+            "type": "source",
+            "file": source_file,
+            "children": []
+        }
+    ]
+}
 
 with open(source_file, "r") as f:
     soup = bs4.BeautifulSoup(f.read(), "lxml")
@@ -102,15 +119,17 @@ for child in soup.body.descendants:
 def template_parse(content, child):
     args = content[2:-2].split("|")
     if args[0] == "tiles":
-        template_tiles.parse(args, child, soup, workdir, out_dir)
+        res = template_tiles.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "pagelist":
-        template_pagelist.parse(args, child, soup, workdir, out_dir)
+        res = template_pagelist.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "wikicite":
-        template_wikicite.parse(args, child, soup, workdir, out_dir)
+        res = template_wikicite.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "toc":
-        template_toc.parse(args, child, soup, workdir, out_dir)
+        res = template_toc.parse(args, child, soup, workdir, out_dir)
     else:
         raise ValueError("'" + args[0] + "' is not a valid template")
+    
+    source_file_info["children"].append(res)
 
 for child in soup.body.descendants:
     # Look only for tags containing a single string as a child
@@ -126,6 +145,33 @@ for child in soup.body.descendants:
         child.clear()
         template_parse(content, child)
 
+out_str = soup.prettify()
+
+# Source file info
+def gen_source_info(what, indent=0):
+    cur_name = os.path.splitext(os.path.basename(what["file"]))[0]
+    cur_file = os.path.relpath(what["file"], start=".")
+    
+    indent_str = (" " * indent) + " - "
+    
+    cur_blurb = cur_file
+    if what["type"] == "script":
+        cur_blurb = "%s (%s)" % (cur_name, cur_file)
+    
+    if len(what["children"]) == 0:
+        return indent_str + cur_blurb + "\n"
+    else:
+        out = indent_str + cur_blurb + ", using:\n"
+        for child in what["children"]:
+            out += gen_source_info(child, indent=(indent+2))
+        return out
+
+source_info_str = "<!--\n"
+if base_url is not None:
+    source_info_str += "[%s]" % base_url
+source_info_str += os.path.relpath(output_file, start=".") + "\nBuilt with:\n" + gen_source_info(source_file_info) + "-->\n"
+out_str = source_info_str + out_str
+
 os.makedirs(out_dir, exist_ok=True)
 with open(output_file, "w") as outf:
-    outf.write(soup.prettify())
+    outf.write(out_str)

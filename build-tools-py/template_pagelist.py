@@ -7,6 +7,12 @@ tag_colors = {
 }
 
 def parse(args, target, soup, workdir, out_dir):
+    source_info = {
+        "type": "script",
+        "file": __file__,
+        "children": []
+    }
+    
     tile_data = []
     for filename_raw in args[1:]:
         parts = filename_raw.split("#")
@@ -42,6 +48,12 @@ def parse(args, target, soup, workdir, out_dir):
                             tile_data.append(data_items[i])
                 else:
                     tile_data.append(data_items[int(n)])
+        
+        source_info["children"].append({
+            "type": "source",
+            "file": filename,
+            "children": []
+        })
     
     nav = soup.new_tag("div")
     nav["class"] = "pagelist-nav"
@@ -89,3 +101,5 @@ def parse(args, target, soup, workdir, out_dir):
             entry.append(body)
         
         target.append(entry)
+    
+    return source_info

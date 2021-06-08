@@ -4,6 +4,12 @@ import bs4
 from urllib.parse import quote
 
 def parse(args, target, soup, workdir, out_dir):
+    source_info = {
+        "type": "script",
+        "file": __file__,
+        "children": []
+    }
+    
     i = soup.new_tag("i")
     
     i.append("This page uses material from the Wikipedia article \"")
@@ -28,3 +34,5 @@ def parse(args, target, soup, workdir, out_dir):
     i.append(".")
     
     target.append(i)
+    
+    return source_info

@@ -127,3 +127,46 @@
     background-blend-mode: multiply;
   }
 }
+
+@media print {
+  .tiles {
+    display: revert;
+  }
+  .tile {
+    width: revert;
+    margin: 0;
+    padding-bottom: 16px;
+    border-radius: revert;
+    box-shadow: revert;
+    background-color: revert;
+    
+    break-inside: avoid;
+  }
+  .tile-date {
+    color: revert;
+  }
+  .tile-tag-container {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .tile-image {
+    width: 240px;
+    float: right;
+    margin-right: 20px;
+    border: 1px solid black;
+  }
+  .tag {
+    background-color: revert !important;
+    color: revert !important;
+    border: none;
+    background-image: revert;
+    padding: 0;
+  }
+  .tag:before {
+    content: "-";
+    color: initial;
+  }
+  .tag-link-icon {
+    display: none;
+  }
+}

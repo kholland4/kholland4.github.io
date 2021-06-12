@@ -64,3 +64,9 @@ body {
     color: #ddd;
   }
 }
+
+@media print {
+  .titlebar {
+    display: none;
+  }
+}

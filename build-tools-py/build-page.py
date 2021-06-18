@@ -9,7 +9,6 @@ import sys, os, argparse, bs4
 import template_tiles, template_pagelist, template_wikicite, template_toc
 
 include_css = [
-    "styles/main.css",
     "styles/page.css"
 ]
 main_title = "a blog"

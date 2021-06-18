@@ -1,8 +1,7 @@
-#content {
-  font-family: serif;
-  padding: 10px;
-  max-width: 1200px;
-  margin: auto;
+body {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
 }
 
 .skipLink {
@@ -16,6 +15,91 @@
 }
 .skipLink:focus {
   transform: translateY(0);
+}
+
+/* Title bar */
+
+.titlebar {
+  width: calc(100% - 30px);
+  
+  margin: 0px;
+  border: 0px;
+  padding: 15px;
+}
+
+#titlebar_main {
+  font-family: sans-serif;
+  font-size: 36pt;
+  /* background-color: #2979ff; */
+  background-color: #333;
+  color: white;
+}
+#titlebar_sub {
+  font-family: sans-serif;
+  font-size: 16pt;
+  
+  padding-top: 0px;
+  padding-bottom: 0px;
+  
+  background-color: #bbb;
+  color: #444;
+}
+#titlebar_sub ul {
+  margin: 0;
+  padding: 0;
+}
+#titlebar_sub li {
+  list-style-type: none;
+}
+
+.titlebar_button {
+  display: inline-block;
+  
+  padding-top: 7px;
+  padding-bottom: 7px;
+  
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.titlebar_button.selected {
+  background-color: #999;
+  color: #222;
+}
+.titlebar_button a {
+  color: inherit !important;
+  text-decoration: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  #titlebar_main {
+    background-color: #222;
+    color: #ccc;
+  }
+  #titlebar_sub {
+    background-color: #202929;
+    color: #ccc;
+  }
+  .titlebar_button.selected {
+    background-color: #394545;
+    color: #ddd;
+  }
+}
+
+@media print {
+  .titlebar {
+    display: none;
+  }
+}
+
+/* Page content */
+
+#content {
+  font-family: serif;
+  padding: 10px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {

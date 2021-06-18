@@ -32,6 +32,8 @@ output_file = args.o[0]
 base_url = args.baseurl
 if base_url is not None:
     base_url = base_url[0]
+else:
+    base_url = ""
 
 
 workdir = os.path.dirname(source_file)
@@ -154,9 +156,9 @@ def gen_source_info(what, indent=0):
     
     indent_str = (" " * indent) + " - "
     
-    cur_blurb = cur_file
+    cur_blurb = "%s (%s)" % (cur_file, base_url + cur_file)
     if what["type"] == "script":
-        cur_blurb = "%s (%s)" % (cur_name, cur_file)
+        cur_blurb = "%s (%s)" % (cur_name, base_url + cur_file)
     
     if len(what["children"]) == 0:
         return indent_str + cur_blurb + "\n"
@@ -167,9 +169,9 @@ def gen_source_info(what, indent=0):
         return out
 
 source_info_str = "<!--\n"
-if base_url is not None:
-    source_info_str += "[%s]" % base_url
-source_info_str += os.path.relpath(output_file, start=".") + "\nBuilt with:\n" + gen_source_info(source_file_info) + "-->\n"
+source_info_str += os.path.relpath(output_file, start=".")
+source_info_str += " (" + base_url + os.path.relpath(output_file, start=".") + ")\n"
+source_info_str += "Built with:\n" + gen_source_info(source_file_info) + "-->\n"
 out_str = source_info_str + out_str
 
 os.makedirs(out_dir, exist_ok=True)

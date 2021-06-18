@@ -29,6 +29,13 @@ body {
   background-color: #bbb;
   color: #444;
 }
+#titlebar_sub ul {
+  margin: 0;
+  padding: 0;
+}
+#titlebar_sub li {
+  list-style-type: none;
+}
 
 .titlebar_button {
   display: inline-block;

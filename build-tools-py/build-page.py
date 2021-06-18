@@ -55,6 +55,14 @@ source_file_info = {
 with open(source_file, "r") as f:
     soup = bs4.BeautifulSoup(f.read(), "lxml")
 
+# Wrap source body content in <main id="content">
+main = soup.new_tag("main", id="content")
+body_children = list(soup.body.contents)
+soup.body.clear()
+soup.body.append(main)
+for child in body_children:
+    main.append(child)
+
 # Append meta tags & CSS tags
 soup.html["lang"] = "en"
 soup.head.append(soup.new_tag("meta", charset="utf-8"))
@@ -66,11 +74,18 @@ for c in include_css:
     rel = os.path.relpath(c, start=out_dir)
     soup.head.append(soup.new_tag("link", rel="stylesheet", href=rel, type="text/css"))
 
-# Put in the titlebar
-titlebar_sub = soup.new_tag("div", id="titlebar_sub")
+header = soup.new_tag("header")
+# Put in the titlebar and navigation
+titlebar = soup.new_tag("div", id="titlebar_main")
+titlebar["class"] = "titlebar"
+titlebar.string = main_title
+header.append(titlebar)
+
+titlebar_sub = soup.new_tag("nav", id="titlebar_sub")
 titlebar_sub["class"] = "titlebar"
+titlebar_nav = soup.new_tag("ul")
 for label, link, match in titlebar_buttons:
-    button_div = soup.new_tag("div")
+    button_div = soup.new_tag("li")
     button_div["class"] = "titlebar_button"
     if source_file.endswith(match):
         button_div["class"] += " selected"
@@ -78,13 +93,11 @@ for label, link, match in titlebar_buttons:
     a = soup.new_tag("a", href=link_rel)
     a.string = label
     button_div.append(a)
-    titlebar_sub.append(button_div)
+    titlebar_nav.append(button_div)
+titlebar_sub.append(titlebar_nav)
+header.append(titlebar_sub)
 
-soup.body.insert(0, titlebar_sub)
-titlebar = soup.new_tag("div", id="titlebar_main")
-titlebar["class"] = "titlebar"
-titlebar.string = main_title
-soup.body.insert(0, titlebar)
+soup.body.insert(0, header)
 
 # Skip link
 skip_link = soup.new_tag("a", href="#content")

@@ -14,264 +14,261 @@ Built with:
     prime numbers, encryption and decryption, and Håstad's broadcast attack." name="description"/>
 <script src="../../scripts/bigint-math.js" type="text/javascript"></script>
 <script>
-    
-    var outputBase = 10;
-    
-    function getNum(where) {
-      var text = document.getElementById(where).value;
-      return BigInt(text);
-    }
-    function putNum(where, num) {
-      var text = num.toString(outputBase);
-      if(outputBase == 2)
-        text = "0b" + text;
-      if(outputBase == 8)
-        text = "0o" + text;
-      if(outputBase == 16)
-        text = "0x" + text;
-      
-      document.getElementById(where).value = text;
-    }
-    function putText(where, text) {
-      document.getElementById(where).innerText = text;
-    }
-    
-    document.addEventListener("DOMContentLoaded", function() {
-      outputBase = parseInt(document.getElementById("outStyle").value);
-    });
-    
-    function clearAll(fields, texts) {
-      for(var f of fields)
-        document.getElementById(f).value = "";
-      for(var t of texts)
-        document.getElementById(t).innerText = "";
-    }
-    function clearAllMain() {
-      var fields = ["inputP", "inputQ", "inputN", "outputTot", "inputE", "outputD", "inputM", "inputC"];
-      var texts = ["checkCoprimeE"];
-      clearAll(fields, texts);
-    }
-    
-    function calcN() {
-      var p = getNum("inputP");
-      var q = getNum("inputQ");
-      var n = p * q;
-      putNum("inputN", n);
-    }
-    function calcP() {
-      var q = getNum("inputQ");
-      var n = getNum("inputN");
-      var p = n / q;
-      putNum("inputP", p);
-    }
-    function calcQ() {
-      var p = getNum("inputP");
-      var n = getNum("inputN");
-      var q = n / p;
-      putNum("inputQ", q);
-    }
-    
-    function calcTotC() {
-      var p = getNum("inputP");
-      var q = getNum("inputQ");
-      var lambdaN = bmath.lcm(p - 1n, q - 1n);
-      putNum("outputTot", lambdaN);
-    }
-    function calcTotE() {
-      var p = getNum("inputP");
-      var q = getNum("inputQ");
-      var phiN = (p - 1n) * (q - 1n);
-      putNum("outputTot", phiN);
-    }
-    
-    function checkCoprimeE() {
-      var tot = getNum("outputTot");
-      var e = getNum("inputE");
-      
-      if(tot == 0) {
-        putText("checkCoprimeE", "Please calculate tot(n) first.");
-        return;
-      }
-      if(e <= 1) {
-        putText("checkCoprimeE", "e must be greater than 1.");
-        return;
-      }
-      if(e >= tot) {
-        putText("checkCoprimeE", "e must be less than tot(n).");
-        return;
-      }
-      
-      var gcd = bmath.gcd(e, tot);
-      if(gcd == 1) {
-        putText("checkCoprimeE", "e and tot(n) are coprime! Continue.");
-      } else {
-        putText("checkCoprimeE", "Not coprime. Try another e (perhaps a prime number)?");
-      }
-    }
-    
-    function calcD() {
-      var tot = getNum("outputTot");
-      var e = getNum("inputE");
-      var d = bmath.modMultInverse(e, tot);
-      putNum("outputD", d);
-    }
-    
-    // Encrypt
-    function calcC() {
-      var m = getNum("inputM");
-      var e = getNum("inputE");
-      var n = getNum("inputN");
-      var c = bmath.modExp(m, e, n);
-      putNum("inputC", c);
-    }
-    
-    // Decrypt
-    function calcM() {
-      var c = getNum("inputC");
-      var d = getNum("outputD");
-      var n = getNum("inputN");
-      var m = bmath.modExp(c, d, n);
-      putNum("inputM", m);
-    }
-    
-    // Broadcast attack
-    function checkBroadcastCoprime() {
-      var n1 = getNum("broadcast_n1");
-      var n2 = getNum("broadcast_n2");
-      var n3 = getNum("broadcast_n3");
-      if(n1 == 0)
-        putText("checkBroadcastCoprime", "please enter n1");
-      if(n2 == 0)
-        putText("checkBroadcastCoprime", "please enter n2");
-      if(n3 == 0)
-        putText("checkBroadcastCoprime", "please enter n3");
-      if(n1 == 0 || n2 == 0 || n3 == 0)
-        return;
-      
-      var g = bmath.gcd(n1, n2);
-      if(g > 1) {
-        putText("checkBroadcastCoprime", "n1 and n2 share a factor of " + g);
-        return;
-      }
-      
-      g = bmath.gcd(n2, n3);
-      if(g > 1) {
-        putText("checkBroadcastCoprime", "n2 and n3 share a factor of " + g);
-        return;
-      }
-      
-      g = bmath.gcd(n1, n3);
-      if(g > 1) {
-        putText("checkBroadcastCoprime", "n1 and n3 share a factor of " + g);
-        return;
-      }
-      
-      putText("checkBroadcastCoprime", "All good!");
-    }
-    function calcBroadcastN() {
-      var n1 = getNum("broadcast_n1");
-      var n2 = getNum("broadcast_n2");
-      var n3 = getNum("broadcast_n3");
-      
-      var N1 = n2 * n3;
-      var N2 = n1 * n3;
-      var N3 = n1 * n2;
-      putNum("broadcastN1", N1);
-      putNum("broadcastN2", N2);
-      putNum("broadcastN3", N3);
-    }
-    function calcBroadcastU() {
-      var n1 = getNum("broadcast_n1");
-      var n2 = getNum("broadcast_n2");
-      var n3 = getNum("broadcast_n3");
-      
-      var N = n1 * n2 * n3;
-      var N1 = n2 * n3;
-      var N2 = n1 * n3;
-      var N3 = n1 * n2;
-      
-      var u1 = bmath.modMultInverse(N1, n1);
-      var u2 = bmath.modMultInverse(N2, n2);
-      var u3 = bmath.modMultInverse(N3, n3);
-      putNum("broadcastU1", u1);
-      putNum("broadcastU2", u2);
-      putNum("broadcastU3", u3);
-    }
-    function calcBroadcastM() {
-      var n1 = getNum("broadcast_n1");
-      var n2 = getNum("broadcast_n2");
-      var n3 = getNum("broadcast_n3");
-      var c1 = getNum("broadcastC1");
-      var c2 = getNum("broadcastC2");
-      var c3 = getNum("broadcastC3");
-      var u1 = getNum("broadcastU1");
-      var u2 = getNum("broadcastU2");
-      var u3 = getNum("broadcastU3");
-      
-      var N = n1 * n2 * n3;
-      var N1 = n2 * n3;
-      var N2 = n1 * n3;
-      var N3 = n1 * n2;
-      
-      var M = (c1*N1*u1 + c2*N2*u2 + c3*N3*u3) % N;
-      putNum("broadcastM", M);
-    }
-    function calcBroadcast_m() {
-      var M = getNum("broadcastM");
-      var m = bmath.invPow(M, 3n);
-      putNum("broadcast_m", m);
-      if(m ** 3n != M) {
-        putText("broadcastRoot", "M does not have an integer cube root. Something's off.");
-      } else {
-        putText("broadcastRoot", "");
-      }
-    }
-    function clearAllBroadcast() {
-      var fields = [
-        "broadcast_n1", "broadcast_n2", "broadcast_n3",
-        "broadcastC1", "broadcastC2", "broadcastC3",
-        "broadcastN1", "broadcastN2", "broadcastN3",
-        "broadcastU1", "broadcastU2", "broadcastU3",
-        "broadcastM", "broadcast_m"
-      ];
-      var texts = ["checkBroadcastCoprime", "broadcastRoot"];
-      clearAll(fields, texts);
-    }
-    
-    // Oracle attack
-    function calcOracleCP() {
-      var n = getNum("oracleN");
-      var e = getNum("oracleE");
-      var c = getNum("oracleC");
-      var cp = (c * (2n ** e)) % n;
-      putNum("oracleCP", cp);
-    }
-    function calcOracleM() {
-      var mp = getNum("oracleMP");
-      var m = mp / 2n;
-      putNum("oracleM", m);
-    }
-    function clearAllOracle() {
-      var fields = ["oracleN", "oracleE", "oracleC", "oracleCP", "oracleMP", "oracleM"];
-      var texts = [];
-      clearAll(fields, texts);
-    }
-    
+var outputBase = 10;
+
+function getNum(where) {
+  var text = document.getElementById(where).value;
+  return BigInt(text);
+}
+function putNum(where, num) {
+  var text = num.toString(outputBase);
+  if(outputBase == 2)
+    text = "0b" + text;
+  if(outputBase == 8)
+    text = "0o" + text;
+  if(outputBase == 16)
+    text = "0x" + text;
+  
+  document.getElementById(where).value = text;
+}
+function putText(where, text) {
+  document.getElementById(where).innerText = text;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  outputBase = parseInt(document.getElementById("outStyle").value);
+});
+
+function clearAll(fields, texts) {
+  for(var f of fields)
+    document.getElementById(f).value = "";
+  for(var t of texts)
+    document.getElementById(t).innerText = "";
+}
+function clearAllMain() {
+  var fields = ["inputP", "inputQ", "inputN", "outputTot", "inputE", "outputD", "inputM", "inputC"];
+  var texts = ["checkCoprimeE"];
+  clearAll(fields, texts);
+}
+
+function calcN() {
+  var p = getNum("inputP");
+  var q = getNum("inputQ");
+  var n = p * q;
+  putNum("inputN", n);
+}
+function calcP() {
+  var q = getNum("inputQ");
+  var n = getNum("inputN");
+  var p = n / q;
+  putNum("inputP", p);
+}
+function calcQ() {
+  var p = getNum("inputP");
+  var n = getNum("inputN");
+  var q = n / p;
+  putNum("inputQ", q);
+}
+
+function calcTotC() {
+  var p = getNum("inputP");
+  var q = getNum("inputQ");
+  var lambdaN = bmath.lcm(p - 1n, q - 1n);
+  putNum("outputTot", lambdaN);
+}
+function calcTotE() {
+  var p = getNum("inputP");
+  var q = getNum("inputQ");
+  var phiN = (p - 1n) * (q - 1n);
+  putNum("outputTot", phiN);
+}
+
+function checkCoprimeE() {
+  var tot = getNum("outputTot");
+  var e = getNum("inputE");
+  
+  if(tot == 0) {
+    putText("checkCoprimeE", "Please calculate tot(n) first.");
+    return;
+  }
+  if(e <= 1) {
+    putText("checkCoprimeE", "e must be greater than 1.");
+    return;
+  }
+  if(e >= tot) {
+    putText("checkCoprimeE", "e must be less than tot(n).");
+    return;
+  }
+  
+  var gcd = bmath.gcd(e, tot);
+  if(gcd == 1) {
+    putText("checkCoprimeE", "e and tot(n) are coprime! Continue.");
+  } else {
+    putText("checkCoprimeE", "Not coprime. Try another e (perhaps a prime number)?");
+  }
+}
+
+function calcD() {
+  var tot = getNum("outputTot");
+  var e = getNum("inputE");
+  var d = bmath.modMultInverse(e, tot);
+  putNum("outputD", d);
+}
+
+// Encrypt
+function calcC() {
+  var m = getNum("inputM");
+  var e = getNum("inputE");
+  var n = getNum("inputN");
+  var c = bmath.modExp(m, e, n);
+  putNum("inputC", c);
+}
+
+// Decrypt
+function calcM() {
+  var c = getNum("inputC");
+  var d = getNum("outputD");
+  var n = getNum("inputN");
+  var m = bmath.modExp(c, d, n);
+  putNum("inputM", m);
+}
+
+// Broadcast attack
+function checkBroadcastCoprime() {
+  var n1 = getNum("broadcast_n1");
+  var n2 = getNum("broadcast_n2");
+  var n3 = getNum("broadcast_n3");
+  if(n1 == 0)
+    putText("checkBroadcastCoprime", "please enter n1");
+  if(n2 == 0)
+    putText("checkBroadcastCoprime", "please enter n2");
+  if(n3 == 0)
+    putText("checkBroadcastCoprime", "please enter n3");
+  if(n1 == 0 || n2 == 0 || n3 == 0)
+    return;
+  
+  var g = bmath.gcd(n1, n2);
+  if(g > 1) {
+    putText("checkBroadcastCoprime", "n1 and n2 share a factor of " + g);
+    return;
+  }
+  
+  g = bmath.gcd(n2, n3);
+  if(g > 1) {
+    putText("checkBroadcastCoprime", "n2 and n3 share a factor of " + g);
+    return;
+  }
+  
+  g = bmath.gcd(n1, n3);
+  if(g > 1) {
+    putText("checkBroadcastCoprime", "n1 and n3 share a factor of " + g);
+    return;
+  }
+  
+  putText("checkBroadcastCoprime", "All good!");
+}
+function calcBroadcastN() {
+  var n1 = getNum("broadcast_n1");
+  var n2 = getNum("broadcast_n2");
+  var n3 = getNum("broadcast_n3");
+  
+  var N1 = n2 * n3;
+  var N2 = n1 * n3;
+  var N3 = n1 * n2;
+  putNum("broadcastN1", N1);
+  putNum("broadcastN2", N2);
+  putNum("broadcastN3", N3);
+}
+function calcBroadcastU() {
+  var n1 = getNum("broadcast_n1");
+  var n2 = getNum("broadcast_n2");
+  var n3 = getNum("broadcast_n3");
+  
+  var N = n1 * n2 * n3;
+  var N1 = n2 * n3;
+  var N2 = n1 * n3;
+  var N3 = n1 * n2;
+  
+  var u1 = bmath.modMultInverse(N1, n1);
+  var u2 = bmath.modMultInverse(N2, n2);
+  var u3 = bmath.modMultInverse(N3, n3);
+  putNum("broadcastU1", u1);
+  putNum("broadcastU2", u2);
+  putNum("broadcastU3", u3);
+}
+function calcBroadcastM() {
+  var n1 = getNum("broadcast_n1");
+  var n2 = getNum("broadcast_n2");
+  var n3 = getNum("broadcast_n3");
+  var c1 = getNum("broadcastC1");
+  var c2 = getNum("broadcastC2");
+  var c3 = getNum("broadcastC3");
+  var u1 = getNum("broadcastU1");
+  var u2 = getNum("broadcastU2");
+  var u3 = getNum("broadcastU3");
+  
+  var N = n1 * n2 * n3;
+  var N1 = n2 * n3;
+  var N2 = n1 * n3;
+  var N3 = n1 * n2;
+  
+  var M = (c1*N1*u1 + c2*N2*u2 + c3*N3*u3) % N;
+  putNum("broadcastM", M);
+}
+function calcBroadcast_m() {
+  var M = getNum("broadcastM");
+  var m = bmath.invPow(M, 3n);
+  putNum("broadcast_m", m);
+  if(m ** 3n != M) {
+    putText("broadcastRoot", "M does not have an integer cube root. Something's off.");
+  } else {
+    putText("broadcastRoot", "");
+  }
+}
+function clearAllBroadcast() {
+  var fields = [
+    "broadcast_n1", "broadcast_n2", "broadcast_n3",
+    "broadcastC1", "broadcastC2", "broadcastC3",
+    "broadcastN1", "broadcastN2", "broadcastN3",
+    "broadcastU1", "broadcastU2", "broadcastU3",
+    "broadcastM", "broadcast_m"
+  ];
+  var texts = ["checkBroadcastCoprime", "broadcastRoot"];
+  clearAll(fields, texts);
+}
+
+// Oracle attack
+function calcOracleCP() {
+  var n = getNum("oracleN");
+  var e = getNum("oracleE");
+  var c = getNum("oracleC");
+  var cp = (c * (2n ** e)) % n;
+  putNum("oracleCP", cp);
+}
+function calcOracleM() {
+  var mp = getNum("oracleMP");
+  var m = mp / 2n;
+  putNum("oracleM", m);
+}
+function clearAllOracle() {
+  var fields = ["oracleN", "oracleE", "oracleC", "oracleCP", "oracleMP", "oracleM"];
+  var texts = [];
+  clearAll(fields, texts);
+}
     </script>
 <meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
-<body><a class="skipLink" href="#content">Skip to content</a><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
-<div id="content">
+<body><a class="skipLink" href="#content">Skip to content</a><header><div class="titlebar" id="titlebar_main">a blog</div><nav class="titlebar" id="titlebar_sub"><ul><li class="titlebar_button"><a href="..">showcase</a></li><li class="titlebar_button"><a href="../projects.html">all projects</a></li><li class="titlebar_button"><a href="../page-list.html">pages</a></li><li class="titlebar_button"><a href="../ctf.html">ctf tools</a></li><li class="titlebar_button"><a href="../flags.html">ctf challenges</a></li></ul></nav></header><main id="content">
 <h1 id="RSA_calculator">RSA calculator</h1>
 <p>
-        Disclaimer: this tool is for educational purposes only and is not suited for security.
-      </p>
+  Disclaimer: this tool is for educational purposes only and is not suited for security.
+</p>
 <p>
-        Note: this tool uses JavaScript
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInts</a>.
-        If you want hex, octal, or binary input, prefix with
-        <code>0x</code>, <code>0o</code>, or <code>0b</code> respectively.
-        For hex, octal, or binary output, select:
-        <select id="outStyle" onchange="outputBase = parseInt(this.value);">
+  Note: this tool uses JavaScript
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInts</a>.
+  If you want hex, octal, or binary input, prefix with
+  <code>0x</code>, <code>0o</code>, or <code>0b</code> respectively.
+  For hex, octal, or binary output, select:
+  <select id="outStyle" onchange="outputBase = parseInt(this.value);">
 <option selected="" value="10">Decimal (10)</option>
 <option value="16">Hex (16)</option>
 <option value="2">Binary (2)</option>
@@ -279,13 +276,13 @@ Built with:
 </select>
 </p>
 <p>
-        Further reading:
-        <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a> on Wikipedia
-      </p>
+  Further reading:
+  <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a> on Wikipedia
+</p>
 <p>
-        Need more flexibility? <a href="https://www.python.org/">Python</a> has
-        arbitrary-precision integer support (preferably use version 3.8 or later).
-      </p>
+  Need more flexibility? <a href="https://www.python.org/">Python</a> has
+  arbitrary-precision integer support (preferably use version 3.8 or later).
+</p>
 <div><div class="tocBox"><span class="tocHeader">Contents</span><ul class="toc tocRoot"><li class="toc toc2"><a href="#RSA">RSA</a><ul class="toc"><li class="toc toc3"><a href="#Key_generation">Key generation</a></li><li class="toc toc3"><a href="#Encryption_and_decryption">Encryption and decryption</a></li></ul></li><li class="toc toc2"><a href="#Attacks">Attacks</a><ul class="toc"><li class="toc toc3"><a href="#Factoring_the_public_modulus_n">Factoring the public modulus n</a></li><li class="toc toc3"><a href="#Broadcast_attack">Broadcast attack</a></li><li class="toc toc3"><a href="#Oracle_attack">Oracle attack</a></li></ul></li></ul></div></div>
 <h2 id="RSA">RSA</h2>
 <p>
@@ -293,8 +290,8 @@ Built with:
 </p>
 <h3 id="Key_generation">Key generation</h3>
 <p>
-        Choose two distinct prime numbers <code>p</code> and <code>q</code>.
-      </p>
+  Choose two distinct prime numbers <code>p</code> and <code>q</code>.
+</p>
 <p>
 <code>p</code>: <textarea id="inputP"></textarea>
 </p>
@@ -302,8 +299,8 @@ Built with:
 <code>q</code>: <textarea id="inputQ"></textarea>
 </p>
 <p>
-        Calculate <code>n = p * q</code>.
-      </p>
+  Calculate <code>n = p * q</code>.
+</p>
 <p>
 <code>n</code>: <textarea id="inputN"></textarea>
 </p>
@@ -313,10 +310,10 @@ Built with:
 <button onclick="calcQ();">Calculate q = n / p</button>
 </p>
 <p>
-        Compute the Carmichael's totient function <code>tot(n) = λ(n) = lcm(p - 1, q - 1)</code>.
-        (Note that Euler's totient function <code>tot(n) = φ(n) = (p - 1) * (q - 1)</code> could be used instead.
-        See <a href="https://crypto.stackexchange.com/a/70626">StackExchange</a>.)
-      </p>
+  Compute the Carmichael's totient function <code>tot(n) = λ(n) = lcm(p - 1, q - 1)</code>.
+  (Note that Euler's totient function <code>tot(n) = φ(n) = (p - 1) * (q - 1)</code> could be used instead.
+  See <a href="https://crypto.stackexchange.com/a/70626">StackExchange</a>.)
+</p>
 <p>
 <code>tot(n)</code>: <textarea id="outputTot"></textarea>
 </p>
@@ -325,9 +322,9 @@ Built with:
 <button onclick="calcTotE();">Calculate φ(n)</button>
 </p>
 <p>
-        Choose any number <code>e</code> where <code>1 &lt; e &lt; tot(n)</code> and <code>e</code> is coprime to <code>tot(n)</code>.
-        Common choices are 3, 17, and 65537 (these are <a href="https://en.wikipedia.org/wiki/Fermat_number">Fermat primes</a>).
-      </p>
+  Choose any number <code>e</code> where <code>1 &lt; e &lt; tot(n)</code> and <code>e</code> is coprime to <code>tot(n)</code>.
+  Common choices are 3, 17, and 65537 (these are <a href="https://en.wikipedia.org/wiki/Fermat_number">Fermat primes</a>).
+</p>
 <p>
 <code>e</code>: <textarea id="inputE"></textarea>
 </p>
@@ -336,8 +333,8 @@ Built with:
 <span id="checkCoprimeE"></span>
 </p>
 <p>
-        Compute <code>d</code>, the modular multiplicative inverse of <code>e</code> (mod <code>tot(n)</code>).
-      </p>
+  Compute <code>d</code>, the modular multiplicative inverse of <code>e</code> (mod <code>tot(n)</code>).
+</p>
 <p>
 <code>d</code>: <textarea id="outputD"></textarea>
 </p>
@@ -346,17 +343,17 @@ Built with:
 <span id="calcD"></span>
 </p>
 <p>
-        That's it for key generation!
-        The public key is <code>(n, e)</code> and the private key is <code>(n, d)</code>
+  That's it for key generation!
+  The public key is <code>(n, e)</code> and the private key is <code>(n, d)</code>
 </p>
 <h3 id="Encryption_and_decryption">Encryption and decryption</h3>
 <p>
-        Encryption is done with <code>c(m) = m^e mod n</code> where <code>c</code> is the ciphertext and <code>m</code> is the message.
-        Note that both of these values must be integers <code>1 &lt; m &lt; n</code> and <code>1 &lt; c &lt; n</code>.
-      </p>
+  Encryption is done with <code>c(m) = m^e mod n</code> where <code>c</code> is the ciphertext and <code>m</code> is the message.
+  Note that both of these values must be integers <code>1 &lt; m &lt; n</code> and <code>1 &lt; c &lt; n</code>.
+</p>
 <p>
-        Decryption is done with <code>m(c) = c^d mod n</code>.
-      </p>
+  Decryption is done with <code>m(c) = c^d mod n</code>.
+</p>
 <p>
 <code>m</code>: <textarea id="inputM"></textarea>
 </p>
@@ -371,31 +368,31 @@ Built with:
 <h2 id="Attacks">Attacks</h2>
 <h3 id="Factoring_the_public_modulus_n">Factoring the public modulus <code>n</code></h3>
 <p>
-        The public modulus <code>n</code> is equal to a prime number <code>p</code>
-        times a prime number <code>q</code>.
-        If you know <code>p</code> and <code>q</code> (and <code>e</code> from the
-        public key), you can determine the private key, thus breaking the encryption.
-        However, factoring a large <code>n</code> is very difficult (effectively impossible).
-        A small-ish <code>n</code> (perhaps 50-100 decimal digits) can be factored.
-        The following tool can do just that:
-      </p>
+  The public modulus <code>n</code> is equal to a prime number <code>p</code>
+  times a prime number <code>q</code>.
+  If you know <code>p</code> and <code>q</code> (and <code>e</code> from the
+  public key), you can determine the private key, thus breaking the encryption.
+  However, factoring a large <code>n</code> is very difficult (effectively impossible).
+  A small-ish <code>n</code> (perhaps 50-100 decimal digits) can be factored.
+  The following tool can do just that:
+</p>
 <p>
 <a href="https://www.alpertron.com.ar/ECM.HTM">Alpertron's integer factorization calculator</a>
 </p>
 <h3 id="Broadcast_attack">Broadcast attack</h3>
 <p>
-        If the same message <code>m</code> is encrypted with <code>e</code>
-        different public keys, then the original message can be recovered
-        without the private key.
-        This is Håstad's broadcast attack.
-        It's most useful when <code>e</code> is 3, since only 3 messages are
-        needed; this calculator is meant for that case.
-        This attack applies primarily to textbook RSA where there is no padding;
-        modern padding schemes mitigate it.
-      </p>
+  If the same message <code>m</code> is encrypted with <code>e</code>
+  different public keys, then the original message can be recovered
+  without the private key.
+  This is Håstad's broadcast attack.
+  It's most useful when <code>e</code> is 3, since only 3 messages are
+  needed; this calculator is meant for that case.
+  This attack applies primarily to textbook RSA where there is no padding;
+  modern padding schemes mitigate it.
+</p>
 <p>
 <code>e</code>: 3
-      </p>
+</p>
 <p>
 <code>n1</code>: <textarea id="broadcast_n1"></textarea>
 <code>c1</code>: <textarea id="broadcastC1"></textarea>
@@ -409,27 +406,27 @@ Built with:
 <code>c3</code>: <textarea id="broadcastC3"></textarea>
 </p>
 <p>
-        The RSA decryption function is <code>c = m^e (mod n)</code>, so
-        suppose that <code>e=3</code> and <code>M = m^3</code>.
-        We must now solve this system of equations:
-      </p>
+  The RSA decryption function is <code>c = m^e (mod n)</code>, so
+  suppose that <code>e=3</code> and <code>M = m^3</code>.
+  We must now solve this system of equations:
+</p>
 <pre>
 M ≡ c1 (mod n1)
 M ≡ c2 (mod n2)
 M ≡ c3 (mod n3)
 </pre>
 <p>
-        Assuming all three <code>n</code>s are coprime, the Chinese Remainder
-        Theorem indicates that there is a solution for the system exists.
-        If the moduli were not coprime, then one or more could be factored.
-      </p>
+  Assuming all three <code>n</code>s are coprime, the Chinese Remainder
+  Theorem indicates that there is a solution for the system exists.
+  If the moduli were not coprime, then one or more could be factored.
+</p>
 <p>
 <button onclick="checkBroadcastCoprime();">Check if moduli are coprime</button>
 <span id="checkBroadcastCoprime"></span>
 </p>
 <p>
-        To find this solution, first find:
-      </p>
+  To find this solution, first find:
+</p>
 <pre>
 N = n1*n2*n3
 N1 = N / n1
@@ -450,10 +447,10 @@ N3 = N / n3
 </p>
 <p>
 <code>gcd(Ni, ni) = 1</code> for each pair <code>Ni</code> and
-        <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
-        must exist such that <code>Ni * ui = 1 (mod ni)</code>.
-        Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
-      </p>
+  <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
+  must exist such that <code>Ni * ui = 1 (mod ni)</code>.
+  Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
+</p>
 <p>
 <code>u1</code>: <textarea id="broadcastU1"></textarea>
 </p>
@@ -467,9 +464,9 @@ N3 = N / n3
 <button onclick="calcBroadcastU();">Calculate u1, u2, u3</button>
 </p>
 <p>
-        Now, calculate
-        <code>M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)</code>:
-      </p>
+  Now, calculate
+  <code>M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)</code>:
+</p>
 <p>
 <code>M</code>: <textarea id="broadcastM"></textarea>
 </p>
@@ -477,10 +474,10 @@ N3 = N / n3
 <button onclick="calcBroadcastM();">Calculate M</button>
 </p>
 <p>
-        Since <code>m &lt; n</code> for each message,
-        <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
-        Find the cube root of <code>M</code> to recover the original message.
-      </p>
+  Since <code>m &lt; n</code> for each message,
+  <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
+  Find the cube root of <code>M</code> to recover the original message.
+</p>
 <p>
 <code>m</code>: <textarea id="broadcast_m"></textarea>
 </p>
@@ -492,14 +489,14 @@ N3 = N / n3
 <button onclick="clearAllBroadcast();">Clear all fields</button>
 </p>
 <p>
-        Further reading: <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
-        Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)
-      </p>
+  Further reading: <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
+  Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)
+</p>
 <h3 id="Oracle_attack">Oracle attack</h3>
 <p>
-        You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,
-        and an oracle that will decrypt anything except for the given ciphertext.
-      </p>
+  You are given the public key <code>n</code> and <code>e</code>, a ciphertext <code>c</code>,
+  and an oracle that will decrypt anything except for the given ciphertext.
+</p>
 <p>
 <code>n</code>: <textarea id="oracleN"></textarea>
 </p>
@@ -510,8 +507,8 @@ N3 = N / n3
 <code>c</code>: <textarea id="oracleC"></textarea>
 </p>
 <p>
-        Compute a new ciphertext <code>c' = (c * 2^e) mod n</code>.
-      </p>
+  Compute a new ciphertext <code>c' = (c * 2^e) mod n</code>.
+</p>
 <p>
 <code>c'</code>: <textarea id="oracleCP"></textarea>
 </p>
@@ -519,17 +516,17 @@ N3 = N / n3
 <button onclick="calcOracleCP();">Calculate c'</button>
 </p>
 <p>
-        When <code>c'</code> is decrypted using the oracle, you get back <code>m' = 2m mod n</code>.
-        Decrypt and put the result here (it should be significantly smaller than <code>n</code>,
-        assuming the message is not padded).
-      </p>
+  When <code>c'</code> is decrypted using the oracle, you get back <code>m' = 2m mod n</code>.
+  Decrypt and put the result here (it should be significantly smaller than <code>n</code>,
+  assuming the message is not padded).
+</p>
 <p>
 <code>m'</code>: <textarea id="oracleMP"></textarea>
 </p>
 <p>
-        For the unpadded messages found in this sort of textbook RSA implementation,
-        simply divide by <code>2</code> to recover the original message.
-      </p>
+  For the unpadded messages found in this sort of textbook RSA implementation,
+  simply divide by <code>2</code> to recover the original message.
+</p>
 <p>
 <code>m</code>: <textarea id="oracleM"></textarea>
 </p>
@@ -540,8 +537,7 @@ N3 = N / n3
 <button onclick="clearAllOracle();">Clear all fields</button>
 </p>
 <p>
-        Further reading: <a href="https://crypto.stackexchange.com/a/1449">StackExchange</a>
+  Further reading: <a href="https://crypto.stackexchange.com/a/1449">StackExchange</a>
 </p>
-</div>
-</body>
+</main></body>
 </html>

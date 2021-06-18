@@ -7,350 +7,347 @@
     <script src="../../scripts/cipher.js" type="text/javascript"></script>
     <script src="../../scripts/cipher-display.js" type="text/javascript"></script>
     <script>
+var content;
+
+document.addEventListener("DOMContentLoaded", function() {
+  content = document.getElementsByClassName("content")[0];
+  
+  // Tool for cracking two messages that have been encrypted with the same one-time pad key
+  // See https://crypto.stackexchange.com/a/2250
+  
+  var commonChars = new Set();
+  var commonCharsStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .,";
+  for(var i = 0; i < commonCharsStr.length; i++) {
+    commonChars.add(commonCharsStr.charCodeAt(i));
+  }
+  
+  var opts = {
+    showAll: document.getElementById("showAll").checked, // default false
+    showPossible: document.getElementById("showPossible").checked, // true
+    showProbable: document.getElementById("showProbable").checked // true
+  };
+  
+  document.getElementById("showAll").onchange = function() {
+    opts.showAll = this.checked;
+  };
+  document.getElementById("showPossible").onchange = function() {
+    opts.showPossible = this.checked;
+  };
+  document.getElementById("showProbable").onchange = function() {
+    opts.showProbable = this.checked;
+  };
+  
+  // Accept ciphertexts c1 and c2 from the user as text
+  // and calculate:
+  //   k = c1 ^ c2
+  // Display it as hex.
+  var c1 = new Cipher.Message();
+  var c2 = new Cipher.Message();
+  var k = new Cipher.Message();
+  
+  var xorK = new Cipher.XOR()
+      .link("A", c1)
+      .link("B", c2)
+      .link("Q", k);
+  
+  var inputC1 = new CipherDisplay.Input.Hex().link(c1);
+  document.getElementById("inputC1").appendChild(inputC1.dom());
+  
+  var inputC2 = new CipherDisplay.Input.Hex().link(c2);
+  document.getElementById("inputC2").appendChild(inputC2.dom());
+  
+  var outputK = new CipherDisplay.Plain({ hex: true }).link(k);
+  document.getElementById("outputK").appendChild(outputK.dom());
+  
+  
+  // Show messages worked out so far.
+  var m1 = new Cipher.Message();
+  var m2 = new Cipher.Message();
+  
+  var textM1 = new CipherDisplay.Colored().link(m1);
+  document.getElementById("textM1").appendChild(textM1.dom());
+  var hexM1 = new CipherDisplay.Colored({ hex: true }).link(m1);
+  document.getElementById("hexM1").appendChild(hexM1.dom());
+  
+  var textM2 = new CipherDisplay.Colored().link(m2);
+  document.getElementById("textM2").appendChild(textM2.dom());
+  var hexM2 = new CipherDisplay.Colored({ hex: true }).link(m2);
+  document.getElementById("hexM2").appendChild(hexM2.dom());
+  
+  document.getElementById("startButton").onclick = function() {
+    textM1.colors = [];
+    hexM1.colors = [];
+    textM2.colors = [];
+    hexM2.colors = [];
     
-    var content;
+    m1.update(c1.data, null);
+    m2.update(c2.data, null);
+  };
+  
+  // Buffer messages to hold the result of XORs and avoid circular dependencies.
+  var m1next = new Cipher.Message();
+  var m2next = new Cipher.Message();
+  
+  var m1calc = new Cipher.XOR()
+      .link("A", k)
+      .link("B", m2)
+      .link("Q", m1next);
+  var m2calc = new Cipher.XOR()
+      .link("A", k)
+      .link("B", m1)
+      .link("Q", m2next);
+  
+  // Accept guesses.
+  var guessM1 = new Cipher.Message();
+  var guessM2 = new Cipher.Message();
+  
+  // Called when the user clicks to accept a guess.
+  // Updates both messages' content and color.
+  function setGuess(guess, offset, message) {
+    if(m1.data.length < k.data.length) {
+      var d = Array.from(m1.data);
+      while(d.length < k.data.length)
+        d.push(0);
+      m1.data = new Uint8Array(d);
+    }
+    if(m2.data.length < k.data.length) {
+      var d = Array.from(m2.data);
+      while(d.length < k.data.length)
+        d.push(0);
+      m2.data = new Uint8Array(d);
+    }
     
-    document.addEventListener("DOMContentLoaded", function() {
-      content = document.getElementsByClassName("content")[0];
+    while(textM1.colors.length < m1.data.length) { textM1.colors.push(CipherDisplay.white); }
+    while(hexM1.colors.length < m1.data.length) { hexM1.colors.push(CipherDisplay.white); }
+    while(textM2.colors.length < m2.data.length) { textM2.colors.push(CipherDisplay.white); }
+    while(hexM2.colors.length < m2.data.length) { hexM2.colors.push(CipherDisplay.white); }
+    
+    for(var i = 0; i < guess.data.length && offset + i < message.data.length; i++) {
+      message.data[offset + i] = guess.data[i];
       
-      // Tool for cracking two messages that have been encrypted with the same one-time pad key
-      // See https://crypto.stackexchange.com/a/2250
-      
-      var commonChars = new Set();
-      var commonCharsStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .,";
-      for(var i = 0; i < commonCharsStr.length; i++) {
-        commonChars.add(commonCharsStr.charCodeAt(i));
+      textM1.colors[offset + i] = CipherDisplay.green;
+      hexM1.colors[offset + i] = CipherDisplay.green;
+      textM2.colors[offset + i] = CipherDisplay.green;
+      hexM2.colors[offset + i] = CipherDisplay.green;
+    }
+    message.update();
+    
+    if(message == m1) {
+      m2.data = m2next.data;
+      m2.update();
+    } else if(message == m2) {
+      m1.data = m1next.data;
+      m1.update();
+    }
+  }
+  
+  // Generates a list of possible decryptions for a given guess word.
+  function updateGuess(which) {
+    var m1candidates = document.getElementById("m1candidates");
+    var m2candidates = document.getElementById("m2candidates");
+    
+    while(m1candidates.firstChild)
+      m1candidates.removeChild(m1candidates.firstChild);
+    while(m2candidates.firstChild)
+      m2candidates.removeChild(m2candidates.firstChild);
+    
+    var srcWord, srcMessage, destDiv;
+    if(which == "m1") {
+      srcWord = guessM1;
+      srcMessage = m1;
+      destDiv = m1candidates;
+    } else if(which == "m2") {
+      srcWord = guessM2;
+      srcMessage = m2;
+      destDiv = m2candidates;
+    }
+    
+    if(srcWord.data.length == 0)
+      return;
+    
+    var table = document.createElement("table");
+    
+    for(var offset = 0; offset < k.data.length; offset++) {
+      var mask = new Cipher.Message(srcMessage.data.slice());
+      for(var i = 0; i < srcWord.data.length && offset + i < mask.data.length; i++) {
+        mask.data[offset + i] = srcWord.data[i];
       }
       
-      var opts = {
-        showAll: document.getElementById("showAll").checked, // default false
-        showPossible: document.getElementById("showPossible").checked, // true
-        showProbable: document.getElementById("showProbable").checked // true
-      };
+      var c = Cipher.calcXOR(mask, k);
+      var display = new CipherDisplay.Colored().from(c);
       
-      document.getElementById("showAll").onchange = function() {
-        opts.showAll = this.checked;
-      };
-      document.getElementById("showPossible").onchange = function() {
-        opts.showPossible = this.checked;
-      };
-      document.getElementById("showProbable").onchange = function() {
-        opts.showProbable = this.checked;
-      };
+      if(c.data.length == 0)
+        continue;
       
-      // Accept ciphertexts c1 and c2 from the user as text
-      // and calculate:
-      //   k = c1 ^ c2
-      // Display it as hex.
-      var c1 = new Cipher.Message();
-      var c2 = new Cipher.Message();
-      var k = new Cipher.Message();
-      
-      var xorK = new Cipher.XOR()
-          .link("A", c1)
-          .link("B", c2)
-          .link("Q", k);
-      
-      var inputC1 = new CipherDisplay.Input.Hex().link(c1);
-      document.getElementById("inputC1").appendChild(inputC1.dom());
-      
-      var inputC2 = new CipherDisplay.Input.Hex().link(c2);
-      document.getElementById("inputC2").appendChild(inputC2.dom());
-      
-      var outputK = new CipherDisplay.Plain({ hex: true }).link(k);
-      document.getElementById("outputK").appendChild(outputK.dom());
-      
-      
-      // Show messages worked out so far.
-      var m1 = new Cipher.Message();
-      var m2 = new Cipher.Message();
-      
-      var textM1 = new CipherDisplay.Colored().link(m1);
-      document.getElementById("textM1").appendChild(textM1.dom());
-      var hexM1 = new CipherDisplay.Colored({ hex: true }).link(m1);
-      document.getElementById("hexM1").appendChild(hexM1.dom());
-      
-      var textM2 = new CipherDisplay.Colored().link(m2);
-      document.getElementById("textM2").appendChild(textM2.dom());
-      var hexM2 = new CipherDisplay.Colored({ hex: true }).link(m2);
-      document.getElementById("hexM2").appendChild(hexM2.dom());
-      
-      document.getElementById("startButton").onclick = function() {
-        textM1.colors = [];
-        hexM1.colors = [];
-        textM2.colors = [];
-        hexM2.colors = [];
-        
-        m1.update(c1.data, null);
-        m2.update(c2.data, null);
-      };
-      
-      // Buffer messages to hold the result of XORs and avoid circular dependencies.
-      var m1next = new Cipher.Message();
-      var m2next = new Cipher.Message();
-      
-      var m1calc = new Cipher.XOR()
-          .link("A", k)
-          .link("B", m2)
-          .link("Q", m1next);
-      var m2calc = new Cipher.XOR()
-          .link("A", k)
-          .link("B", m1)
-          .link("Q", m2next);
-      
-      // Accept guesses.
-      var guessM1 = new Cipher.Message();
-      var guessM2 = new Cipher.Message();
-      
-      // Called when the user clicks to accept a guess.
-      // Updates both messages' content and color.
-      function setGuess(guess, offset, message) {
-        if(m1.data.length < k.data.length) {
-          var d = Array.from(m1.data);
-          while(d.length < k.data.length)
-            d.push(0);
-          m1.data = new Uint8Array(d);
+      var color = CipherDisplay.green;
+      var nonASCII = false;
+      var commonCharCount = 0;
+      for(var i = 0; i < srcWord.data.length && offset + i < c.data.length; i++) {
+        var d = c.data[offset + i];
+        if(d < 32 || d > 126) {
+          nonASCII = true;
+          break;
         }
-        if(m2.data.length < k.data.length) {
-          var d = Array.from(m2.data);
-          while(d.length < k.data.length)
-            d.push(0);
-          m2.data = new Uint8Array(d);
-        }
-        
-        while(textM1.colors.length < m1.data.length) { textM1.colors.push(CipherDisplay.white); }
-        while(hexM1.colors.length < m1.data.length) { hexM1.colors.push(CipherDisplay.white); }
-        while(textM2.colors.length < m2.data.length) { textM2.colors.push(CipherDisplay.white); }
-        while(hexM2.colors.length < m2.data.length) { hexM2.colors.push(CipherDisplay.white); }
-        
-        for(var i = 0; i < guess.data.length && offset + i < message.data.length; i++) {
-          message.data[offset + i] = guess.data[i];
-          
-          textM1.colors[offset + i] = CipherDisplay.green;
-          hexM1.colors[offset + i] = CipherDisplay.green;
-          textM2.colors[offset + i] = CipherDisplay.green;
-          hexM2.colors[offset + i] = CipherDisplay.green;
-        }
-        message.update();
-        
-        if(message == m1) {
-          m2.data = m2next.data;
-          m2.update();
-        } else if(message == m2) {
-          m1.data = m1next.data;
-          m1.update();
+        if(commonChars.has(d)) {
+          commonCharCount++;
         }
       }
       
-      // Generates a list of possible decryptions for a given guess word.
-      function updateGuess(which) {
-        var m1candidates = document.getElementById("m1candidates");
-        var m2candidates = document.getElementById("m2candidates");
-        
-        while(m1candidates.firstChild)
-          m1candidates.removeChild(m1candidates.firstChild);
-        while(m2candidates.firstChild)
-          m2candidates.removeChild(m2candidates.firstChild);
-        
-        var srcWord, srcMessage, destDiv;
-        if(which == "m1") {
-          srcWord = guessM1;
-          srcMessage = m1;
-          destDiv = m1candidates;
-        } else if(which == "m2") {
-          srcWord = guessM2;
-          srcMessage = m2;
-          destDiv = m2candidates;
-        }
-        
-        if(srcWord.data.length == 0)
-          return;
-        
-        var table = document.createElement("table");
-        
-        for(var offset = 0; offset < k.data.length; offset++) {
-          var mask = new Cipher.Message(srcMessage.data.slice());
-          for(var i = 0; i < srcWord.data.length && offset + i < mask.data.length; i++) {
-            mask.data[offset + i] = srcWord.data[i];
-          }
-          
-          var c = Cipher.calcXOR(mask, k);
-          var display = new CipherDisplay.Colored().from(c);
-          
-          if(c.data.length == 0)
-            continue;
-          
-          var color = CipherDisplay.green;
-          var nonASCII = false;
-          var commonCharCount = 0;
-          for(var i = 0; i < srcWord.data.length && offset + i < c.data.length; i++) {
-            var d = c.data[offset + i];
-            if(d < 32 || d > 126) {
-              nonASCII = true;
-              break;
-            }
-            if(commonChars.has(d)) {
-              commonCharCount++;
-            }
-          }
-          
-          var doShow = opts.showProbable;
-          if(nonASCII) {
-            color = CipherDisplay.red;
-            doShow = opts.showAll;
-          } else if(commonCharCount <= Math.min(srcWord.data.length - 2, Math.floor(srcWord.data.length * 4 / 5))) {
-            color = CipherDisplay.yellow;
-            doShow = opts.showPossible;
-          }
-          
-          if(!doShow)
-            continue;
-          
-          for(var i = 0; i < c.data.length; i++) {
-            if(i >= offset && i < offset + srcWord.data.length) {
-              display.colors.push(color);
-            } else {
-              display.colors.push(CipherDisplay.white);
-            }
-          }
-          
-          var row = document.createElement("tr");
-          
-          var off = document.createElement("td");
-          off.innerText = offset.toString();
-          row.appendChild(off);
-          
-          var text = document.createElement("td");
-          text.appendChild(display.dom());
-          row.appendChild(text);
-          
-          var keep = document.createElement("td");
-          var keepButton = document.createElement("button");
-          keepButton.innerText = "Keep";
-          keepButton.onclick = setGuess.bind(null, srcWord, offset, srcMessage);
-          keep.appendChild(keepButton);
-          row.appendChild(keep);
-          
-          table.appendChild(row);
-        }
-        
-        destDiv.appendChild(table);
+      var doShow = opts.showProbable;
+      if(nonASCII) {
+        color = CipherDisplay.red;
+        doShow = opts.showAll;
+      } else if(commonCharCount <= Math.min(srcWord.data.length - 2, Math.floor(srcWord.data.length * 4 / 5))) {
+        color = CipherDisplay.yellow;
+        doShow = opts.showPossible;
       }
       
-      // Guess input boxes.
-      var inputGuessM1 = new CipherDisplay.Input.Plain({
-        onchange: function() { updateGuess("m1"); }
-      }).link(guessM1);
-      document.getElementById("inputGuessM1").appendChild(inputGuessM1.dom());
+      if(!doShow)
+        continue;
       
-      var inputGuessM2 = new CipherDisplay.Input.Plain({
-        onchange: function() { updateGuess("m2"); }
-      }).link(guessM2);
-      document.getElementById("inputGuessM2").appendChild(inputGuessM2.dom());
-    });
+      for(var i = 0; i < c.data.length; i++) {
+        if(i >= offset && i < offset + srcWord.data.length) {
+          display.colors.push(color);
+        } else {
+          display.colors.push(CipherDisplay.white);
+        }
+      }
+      
+      var row = document.createElement("tr");
+      
+      var off = document.createElement("td");
+      off.innerText = offset.toString();
+      row.appendChild(off);
+      
+      var text = document.createElement("td");
+      text.appendChild(display.dom());
+      row.appendChild(text);
+      
+      var keep = document.createElement("td");
+      var keepButton = document.createElement("button");
+      keepButton.innerText = "Keep";
+      keepButton.onclick = setGuess.bind(null, srcWord, offset, srcMessage);
+      keep.appendChild(keepButton);
+      row.appendChild(keep);
+      
+      table.appendChild(row);
+    }
     
+    destDiv.appendChild(table);
+  }
+  
+  // Guess input boxes.
+  var inputGuessM1 = new CipherDisplay.Input.Plain({
+    onchange: function() { updateGuess("m1"); }
+  }).link(guessM1);
+  document.getElementById("inputGuessM1").appendChild(inputGuessM1.dom());
+  
+  var inputGuessM2 = new CipherDisplay.Input.Plain({
+    onchange: function() { updateGuess("m2"); }
+  }).link(guessM2);
+  document.getElementById("inputGuessM2").appendChild(inputGuessM2.dom());
+});
     </script>
   </head>
   <body>
-    <div id="content">
+
+<h1>Interactive two-time pad cracker</h1>
+
+<p>
+  The <a href="https://en.wikipedia.org/wiki/One-time_pad">one-time pad</a>
+  is a theoretically uncrackable scheme for encrypting messages.
+  It works by XORing a pre-shared, random key with a message,
+  transmitting it, then XORing again with the same key to decrypt.
+  However, for this to happen securely, the key must be truly random,
+  kept completely secret, and <u>never reused</u>.
+  In the case that key material is reused, knowing (or guessing) the
+  plaintext of one message will give you the plaintext of a second message.
+  This tool is meant to assist in guessing (more precisely, "crib dragging")
+  to this end.
+</p>
+
+<div class="p"><!-- avoid build-tools/build-page.py parser bug -->
+  Note that there are some quirks to this method: if you guess, say,
+  <code>" and "</code> for one message, revealing
+  <code>" the "</code> at the same position in the other message,
+  it is entirely possible that these words were in the opposite places
+  in the original messages.
+  Most of the time, this is easy to notice, but sometimes, especially
+  with punctuation, it can be tricky.
+  More notably, this effect happens on the individual bit level,
+  not just for whole characters.
+  Due to the design of ASCII, this means that guessing the wrong case
+  (<code>a</code> vs. <code>A</code>) for one message
+  will result in the second message also having the wrong case.
+</div>
+
+<p>
+  Further reading:
+  <a href="https://crypto.stackexchange.com/a/2250">Stack Exchange</a>
+</p>
+
+<hr>
+
+<div>
+  Ciphertext <code>c1</code> (hex): <span id="inputC1"></span>
+</div>
+<div>
+  Ciphertext <code>c2</code> (hex): <span id="inputC2"></span>
+</div>
+<div>
+  <code>k = c1 &oplus; c2</code> (hex): <span id="outputK"></span>
+</div>
+
+<button id="startButton" style="margin-top: 1em;">Start</button>
+
+<hr>
+
+<div>
+  Show candidates:
+  probable <input type="checkbox" id="showProbable" checked>
+  possible <input type="checkbox" id="showPossible" checked>
+  all <input type="checkbox" id="showAll">
+</div>
+
+<table style="table-layout: fixed; width: 100%;">
+  <tr>
+  
+    <td style="vertical-align: top;">
+      <h3>Message 1</h3>
       
-      <h1>Interactive two-time pad cracker</h1>
+      Decrypted so far, <code>m1 = m2 &oplus; k</code>:
+      <div id="textM1"></div>
+      <div id="hexM1"></div>
       
-      <p>
-        The <a href="https://en.wikipedia.org/wiki/One-time_pad">one-time pad</a>
-        is a theoretically uncrackable scheme for encrypting messages.
-        It works by XORing a pre-shared, random key with a message,
-        transmitting it, then XORing again with the same key to decrypt.
-        However, for this to happen securely, the key must be truly random,
-        kept completely secret, and <u>never reused</u>.
-        In the case that key material is reused, knowing (or guessing) the
-        plaintext of one message will give you the plaintext of a second message.
-        This tool is meant to assist in guessing (more precisely, "crib dragging")
-        to this end.
-      </p>
-      
-      <div class="p"><!-- avoid build-tools/build-page.py parser bug -->
-        Note that there are some quirks to this method: if you guess, say,
-        <code>" and "</code> for one message, revealing
-        <code>" the "</code> at the same position in the other message,
-        it is entirely possible that these words were in the opposite places
-        in the original messages.
-        Most of the time, this is easy to notice, but sometimes, especially
-        with punctuation, it can be tricky.
-        More notably, this effect happens on the individual bit level,
-        not just for whole characters.
-        Due to the design of ASCII, this means that guessing the wrong case
-        (<code>a</code> vs. <code>A</code>) for one message
-        will result in the second message also having the wrong case.
-      </div>
-      
-      <p>
-        Further reading:
-        <a href="https://crypto.stackexchange.com/a/2250">Stack Exchange</a>
-      </p>
-      
-      <hr>
-      
+      <br>
       <div>
-        Ciphertext <code>c1</code> (hex): <span id="inputC1"></span>
+        Guess a word: <span id="inputGuessM1"></span>
       </div>
+      
+      <h4>Candidates for <code>m2</code>:</h4>
+      
+      <div id="m1candidates"></div>
+    </td>
+    
+    <td style="vertical-align: top;">
+      <h3>Message 2</h3>
+      
+      Decrypted so far, <code>m2 = m1 &oplus; k</code>:
+      <div id="textM2"></div>
+      <div id="hexM2"></div>
+      
+      <br>
       <div>
-        Ciphertext <code>c2</code> (hex): <span id="inputC2"></span>
-      </div>
-      <div>
-        <code>k = c1 &oplus; c2</code> (hex): <span id="outputK"></span>
+        Guess a word: <span id="inputGuessM2"></span>
       </div>
       
-      <button id="startButton" style="margin-top: 1em;">Start</button>
+      <h4>Candidates for <code>m1</code>:</h4>
       
-      <hr>
-      
-      <div>
-        Show candidates:
-        probable <input type="checkbox" id="showProbable" checked>
-        possible <input type="checkbox" id="showPossible" checked>
-        all <input type="checkbox" id="showAll">
-      </div>
-      
-      <table style="table-layout: fixed; width: 100%;">
-        <tr>
-        
-          <td style="vertical-align: top;">
-            <h3>Message 1</h3>
-            
-            Decrypted so far, <code>m1 = m2 &oplus; k</code>:
-            <div id="textM1"></div>
-            <div id="hexM1"></div>
-            
-            <br>
-            <div>
-              Guess a word: <span id="inputGuessM1"></span>
-            </div>
-            
-            <h4>Candidates for <code>m2</code>:</h4>
-            
-            <div id="m1candidates"></div>
-          </td>
-          
-          <td style="vertical-align: top;">
-            <h3>Message 2</h3>
-            
-            Decrypted so far, <code>m2 = m1 &oplus; k</code>:
-            <div id="textM2"></div>
-            <div id="hexM2"></div>
-            
-            <br>
-            <div>
-              Guess a word: <span id="inputGuessM2"></span>
-            </div>
-            
-            <h4>Candidates for <code>m1</code>:</h4>
-            
-            <div id="m2candidates"></div>
-          </td>
-          
-        </tr>
-      </table>
-    </div>
+      <div id="m2candidates"></div>
+    </td>
+    
+  </tr>
+</table>
+
   </body>
 </html>

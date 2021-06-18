@@ -145,7 +145,7 @@ for child in soup.body.descendants:
         child.clear()
         template_parse(content, child)
 
-out_str = soup.prettify()
+out_str = str(soup)
 
 # Source file info
 def gen_source_info(what, indent=0):

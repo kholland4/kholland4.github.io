@@ -6,55 +6,14 @@ Built with:
 -->
 <!DOCTYPE html>
 <html lang="en">
- <head>
-  <title>
-   Solution: "Three can keep a secret"
-  </title>
-  <meta content="Writeup for a challenge about Håstad's broadcast attack." name="description"/>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width" name="viewport"/>
-  <link href="../../styles/main.css" rel="stylesheet" type="text/css"/>
-  <link href="../../styles/page.css" rel="stylesheet" type="text/css"/>
- </head>
- <body>
-  <a class="skipLink" href="#content">
-   Skip to content
-  </a>
-  <div class="titlebar" id="titlebar_main">
-   a blog
-  </div>
-  <div class="titlebar" id="titlebar_sub">
-   <div class="titlebar_button">
-    <a href="..">
-     showcase
-    </a>
-   </div>
-   <div class="titlebar_button">
-    <a href="../projects.html">
-     all projects
-    </a>
-   </div>
-   <div class="titlebar_button">
-    <a href="../page-list.html">
-     pages
-    </a>
-   </div>
-   <div class="titlebar_button">
-    <a href="../ctf.html">
-     ctf tools
-    </a>
-   </div>
-   <div class="titlebar_button">
-    <a href="../flags.html">
-     ctf challenges
-    </a>
-   </div>
-  </div>
-  <div id="content">
-   <h1 id='Solution:_"Three_can_keep_a_secret"'>
-    Solution: "Three can keep a secret"
-   </h1>
-   <pre class="wrap">
+<head>
+<title>Solution: "Three can keep a secret"</title>
+<meta content="Writeup for a challenge about Håstad's broadcast attack." name="description"/>
+<meta charset="utf-8"/><meta content="width=device-width" name="viewport"/><link href="../../styles/main.css" rel="stylesheet" type="text/css"/><link href="../../styles/page.css" rel="stylesheet" type="text/css"/></head>
+<body><a class="skipLink" href="#content">Skip to content</a><div class="titlebar" id="titlebar_main">a blog</div><div class="titlebar" id="titlebar_sub"><div class="titlebar_button"><a href="..">showcase</a></div><div class="titlebar_button"><a href="../projects.html">all projects</a></div><div class="titlebar_button"><a href="../page-list.html">pages</a></div><div class="titlebar_button"><a href="../ctf.html">ctf tools</a></div><div class="titlebar_button"><a href="../flags.html">ctf challenges</a></div></div>
+<div id="content">
+<h1 id='Solution:_"Three_can_keep_a_secret"'>Solution: "Three can keep a secret"</h1>
+<pre class="wrap">
 Bob sends the same ASCII message to each of his three friends, Alice, Carol, and Dave.
 
 Alice's public key is:
@@ -81,125 +40,51 @@ c3 = 105701078713124916679890751630377272530830855893924304038439189705574579165
 "Three may keep a secret, if two of them are dead."
   -- Benjamin Franklin, Poor Richard's Almanack
 </pre>
-   <p>
-    If the same message
-    <code>
-     m
-    </code>
-    is encrypted with
-    <code>
-     e
-    </code>
-    different public keys, then the original message can be recovered without the private key.
+<p>
+  If the same message <code>m</code> is encrypted with <code>e</code>
+  different public keys, then the original message can be recovered without the private key.
   This is Håstad's broadcast attack.
-  It's most useful when
-    <code>
-     e
-    </code>
-    is 3, since only 3 messages are needed.
+  It's most useful when <code>e</code> is 3, since only 3 messages are needed.
   This attack applies primarily to textbook RSA where there is no padding;
   modern padding schemes mitigate it.
-   </p>
-   <p>
-    The RSA decryption function is
-    <code>
-     c = m^e (mod n)
-    </code>
-    , so
-  suppose that
-    <code>
-     e=3
-    </code>
-    and
-    <code>
-     M = m^3
-    </code>
-    .
+</p>
+<p>
+  The RSA decryption function is <code>c = m^e (mod n)</code>, so
+  suppose that <code>e=3</code> and <code>M = m^3</code>.
   We must now solve this system of equations:
-   </p>
-   <pre class="wrap">
+</p>
+<pre class="wrap">
 M ≡ c1 (mod n1)
 M ≡ c2 (mod n2)
 M ≡ c3 (mod n3)
 </pre>
-   <p>
-    Assuming all three
-    <code>
-     n
-    </code>
-    s are coprime,
+<p>
+  Assuming all three <code>n</code>s are coprime,
   the Chinese Remainder Theorem indicates that there is a solution for the system exists.
   To find this solution, first find:
-   </p>
-   <pre class="wrap">
+</p>
+<pre class="wrap">
 N = n1*n2*n3
 N1 = N / n1
 N2 = N / n2
 N3 = N / n3
 </pre>
-   <p>
-    <code>
-     gcd(Ni, ni) = 1
-    </code>
-    for each pair
-    <code>
-     Ni
-    </code>
-    and
-    <code>
-     ni
-    </code>
-    , so the modular multiplicative inverse
-    <code>
-     ui
-    </code>
-    must exist such that
-    <code>
-     Ni * ui = 1 (mod ni)
-    </code>
-    .
-  Find each inverse
-    <code>
-     u1
-    </code>
-    ,
-    <code>
-     u2
-    </code>
-    , and
-    <code>
-     u3
-    </code>
-    .
+<p>
+<code>gcd(Ni, ni) = 1</code> for each pair <code>Ni</code> and
+  <code>ni</code>, so the modular multiplicative inverse <code>ui</code>
+  must exist such that <code>Ni * ui = 1 (mod ni)</code>.
+  Find each inverse <code>u1</code>, <code>u2</code>, and <code>u3</code>.
   Therefore:
-   </p>
-   <pre class="wrap">
+</p>
+<pre class="wrap">
 M ≡ c1*N1*u1 + c2*N2*u2 + c3*N3*u3 (mod N)
 </pre>
-   <p>
-    Since
-    <code>
-     m &lt; n
-    </code>
-    for each message,
-    <code>
-     m^3 &lt; n1*n2*n3
-    </code>
-    and
-    <code>
-     M = m^3
-    </code>
-    .
-  Find the cube root of
-    <code>
-     M
-    </code>
-    to recover the original message.
-   </p>
-   <h3 id="Python_3.8+_code">
-    Python 3.8+ code
-   </h3>
-   <pre class="wrap">
+<p>
+  Since <code>m &lt; n</code> for each message, <code>m^3 &lt; n1*n2*n3</code> and <code>M = m^3</code>.
+  Find the cube root of <code>M</code> to recover the original message.
+</p>
+<h3 id="Python_3.8+_code">Python 3.8+ code</h3>
+<pre class="wrap">
 # find_invpow adapted from https://stackoverflow.com/q/55436001
 # by user GMX Rider (https://stackoverflow.com/users/8207239/gmx-rider)
 # CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/legalcode)
@@ -242,51 +127,30 @@ u3 = pow(N3, -1, n3)
 M = (c1*N1*u1 + c2*N2*u2 + c3*N3*u3) % N
 m = find_invpow(M, 3)
 </pre>
-   <h3 id="Applied_to_the_challenge">
-    Applied to the challenge
-   </h3>
-   <p>
-    Using the above code, we find
-    <code>
-     m
-    </code>
-    to be:
-   </p>
-   <pre class="wrap">
+<h3 id="Applied_to_the_challenge">Applied to the challenge</h3>
+<p>
+        Using the above code, we find <code>m</code> to be:
+      </p>
+<pre class="wrap">
 m = 186576314465159171206572697173754806981509321675655648776614523032773455457361390801192678189859864088187148169981814221757456882655522670736473272289076707789729388576613685689382980630853081842314743476285631463193232725295173581041890295056874188827094127
 </pre>
-   <p>
-    Converting this integer to hexadecimal and then to ASCII, we get:
-   </p>
-   <pre class="wrap">
+<p>
+  Converting this integer to hexadecimal and then to ASCII, we get:
+</p>
+<pre class="wrap">
 charlie oscar papa papa echo romeo sierra mike india tango hotel underscore zulu Juliet mike five golf kilo
 </pre>
-   <p>
-    The flag:
-   </p>
-   <pre class="wrap">coppersmith_zJm5gk</pre>
-   <p>
-    Online tools:
-   </p>
-   <ul>
-    <li>
-     My own
-     <a href="../ctf/rsa.html">
-      RSA calculator
-     </a>
-    </li>
-   </ul>
-   <p>
-    Further reading:
-   </p>
-   <ul>
-    <li>
-     <a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
-      Attacking RSA for fun and CTF points – part 2
-     </a>
-     (BitsDeep)
-    </li>
-   </ul>
-  </div>
- </body>
+<p>The flag:</p>
+<pre class="wrap">coppersmith_zJm5gk</pre>
+<p>Online tools:</p>
+<ul>
+<li>My own <a href="../ctf/rsa.html">RSA calculator</a></li>
+</ul>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-2/">
+  Attacking RSA for fun and CTF points – part 2</a> (BitsDeep)</li>
+</ul>
+</div>
+</body>
 </html>

@@ -1,8 +1,15 @@
 [
   {
+    "id": 3,
+    "title": "Homebrew VGA controller",
+    "tags": [["category", "8-bit"]],
+    "click": "vga.html",
+    "body": "80x60 character, 16 color text mode on a breadboard"
+  },
+  {
     "id": 1,
     "title": "8-bit computer",
-    "tags": [],
+    "tags": [["category", "8-bit"]],
     "click": "8-bit-computer.html",
     "body": "Build log and information about the <a href=\"https://github.com/kholland4/8-bit/\">8-bit computer project</a>"
   },

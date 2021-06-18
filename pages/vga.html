@@ -1,0 +1,657 @@
+<!--
+[https://www.tausquared.net/]pages/vga.html
+Built with:
+ - build-page (build-tools-py/build-page.py), using:
+   - src/pages/vga.html
+   - template_toc (build-tools-py/template_toc.py)
+-->
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>
+   Homebrew VGA
+  </title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width" name="viewport"/>
+  <link href="../styles/main.css" rel="stylesheet" type="text/css"/>
+  <link href="../styles/page.css" rel="stylesheet" type="text/css"/>
+ </head>
+ <body>
+  <a class="skipLink" href="#content">
+   Skip to content
+  </a>
+  <div class="titlebar" id="titlebar_main">
+   a blog
+  </div>
+  <div class="titlebar" id="titlebar_sub">
+   <div class="titlebar_button">
+    <a href=".">
+     showcase
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="projects.html">
+     all projects
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="page-list.html">
+     pages
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="ctf.html">
+     ctf tools
+    </a>
+   </div>
+   <div class="titlebar_button">
+    <a href="flags.html">
+     ctf challenges
+    </a>
+   </div>
+  </div>
+  <div id="content">
+   <h1 id="Homebrew_VGA_controller">
+    Homebrew VGA controller
+   </h1>
+   <p>
+    To start, I'm grateful VGA is still around.
+  It's the only analog video standard in widespread usage nowadays.
+  That makes it accessible to hobbyists like myself in a way that high-bandwidth
+  digital video interconnects may never be.
+   </p>
+   <div>
+    <div class="tocBox">
+     <span class="tocHeader">
+      Contents
+     </span>
+     <ul class="toc tocRoot">
+      <li class="toc toc2">
+       <a href="#80x60_characters,_16_colors">
+        80x60 characters, 16 colors
+       </a>
+       <ul class="toc">
+        <li class="toc toc3">
+         <a href="#A_brief_introduction_to_VGA">
+          A brief introduction to VGA
+         </a>
+        </li>
+        <li class="toc toc3">
+         <a href="#640x480_@_60_Hz">
+          640x480 @ 60 Hz
+         </a>
+         <ul class="toc">
+          <li class="toc toc4">
+           <a href="#Generating_the_signal">
+            Generating the signal
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+      <li class="toc toc2">
+       <a href="#Text_mode">
+        Text mode
+       </a>
+       <ul class="toc">
+        <li class="toc toc3">
+         <a href="#Memory_mapping_and_access">
+          Memory mapping and access
+         </a>
+        </li>
+        <li class="toc toc3">
+         <a href="#Writing_to_memory">
+          Writing to memory
+         </a>
+         <ul class="toc">
+          <li class="toc toc4">
+           <a href="#The_address_counter">
+            The address counter
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+      <li class="toc toc2">
+       <a href="#VGA_wiring_and_resistors">
+        VGA wiring and resistors
+       </a>
+      </li>
+      <li class="toc toc2">
+       <a href="#Scrolling!">
+        Scrolling!
+       </a>
+      </li>
+      <li class="toc toc2">
+       <a href="#Fonts">
+        Fonts
+       </a>
+      </li>
+      <li class="toc toc2">
+       <a href="#Putting_it_all_together">
+        Putting it all together
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <h2 id="80x60_characters,_16_colors">
+    80x60 characters, 16 colors
+   </h2>
+   <p>
+    I've been working on an
+    <a href="https://github.com/kholland4/8-bit">
+     8-bit CPU
+    </a>
+    for a good while now.
+  It's a monstrosity wire connecting individual logic ICs on a dozen and a half
+  breadboards.
+  Initially, I hooked it up to a puny 20x4 HD44780 character LCD off of eBay.
+  It was all good fun -- they're very easy to interface with a parallel data
+  bus.
+  However, as much as I love these things, they just don't offer much in terms
+  of screen real estate.
+  One of my main goals being to implement a
+    <a href="http://inform-fiction.org/zmachine/standards/z1point1/">
+     Z-Machine
+    </a>
+    and run old (and new!) text adventure games, something bigger
+  was in order.
+   </p>
+   <h3 id="A_brief_introduction_to_VGA">
+    A brief introduction to VGA
+   </h3>
+   <p>
+    Old-fashioned CRT monitors worked by shooting a stream of electrons at a
+  phosphor screen.
+  Their electron beam could only hit one place at a time, so it had to be
+  scanned across the screen.
+  The standard way to do this, baked into the design of early NTSC television,
+  was to scan individual lines from left to right, with the lines scanned from
+  top to bottom.
+  In addition, the electron beam needed to be able to reset itself from the
+  far right side of the screen to the far left and the bottom to the top.
+  This was achieved by way of blanking intervals, where no video data would be
+  sent for a brief period at time between lines and full frames.
+  Squeezed into these intervals were horizontal and vertical sync pulses
+  (
+    <a href="https://antiqueradio.org/art/NTSC%20Signal%20Specifications.pdf">
+     technical information
+    </a>
+    ,
+    <a href="https://en.wikipedia.org/wiki/Analog_television">
+     regular information
+    </a>
+    ).
+  NTSC also did a bunch of clever stuff with color, but that's not relevant
+  here.
+   </p>
+   <figure>
+    <img alt="VGA timing diagram at 640x480" height="325" src="../images/vga-timing-640x480.png" width="430"/>
+    <figcaption>
+     VGA sync timings for 640x480 in pixels
+    </figcaption>
+   </figure>
+   <p>
+    This scanning system lived on with the introduction of computer monitors and
+  eventual standardization on VGA.
+  VGA still uses horizontal and vertical sync pulses, scanning, analog color,
+  and all that; it was meant for driving CRTs.
+  However, it also includes some nice improvements.
+  All the individual signals are split out: red, green, blue, horizontal sync,
+  and vertical sync each get their own physical wires
+  (
+    <a href="https://pinouts.ru/Video/VGA15_pinout.shtml">
+     pinout
+    </a>
+    ).
+  There are a number of
+    <a href="http://www.tinyvga.com/vga-timing">
+     video modes
+    </a>
+    available, of which I chose 640x480 at 60 Hz.
+  Modern computers even make use of built-in monitor ID to detect resolution
+  and other capabilities.
+   </p>
+   <p>
+    Each line of video consists of four components: the visible area, front porch,
+  sync pulse, and back porch (in that order).
+  The same applies vertically.
+  For 640x480, the horizontal is 640 pixels for the visible area, 16 for the
+  front porch, 96 for the sync pulse, and 48 for the back porch.
+  Vertically, the same are 480, 10, 2, and 33 pixels.
+  (You'll notice in the diagram that I've wrapped the horizontal back porch
+  around to the front. This is to aid in prefetching of character data, more on
+  that later.)
+   </p>
+   <h3 id="640x480_@_60_Hz">
+    640x480 @ 60 Hz
+   </h3>
+   <p>
+    The 640x480 mode is perfect for this project.
+  It fits a neat 80 characters across and 60 vertical (each character is 8x8
+  pixels).
+  It's very standard, 4:3 to match old monitors, and all of the horizontal
+  timings are multiples of 16.
+  That last bit means that when generating the signal, the bottom four bits
+  (
+    <code>
+     2^4 = 16
+    </code>
+    ) of the pixel counter can be ignored.
+  The pixel clock runs at exactly 25.175 MHz, for which full can crystal
+  oscillators are easily available.
+   </p>
+   <h4 id="Generating_the_signal">
+    Generating the signal
+   </h4>
+   <p>
+    Ben Eater built a
+    <a href="https://eater.net/vga">
+     breadboard video card
+    </a>
+    in a wonderfully descriptive YouTube video series.
+  He opted for the 800x600 timings with the pixel clock cut in four.
+  Crucially, he used flip-flops to track the blanking and sync intervals.
+  Some clever Boolean logic is used to determine when the horizontal or
+  vertical pixel counter has reached the start of one of these intervals,
+  and it triggers the flip-flop to turn on (and again off at the end of the
+  interval).
+   </p>
+   <p>
+    In total, there are four timing intervals that must be tracked:
+   </p>
+   <ul>
+    <li>
+     Horizontal blanking: any time an image is not displayed.
+    Includes the front porch, sync pulse, and back porch.
+    </li>
+    <li>
+     Horizontal sync
+    </li>
+    <li>
+     Vertical blanking: like horizontal blanking, but vertical.
+    </li>
+    <li>
+     Vertical sync
+    </li>
+   </ul>
+   <p>
+    At 640x480, including blanking intervals, there are a total of 800 horizontal
+  pixels and 525 lines.
+  This means that 10 bits are required for both the x and y pixel counters.
+  (The x pixel counter is fed by the 25.175 MHz oscillator.)
+  The end of the horizontal sync pulse will also serve as a reset signal for the
+  x counter and an increment signal for the y counter.
+  Similarly, the end of the vertical blanking interval will reset the y
+  counter.
+   </p>
+   <p>
+    The minimal set of bit positions that need to be checked to detect the sync
+  and blanking looks like this. The output is a falling edge trigger, so it's
+  okay for a detector to be active for too long.
+  In some cases bits can be safely ignored because the counters reset
+  at 800 and 525, never reaching all possible states.
+  This optimization is seen most clearly with higher numbers.
+   </p>
+   <pre>
+0 = low, 1 = high, x = don't care
+
+HBLANK:
+  on at 688,  1x1011xxxx
+  off at 48,  000011xxxx
+
+HSYNC:
+  on at 704,  1x1100xxxx
+  off at 800, 11xx1xxxxx (x reset)
+
+VBLANK:
+  on at 480,  x111100000
+  off at 525, 1xxxxx11x1 (y reset)
+
+VSYNC:
+  on at 480,  x111101010
+  off at 492, x111101100
+</pre>
+   <p>
+    At this point, I devised and hand-optimized combinational logic to detect
+  these eight states based on available
+    <a href="https://en.wikipedia.org/wiki/List_of_7400_series_integrated_circuits">
+     7400-series logic chips
+    </a>
+    .
+  The output of this combinational logic, which is active low (although there's
+  no reason active high couldn't be used), feeds into four SR latches made of
+  two NAND gates each to generate the
+    <code>
+     HBLANK
+    </code>
+    ,
+    <code>
+     HSYNC
+    </code>
+    ,
+    <code>
+     VBLANK
+    </code>
+    , and
+    <code>
+     VSYNC
+    </code>
+    signals.
+    <code>
+     HSYNC
+    </code>
+    and
+    <code>
+     VSYNC
+    </code>
+    feed directly to the VGA connector
+  via resistors, while
+    <code>
+     HBLANK
+    </code>
+    and
+    <code>
+     VBLANK
+    </code>
+    are combined
+  and used to disable color signal output.
+   </p>
+   <!-- TODO include scan of schematic -->
+   <h2 id="Text_mode">
+    Text mode
+   </h2>
+   <p>
+    With control signals taken care of, we now have a working VGA signal generated
+  by two 10-bit pixel counters at a pixel clock of 25.175 MHz.
+  This can be connected to a monitor, and the monitor will detect the signal and
+  display whatever's on the color lines.
+  I played around with this, connecting the color lines to logic high, ground,
+  and even some of the pixel counter bits (through appropriate resistors of
+  course)!
+  This yielded a variety of colored stripes (albeit with some weirdness due to
+  the blanking signals not being used).
+   </p>
+   <p>
+    For a text mode, I opted for something fairly simple (yet still with color!).
+  There are 256 possible characters (1 byte of address) stored in RAM.
+  Each is stored with 1 bit per pixel across 8 bytes.
+  Conveniently, this means that only one byte needs to be fetched per character
+  per line of video displayed.
+  Each character cell on the 80x60 grid stores two bytes: one for the character
+  number and one for the color.
+  Color is split into 4 bits for the foreground and 4 bits for the background
+  color, each stored in RGBI (red, green, blue, and intensity) format.
+  In total, this makes for 3 one-byte memory reads per every 8 pixels.
+   </p>
+   <h3 id="Memory_mapping_and_access">
+    Memory mapping and access
+   </h3>
+   <p>
+    These days, unlike in the 80s, it's very easy to get spacious SRAM chips.
+  I used an
+    <a href="https://www.alliancememory.com/wp-content/uploads/pdf/AS6C1008feb2007.pdf">
+     AS6C1008
+    </a>
+    , which has 128 KiB organized as 128K by 8 bits.
+  Given all this space, it's easy to do some simple bit packing for addressing.
+  The top bit (16) goes unused, while bit 15 is 0 for character cell memory and
+  1 for character definitions.
+  There's actually 128x128 characters stored and addressed in memory -- not just
+  the 80x60 that fit on the screen.
+  This takes advantage of all 10 bits of the x and y pixel counters and enables
+  easy scrolling (more on that later).
+  This is mapped with 7 bits (14-8) for the top 7 bits of the y counter and 7
+  more bits (7-1) for the top 7 bits of the x counter.
+  The bottom 3 bits can be ignored as they cover the 8 pixel positions within a
+  single character cell.
+  The last bit (0) is set to 0 to store a character number and 1 to store that
+  character's color.
+  The ordering of these bits is important: it means that data can be fed
+  linearly across x positions into video memory.
+   </p>
+   <pre>
+Memory address bits from most to least significant.
+  - = unused (0),
+  y = y counter bits 9-3 inclusive,
+  w = y counter bits 2-0 inclusive,
+  x = x counter bits 9-3 inclusive,
+  n = char # bits 7-0 inclusive,
+  c = char # (0) / color (1)
+
+In character cell mode:
+  -0yyyyyyyxxxxxxxc
+
+In character definition mode:
+  -10000nnnnnnnnwww
+</pre>
+   <p>
+    Out of the memory address bits, 14 are fed directly from the pixel counters
+  and are fixed for the duration of a character, while 2 vary depending on what
+  is being fetched for that character.
+  To get all three bytes needed to make a character (character #, color, and
+  pixel data for that character #), memory accesses need to be made within 8
+  clock cycles.
+  The SRAM chip, fast as it is, can't deliver memory contents fast enough for
+  access within the same cycle.
+  Therefore, it takes two clock cycles per memory read.
+  (Sidenote: This could probably be pipelined, reading data and updating the
+  address during the same cycle.)
+  Six cycles will then be used to access character data, leaving two for other
+  use, such as writing new data to memory.
+   </p>
+   <p>
+    I chose to fetch this data using a 3-to-8 decoder chip: it takes 3 bits of
+  input and activates one of 8 output lines for each input state.
+  First, the character number address is set, and in the next cycle, the data
+  is latched in.
+  In the following cycle, the color address is set (differing by only the lowest
+  bit) then latched in a cycle later.
+  Finally, the character pixel data is read using the character number fetched
+  earlier.
+  At the same time, the color data is promoted from a staging register to the
+  main register, and the new character can begin to be displayed.
+  A multiplexer selects each bit from the 8 bits of loaded pixel data, using
+  the selected bit to choose which color (foreground or background) to output.
+  This happens while the next character's data is fetched.
+   </p>
+   <p>
+    (Note: Because character data is prefetched and buffered for the duration of
+  a character, the video controller needs to begin fetching data for a line of
+  text during the blanking interval.
+  This is why part of the blanking interval is wrapped around to the front in
+  the timings discussed above.
+  The x scroll register also needs to be set to compensate for shifting caused
+  by all of this.)
+   </p>
+   <!-- TODO scans of schematics -->
+   <!-- TODO photo of final product on monitor -->
+   <h3 id="Writing_to_memory">
+    Writing to memory
+   </h3>
+   <p>
+    There's now a jumble of essentially random character data on the screen! Yay!
+  Boundaries between characters are clearly visible since each character has
+  only two colors.
+  The next step is to make something out of that.
+   </p>
+   <p>
+    Ideally, external access to memory slips into the two unused clock cycles
+  every character.
+  This would be blazing fast, and I wouldn't have to worry about the rate at
+  which the CPU feeds data in.
+  However, in practice, this method resulted in some strange flickering issues.
+  (It could probably be solved with greater insight into the timing and signals,
+  but I don't have an oscilloscope or that much patience.)
+  I ended up feeding data in only during the blanking interval.
+   </p>
+   <p>
+    Either way, memory can only be written to at a specific time.
+  The CPU can't be expected to know about this -- the timing is far too fast and
+  precise.
+  The solution? A register and a couple of flip-flops.
+  The CPU sends data along whenever it wants (provided it's not too closely
+  spaced) by putting the data on the bus and pulsing a control signal.
+  This latches the data in and turns the flip-flop on.
+  Next, the video controller looks at the state of the flip-flop whenever it's
+  ready for data (ideally once per character, as discussed before).
+  If it's on, the data is written to memory.
+  As an added perk, the address counter is also incremented.
+   </p>
+   <h4 id="The_address_counter">
+    The address counter
+   </h4>
+   <p>
+    The CPU needs some way to address video memory.
+  With only an 8-bit bus plus control lines, this address must be stored in a
+  register and updated ahead of time.
+  Why stop there? I chose to use presettable counters in place of a register.
+  These can be loaded from the bus by the CPU, but they are also counted up
+  every time a byte is written to memory.
+  This increases the rate at which data can be fed in, and more importantly, it
+  means that the CPU doesn't have to keep track of a video memory address while
+  sending data.
+   </p>
+   <h2 id="VGA_wiring_and_resistors">
+    VGA wiring and resistors
+   </h2>
+   <!-- TODO diagram -->
+   <p>
+    Turns out VGA jacks are pretty cheap, around a dollar
+    <a href="https://www.digikey.com/en/products/detail/assmann-wsw-components/A-HDF-15-LL-Z/1241881">
+     or even less
+    </a>
+    .
+  I got one and soldered it to some chopped-up jumper wires for easy interfacing
+  with a breadboard.
+   </p>
+   <p>
+    As discussed earlier, the VGA connector has three separate wires for each of
+  red, green, and blue.
+  These wires are terminated in the monitor with a 75 ohm resistor to ground.
+  The voltage read by the monitor ranges from 0 volts for off to 0.7 volts for
+  full brightness.
+  However, the video controller's logic operates at 5 volts.
+  Therefore, we must build a voltage divider.
+   </p>
+   <pre>
+      461 ohm  0.7V  75 ohm
+5V? ---/\/\/\--- * ---/\/\/\--- ground
+</pre>
+   <p>
+    A resistance of 461 ohms makes this circuit output a tidy 0.7 volts.
+  However, there's an additional detail -- the 4-bit color we're using includes
+  a bit controlling overall intensity.
+  This means that the signal sent to the monitor could be either 0 volts, 0.35
+  volts, or 0.7 volts.
+  Now, the circuit looks more like this:
+   </p>
+   <pre>
+       909 ohm        75 ohm
+5V? ---/\/\/\--- * ---/\/\/\--- ground
+                 |
+       909 ohm   |
+5V? ---/\/\/\--- |
+</pre>
+   <p>
+    By turning on only one input resistor, we get about 0.38 volts.
+  By turning on both, they essentially become parallel, and the output reads
+  0.71 volts.
+  Close enough.
+   </p>
+   <p>
+    (Sidenote: Driving these color signals requires a not-insubstantial amount of
+  current -- about 4.5 mA for half intensity and 9 mA for full.
+  I'd been using 74F series logic for the video controller up to this point,
+  and while it has very low propagation delay (around 3 ns), it's not great at
+  driving outputs like this.
+  I swapped in a couple of 74HC series AND gate chips to handle this.)
+   </p>
+   <p>
+    The
+    <code>
+     HSYNC
+    </code>
+    and
+    <code>
+     VSYNC
+    </code>
+    signals are regular TTL and work
+  fine with 5 volts.
+  I connected them via 75 ohm resistors.
+  They're active low, so they should remain on at rest and be brought to 0 volts
+  during the sync pulse.
+  Note also that color signal output is suppressed during the horizontal and
+  vertical blanking intervals.
+  Otherwise, the colors get messed up and don't display at a smooth intensity.
+   </p>
+   <h2 id="Scrolling!">
+    Scrolling!
+   </h2>
+   <p>
+    The intended use of this video controller is with a homebrew CPU that has
+  rather limited processing power.
+  It would be less than practical to keep track of entire frames of text on the
+  CPU and rewrite them to video memory every time the screen needs to be
+  scrolled.
+  Video memory stores an entire 128x128 characters -- by displaying only a
+  portion of this, scrolling (or even double-buffering) is possible.
+   </p>
+   <p>
+    Scrolling is implemented via two 10-bit (actually 12-bit but the extra bits
+  don't do anything) adder circuits.
+  All these do is add the value of registers (set by the CPU) to the value of
+  the pixel counters.
+  The output of these adders is used in place of the output of the pixel
+  counters in driving the character generation.
+  This allows pixel-level x and y scrolling across the entirety of video memory!
+   </p>
+   <h2 id="Fonts">
+    Fonts
+   </h2>
+   <p>
+    I used the original Commodore 64 and copied it down by hand from
+    <a href="https://www.c64-wiki.com/wiki/Character_set">
+     here
+    </a>
+    .
+  I added several additional characters and rearranged it all into ASCII.
+  The end result is
+    <a href="../download/vga-char-rom.txt">
+     this
+    </a>
+    , an
+  ASCII-compatible character ROM ready to be fed into the video controller.
+   </p>
+   <p>
+    Character definitions are loaded into memory in the same way as character and
+  color data.
+  The CPU has a character ROM stored and loads it in on startup.
+  Some programs, like Tetris, even add custom characters.
+   </p>
+   <h2 id="Putting_it_all_together">
+    Putting it all together
+   </h2>
+   <p>
+    All of these concepts linked together yield a fully functional, text-mode
+  video controller!
+  Pixel counters combine with scroll registers to feed a VGA timing signal
+  generator and a character generator, and voilà -- text!
+  The parts that gave me the most trouble were mapping the sync pulses and
+  blanking intervals to logic gate ICs in the most efficient way possible and
+  working out the kinks and glitches in external memory access.
+  Note also that care must be taken when interfacing between 74F and 74HC logic
+  families.
+   </p>
+   <!-- TODO link full schematic scans, BOM -->
+   <p>
+    <i>
+     Note to self: upload schematics and pictures at some point.
+    </i>
+   </p>
+  </div>
+ </body>
+</html>

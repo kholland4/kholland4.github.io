@@ -7,16 +7,18 @@ document.addEventListener("DOMContentLoaded", function() {
       if(!("name" in section.dataset))
         continue;
       var tagName = section.dataset.name;
-      for(var c of section.childNodes) {
-        if(c.tagName != "LABEL")
-          continue;
-        var tagText = c.innerText;
-        var check = document.getElementById(c.htmlFor);
-        if(check.checked) {
-          if(!(tagName in tagStatus))
-            tagStatus[tagName] = new Set();
-          
-          tagStatus[tagName].add(tagText);
+      for(var box of section.childNodes) {
+        for(var c of box.childNodes) {
+          if(c.tagName != "LABEL")
+            continue;
+          var tagText = c.innerText;
+          var check = document.getElementById(c.htmlFor);
+          if(check.checked) {
+            if(!(tagName in tagStatus))
+              tagStatus[tagName] = new Set();
+            
+            tagStatus[tagName].add(tagText);
+          }
         }
       }
     }

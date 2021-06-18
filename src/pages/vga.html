@@ -39,7 +39,7 @@
 <h3>A brief introduction to VGA</h3>
 
 <p>
-  Old-fashioned CRT monitors worked by shooting a stream of electrons at a
+  Old-fashioned CRT televisions worked by shooting a stream of electrons at a
   phosphor screen.
   Their electron beam could only hit one place at a time, so it had to be
   scanned across the screen.
@@ -51,8 +51,8 @@
   This was achieved by way of blanking intervals, where no video data would be
   sent for a brief period at time between lines and full frames.
   Squeezed into these intervals were horizontal and vertical sync pulses
-  (<a href="https://antiqueradio.org/art/NTSC%20Signal%20Specifications.pdf">
-  technical information</a>,
+  (<a href="https://antiqueradio.org/art/NTSC%20Signal%20Specifications.pdf"
+  >technical information</a>,
   <a href="https://en.wikipedia.org/wiki/Analog_television">
   regular information</a>).
   NTSC also did a bunch of clever stuff with color, but that's not relevant
@@ -71,7 +71,7 @@
 
 <p>
   This scanning system lived on with the introduction of computer monitors and
-  eventual standardization on VGA.
+  eventual standardization on the VGA connector.
   VGA still uses horizontal and vertical sync pulses, scanning, analog color,
   and all that; it was meant for driving CRTs.
   However, it also includes some nice improvements.
@@ -107,7 +107,7 @@
   That last bit means that when generating the signal, the bottom four bits
   (<code>2^4 = 16</code>) of the pixel counter can be ignored.
   The pixel clock runs at exactly 25.175 MHz, for which full can crystal
-  oscillators are easily available.
+  oscillators are readily available.
 </p>
 
 <h4>Generating the signal</h4>
@@ -156,9 +156,9 @@
 
 <p>
   The minimal set of bit positions that need to be checked to detect the sync
-  and blanking looks like this. The output is a falling edge trigger, so it's
-  okay for a detector to be active for too long.
-  In some cases bits can be safely ignored because the counters reset
+  and blanking looks like this. The output is active low and a falling edge
+  trigger, so it's okay for a detector to be active for too long.
+  In some cases, bits can be safely ignored because the counters reset
   at 800 and 525, never reaching all possible states.
   This optimization is seen most clearly with higher numbers.
 </p>
@@ -210,7 +210,7 @@ VSYNC:
   and even some of the pixel counter bits (through appropriate resistors of
   course)!
   This yielded a variety of colored stripes (albeit with some weirdness due to
-  the blanking signals not being used).
+  the blanking signals not being handled).
 </p>
 
 <p>
@@ -222,7 +222,7 @@ VSYNC:
   Each character cell on the 80x60 grid stores two bytes: one for the character
   number and one for the color.
   Color is split into 4 bits for the foreground and 4 bits for the background
-  color, each stored in RGBI (red, green, blue, and intensity) format.
+  color, each stored in the RGBI (red, green, blue, and intensity) format.
   In total, this makes for 3 one-byte memory reads per every 8 pixels.
 </p>
 
@@ -232,7 +232,7 @@ VSYNC:
   These days, unlike in the 80s, it's very easy to get spacious SRAM chips.
   I used an
   <a href="https://www.alliancememory.com/wp-content/uploads/pdf/AS6C1008feb2007.pdf">
-  AS6C1008</a>, which has 128 KiB organized as 128K by 8 bits.
+  AS6C1008</a>, which has 128 KiB of SRAM organized as 128K by 8 bits.
   Given all this space, it's easy to do some simple bit packing for addressing.
   The top bit (16) goes unused, while bit 15 is 0 for character cell memory and
   1 for character definitions.
@@ -242,12 +242,12 @@ VSYNC:
   easy scrolling (more on that later).
   This is mapped with 7 bits (14-8) for the top 7 bits of the y counter and 7
   more bits (7-1) for the top 7 bits of the x counter.
-  The bottom 3 bits can be ignored as they cover the 8 pixel positions within a
-  single character cell.
+  The bottom 3 bits of the x and y counters can be ignored as they cover the 8
+  pixel positions within a single character cell.
   The last bit (0) is set to 0 to store a character number and 1 to store that
   character's color.
-  The ordering of these bits is important: it means that data can be fed
-  linearly across x positions into video memory.
+  The ordering of these bits is important: it means that external data can be
+  fed linearly across x positions into video memory.
 </p>
 
 <pre>
@@ -257,7 +257,7 @@ Memory address bits from most to least significant.
   w = y counter bits 2-0 inclusive,
   x = x counter bits 9-3 inclusive,
   n = char # bits 7-0 inclusive,
-  c = char # (0) / color (1)
+  c = fetch char # (0) / fetch color (1)
 
 In character cell mode:
   -0yyyyyyyxxxxxxxc
@@ -269,30 +269,31 @@ In character definition mode:
 <p>
   Out of the memory address bits, 14 are fed directly from the pixel counters
   and are fixed for the duration of a character, while 2 vary depending on what
-  is being fetched for that character.
+  data is being fetched for that character.
   To get all three bytes needed to make a character (character #, color, and
   pixel data for that character #), memory accesses need to be made within 8
   clock cycles.
-  The SRAM chip, fast as it is, can't deliver memory contents fast enough for
-  access within the same cycle.
-  Therefore, it takes two clock cycles per memory read.
-  (Sidenote: This could probably be pipelined, reading data and updating the
+  The SRAM chip, fast as it is, can't deliver memory contents quickly enough for
+  access within a single cycle.
+  Therefore, it takes two clock cycles to read a byte of memory.
+  (Sidenote: This could probably be pipelined, reading data and loading the next
   address during the same cycle.)
   Six cycles will then be used to access character data, leaving two for other
   use, such as writing new data to memory.
 </p>
 
 <p>
-  I chose to fetch this data using a 3-to-8 decoder chip: it takes 3 bits of
-  input and activates one of 8 output lines for each input state.
-  First, the character number address is set, and in the next cycle, the data
-  is latched in.
+  I chose to coordinate fetching this data using a 3-to-8 decoder chip: it takes
+  3 bits of input and activates one of 8 output lines for each input state.
+  First, the character number address is set, and during the next cycle, the
+  data is latched in.
   In the following cycle, the color address is set (differing by only the lowest
   bit) then latched in a cycle later.
   Finally, the character pixel data is read using the character number fetched
   earlier.
-  At the same time, the color data is promoted from a staging register to the
-  main register, and the new character can begin to be displayed.
+  At the same time, on the final cycle, the color data is promoted from a
+  staging register to the main register, and the new character can begin to be
+  displayed.
   A multiplexer selects each bit from the 8 bits of loaded pixel data, using
   the selected bit to choose which color (foreground or background) to output.
   This happens while the next character's data is fetched.
@@ -301,7 +302,7 @@ In character definition mode:
 <p>
   (Note: Because character data is prefetched and buffered for the duration of
   a character, the video controller needs to begin fetching data for a line of
-  text during the blanking interval.
+  text slightly ahead of time during the blanking interval.
   This is why part of the blanking interval is wrapped around to the front in
   the timings discussed above.
   The x scroll register also needs to be set to compensate for shifting caused
@@ -309,6 +310,7 @@ In character definition mode:
 </p>
 
 <!-- TODO scans of schematics -->
+<!-- TODO photo of test with random memory -->
 <!-- TODO photo of final product on monitor -->
 
 <h3>Writing to memory</h3>
@@ -322,7 +324,7 @@ In character definition mode:
 
 <p>
   Ideally, external access to memory slips into the two unused clock cycles
-  every character.
+  that happen every character.
   This would be blazing fast, and I wouldn't have to worry about the rate at
   which the CPU feeds data in.
   However, in practice, this method resulted in some strange flickering issues.
@@ -341,7 +343,7 @@ In character definition mode:
   This latches the data in and turns the flip-flop on.
   Next, the video controller looks at the state of the flip-flop whenever it's
   ready for data (ideally once per character, as discussed before).
-  If it's on, the data is written to memory.
+  If it's on, the data is written to memory and the flip-flop is reset.
   As an added perk, the address counter is also incremented.
 </p>
 
@@ -349,9 +351,9 @@ In character definition mode:
 
 <p>
   The CPU needs some way to address video memory.
-  With only an 8-bit bus plus control lines, this address must be stored in a
-  register and updated ahead of time.
-  Why stop there? I chose to use presettable counters in place of a register.
+  With only an 8-bit bus plus control lines, this address must be stored in
+  registers and updated ahead of time.
+  Why stop there? I chose to use presettable counters in place of registers.
   These can be loaded from the bus by the CPU, but they are also counted up
   every time a byte is written to memory.
   This increases the rate at which data can be fed in, and more importantly, it
@@ -372,7 +374,7 @@ In character definition mode:
 </p>
 
 <p>
-  As discussed earlier, the VGA connector has three separate wires for each of
+  As mentioned earlier, the VGA connector has three separate wires for each of
   red, green, and blue.
   These wires are terminated in the monitor with a 75 ohm resistor to ground.
   The voltage read by the monitor ranges from 0 volts for off to 0.7 volts for
@@ -388,8 +390,8 @@ In character definition mode:
 
 <p>
   A resistance of 461 ohms makes this circuit output a tidy 0.7 volts.
-  However, there's an additional detail -- the 4-bit color we're using includes
-  a bit controlling overall intensity.
+  However, there's a catch -- the 4-bit color we're using includes a bit
+  controlling overall intensity.
   This means that the signal sent to the monitor could be either 0 volts, 0.35
   volts, or 0.7 volts.
   Now, the circuit looks more like this:
@@ -405,14 +407,14 @@ In character definition mode:
 
 <p>
   By turning on only one input resistor, we get about 0.38 volts.
-  By turning on both, they essentially become parallel, and the output reads
+  By turning on both, they become effectively parallel, and the output reads
   0.71 volts.
   Close enough.
 </p>
 
 <p>
   (Sidenote: Driving these color signals requires a not-insubstantial amount of
-  current -- about 4.5 mA for half intensity and 9 mA for full.
+  current -- about 4.5 mA for half intensity and 9 mA for full intensity.
   I'd been using 74F series logic for the video controller up to this point,
   and while it has very low propagation delay (around 3 ns), it's not great at
   driving outputs like this.
@@ -425,8 +427,8 @@ In character definition mode:
   I connected them via 75 ohm resistors.
   They're active low, so they should remain on at rest and be brought to 0 volts
   during the sync pulse.
-  Note also that color signal output is suppressed during the horizontal and
-  vertical blanking intervals.
+  Note also that color signal output is needs to be suppressed during the
+  horizontal and vertical blanking intervals.
   Otherwise, the colors get messed up and don't display at a smooth intensity.
 </p>
 
@@ -443,20 +445,20 @@ In character definition mode:
 </p>
 
 <p>
-  Scrolling is implemented via two 10-bit (actually 12-bit but the extra bits
+  Scrolling is implemented via two 10-bit (actually 12-bit, but the extra bits
   don't do anything) adder circuits.
-  All these do is add the value of registers (set by the CPU) to the value of
-  the pixel counters.
+  All these do is add the values of x and y scroll registers (set by the CPU) to
+  the values of the pixel counters.
   The output of these adders is used in place of the output of the pixel
-  counters in driving the character generation.
+  counters in driving character generation.
   This allows pixel-level x and y scrolling across the entirety of video memory!
 </p>
 
 <h2>Fonts</h2>
 
 <p>
-  I used the original Commodore 64 and copied it down by hand from
-  <a href="https://www.c64-wiki.com/wiki/Character_set"> here</a>.
+  I used the original Commodore 64 font, copied down by hand from
+  <a href="https://www.c64-wiki.com/wiki/Character_set">here</a>.
   I added several additional characters and rearranged it all into ASCII.
   The end result is <a href="../download/vga-char-rom.txt">this</a>, an
   ASCII-compatible character ROM ready to be fed into the video controller.
@@ -474,11 +476,11 @@ In character definition mode:
 <p>
   All of these concepts linked together yield a fully functional, text-mode
   video controller!
-  Pixel counters combine with scroll registers to feed a VGA timing signal
-  generator and a character generator, and voilà -- text!
+  Pixel counters feed a VGA timing signal generator and combine with scroll
+  registers to feed a character generator, and voilà -- text! In color!
   The parts that gave me the most trouble were mapping the sync pulses and
-  blanking intervals to logic gate ICs in the most efficient way possible and
-  working out the kinks and glitches in external memory access.
+  blanking intervals to logic gate ICs in the most efficient way possible as
+  well as working out the kinks and glitches in external memory access.
   Note also that care must be taken when interfacing between 74F and 74HC logic
   families.
 </p>

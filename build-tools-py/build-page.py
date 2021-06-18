@@ -159,6 +159,60 @@ for child in soup.body.descendants:
         child.clear()
         template_parse(content, child)
 
+# Gather list of all source files
+def get_source_files(what):
+    files = []
+    if what["type"] == "source":
+        files.append(os.path.relpath(what["file"], start="."))
+    for c in what["children"]:
+        files.extend(get_source_files(c))
+    return files
+source_files = get_source_files(source_file_info)
+
+# Show source files and links in footer
+source_footer = soup.new_tag("footer")
+source_footer["class"] = "source_info_footer"
+soup.body.append(source_footer)
+
+sf_details = soup.new_tag("details")
+source_footer.append(sf_details)
+
+sf_summary = soup.new_tag("summary")
+sf_summary.string = "Page info"
+sf_details.append(sf_summary)
+
+sf_text = soup.new_tag("p")
+sf_text.string = "Source files:"
+sf_details.append(sf_text)
+
+source_list = soup.new_tag("table")
+sf_details.append(source_list)
+for file in source_files:
+    item = soup.new_tag("tr")
+    source_list.append(item)
+    
+    td_link = soup.new_tag("td")
+    item.append(td_link)
+    source_link = soup.new_tag("a")
+    source_link["href"] = base_url + file
+    source_link.string = file
+    td_link.append(source_link)
+    
+    td_history = soup.new_tag("td")
+    item.append(td_history)
+    history_link = soup.new_tag("a")
+    history_link["href"] = "https://github.com/kholland4/kholland4.github.io/commits/master/" + file
+    history_link.string = "history"
+    td_history.append(history_link)
+
+sf_issues = soup.new_tag("p")
+sf_issues_link = soup.new_tag("a")
+sf_issues_link["href"] = "https://github.com/kholland4/kholland4.github.io/issues"
+sf_issues_link.string = "File an issue"
+sf_issues.append(sf_issues_link)
+sf_details.append(sf_issues)
+
+
 out_str = str(soup)
 
 # Source file info

@@ -19,7 +19,7 @@ tidy: .tidy_ok
 
 spell: .spell_ok
 
-.spell_ok: $(SRC_HTML) $(OUT_HTML)
+.spell_ok: $(SRC_HTML)
 	bash ./spellcheck.sh $^
 	touch .spell_ok
 

@@ -163,6 +163,8 @@ code {
   overflow-x: auto;
 }
 
+/* Table of contents template */
+
 .tocBox {
   border: 1px solid #bbb;
   padding: 10px;
@@ -191,6 +193,21 @@ li.toc::before {
   content: "-";
   padding-right: 8px;
 }
+
+/* Auto generated stuff */
+
+.source_info_footer {
+  padding: 10px;
+  font-family: monospace;
+}
+.source_info_footer summary {
+  color: #595959;
+}
+.source_info_footer td {
+  padding-right: 12px;
+}
+
+/* Dark mode and print */
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -243,6 +260,10 @@ li.toc::before {
   button:active {
     background-color: #2c2c2c;
   }
+  
+  .source_info_footer summary {
+    color: #9f9f9f;
+  }
 }
 
 @media print {
@@ -265,5 +286,9 @@ li.toc::before {
   
   img {
     opacity: initial;
+  }
+  
+  .source_info_footer {
+    display: none;
   }
 }

@@ -132,6 +132,7 @@ for child in soup.body.descendants:
 # Traverse the tree looking for templates
 def template_parse(content, child):
     args = content[2:-2].split("|")
+    args = [a.strip() for a in args]
     if args[0] == "tiles":
         res = template_tiles.parse(args, child, soup, workdir, out_dir)
     elif args[0] == "pagelist":

@@ -1,3 +1,7 @@
+#content {
+  max-width: revert !important;
+}
+
 .tiles {
   width: 100%;
   

@@ -1,6 +1,8 @@
 #content {
   font-family: serif;
   padding: 10px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .skipLink {
@@ -31,6 +33,13 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+figure {
+  float: right;
+}
+figcaption {
+  margin-top: 10px;
+  font-style: italic;
 }
 
 pre {
@@ -125,7 +134,7 @@ li.toc::before {
   }
   
   img {
-    opacity: 0.7;
+    opacity: 0.8;
   }
   img:hover {
     opacity: initial;

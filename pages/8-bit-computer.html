@@ -67,6 +67,7 @@ and the second dictates which part uses the data.
 These sections are fed into two separate 4-to-16 decoders that translate a 4-bit value into the activation of one of 16 control lines.
 The control lines from both decoders connect all across the computer, mainly driving tri-state bus buffers (output side) and the clock signals on registers (input side).
 </p>
+<div class="scroll">
 <pre>
 | I register    |
 -----------------
@@ -74,6 +75,7 @@ The control lines from both decoders connect all across the computer, mainly dri
 -----------------
 | out   | in    |
 </pre>
+</div>
 <h4 id="ALU">ALU</h4>
 <p>
 The ALU is perhaps the most straightforward subsystem in the computer.

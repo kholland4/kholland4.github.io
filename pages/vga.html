@@ -145,6 +145,7 @@ Built with:
   at 800 and 525, never reaching all possible states.
   This optimization is seen most clearly with higher numbers.
 </p>
+<div class="scroll">
 <pre>
 0 = low, 1 = high, x = don't care
 
@@ -164,6 +165,7 @@ VSYNC:
   on at 480,  x111101010
   off at 492, x111101100
 </pre>
+</div>
 <p>
   At this point, I devised and hand-optimized combinational logic to detect
   these eight states based on available
@@ -224,6 +226,7 @@ VSYNC:
   The ordering of these bits is important: it means that external data can be
   fed linearly across x positions into video memory.
 </p>
+<div class="scroll">
 <pre>
 Memory address bits from most to least significant.
   - = unused (0),
@@ -239,6 +242,7 @@ In character cell mode:
 In character definition mode:
   -10000nnnnnnnnwww
 </pre>
+</div>
 <p>
   Out of the memory address bits, 14 are fed directly from the pixel counters
   and are fixed for the duration of a character, while 2 vary depending on what
@@ -342,10 +346,12 @@ In character definition mode:
   However, the video controller's logic operates at 5 volts.
   Therefore, we must build a voltage divider.
 </p>
+<div class="scroll">
 <pre>
       461 ohm  0.7V  75 ohm
 5V? ---/\/\/\--- * ---/\/\/\--- ground
 </pre>
+</div>
 <p>
   A resistance of 461 ohms makes this circuit output a tidy 0.7 volts.
   However, there's a catch -- the 4-bit color we're using includes a bit
@@ -354,6 +360,7 @@ In character definition mode:
   volts, or 0.7 volts.
   Now, the circuit looks more like this:
 </p>
+<div class="scroll">
 <pre>
        909 ohm        75 ohm
 5V? ---/\/\/\--- * ---/\/\/\--- ground
@@ -361,6 +368,7 @@ In character definition mode:
        909 ohm   |
 5V? ---/\/\/\--- |
 </pre>
+</div>
 <p>
   By turning on only one input resistor, we get about 0.38 volts.
   By turning on both, they become effectively parallel, and the output reads

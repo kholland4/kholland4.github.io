@@ -117,6 +117,9 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  
+  max-width: calc(100% - 20px);
+  height: auto;
 }
 figure {
   float: right;
@@ -124,6 +127,12 @@ figure {
 figcaption {
   margin-top: 10px;
   font-style: italic;
+}
+@media screen and (max-width: 580px) {
+  figure {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 pre {
